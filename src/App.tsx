@@ -62,12 +62,11 @@ function App() {
         <section className="section lanes" id="care">
           <div className="section-inner">
             <div className="section-head">
-              <p className="eyebrow">Hero care lanes</p>
-              <h2>Built around what Peptis does best</h2>
+              <p className="eyebrow">Care lanes</p>
+              <h2>Personalized protocols for real goals</h2>
               <p>
-                GLP-1 metabolic care meets the demand of Ro, Hims, and Trim.
-                Recovery, longevity, and skin lanes carry Peptis’ peptide
-                forte — the edge generalist telehealth can’t copy overnight.
+                From metabolic reset to recovery, longevity, and skin renewal —
+                every plan starts with a licensed clinician review.
               </p>
             </div>
 
@@ -100,8 +99,8 @@ function App() {
               <p className="eyebrow">Simple path</p>
               <h2>From intake to doorstep in three steps</h2>
               <p>
-                The same frictionless funnel top merchants use — without
-                turning care into a vending machine.
+                A clear path from your health goals to clinician-guided care —
+                without the waiting room.
               </p>
             </div>
             <div className="step-grid">
@@ -119,11 +118,11 @@ function App() {
         <section className="section" id="why">
           <div className="section-inner">
             <div className="section-head">
-              <p className="eyebrow">Trust architecture</p>
-              <h2>Why patients choose Peptis</h2>
+              <p className="eyebrow">Why Peptis</p>
+              <h2>Care built on clinical rigor</h2>
               <p>
-                Compete with Ro, Hims, Musely, Nurx, and Lemonaid on convenience —
-                win on peptide depth and clinical seriousness.
+                Convenient telehealth with peptide depth — licensed providers,
+                pharmacy fulfillment, and transparent membership pricing.
               </p>
             </div>
             <div className="trust-grid">
@@ -134,51 +133,6 @@ function App() {
                 </article>
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="section strategy" id="strategy">
-          <div className="section-inner strategy-panel">
-            <div className="section-head" style={{ marginBottom: 0 }}>
-              <p className="eyebrow">Product strategy</p>
-              <h2>Recommended hero products</h2>
-              <p>
-                Partner sites like GetTrim, FMmeds, and MensRX prove GLP-1 and
-                men’s vitality convert. Peptis should enter that arena — then
-                pull patients into peptide-native protocols competitors treat as
-                side aisles.
-              </p>
-            </div>
-            <ol className="strategy-list">
-              <li>
-                <strong>1. Metabolic Reset — Semaglutide / Tirzepatide</strong>
-                <span>
-                  Highest-intent telehealth category. Required to compete on the
-                  same shelf as Trim, FMmeds, Ro, and Hims.
-                </span>
-              </li>
-              <li>
-                <strong>2. Recovery Protocol — BPC-157 + TB-500 (+ KPV)</strong>
-                <span>
-                  Peptis’ strongest historical catalog forte and clearest brand
-                  differentiator.
-                </span>
-              </li>
-              <li>
-                <strong>3. Longevity Stack — Sermorelin / Ipamorelin / MOTS-c</strong>
-                <span>
-                  Owns healthspan positioning; aligns with existing longevity
-                  SKUs and premium willingness to pay.
-                </span>
-              </li>
-              <li>
-                <strong>4. Skin Renewal — GHK-Cu</strong>
-                <span>
-                  Beauty/derm front door against Musely — converts peptide
-                  expertise into a high-trust aesthetic lane.
-                </span>
-              </li>
-            </ol>
           </div>
         </section>
 
@@ -203,8 +157,8 @@ function App() {
           <div className="section-inner">
             <h2>Your protocol starts with a conversation</h2>
             <p>
-              Example storefront only — wire this CTA to your intake, EMR, and
-              pharmacy partners when you go live.
+              Complete a short assessment and a licensed clinician will review
+              whether treatment is right for you.
             </p>
             <a className="btn btn-primary" href="#care">
               Choose a care lane
@@ -221,14 +175,14 @@ function App() {
               <a href="#care">Care</a>
               <a href="#how">How it works</a>
               <a href="#faq">FAQ</a>
-              <a href="#strategy">Product strategy</a>
             </div>
           </div>
           <p className="footer-note">
-            Peptis example site for demonstration. Not medical advice. Treatment
-            requires evaluation by a licensed clinician; a prescription is not
-            guaranteed. Compounded medications may not be FDA-approved. ©{' '}
-            {new Date().getFullYear()} Peptis.
+            Peptis is operated by Information Edge Insights LLC. Not medical
+            advice. Treatment requires evaluation by a licensed clinician; a
+            prescription is not guaranteed. Compounded medications may not be
+            FDA-approved. © {new Date().getFullYear()} Information Edge Insights
+            LLC.
           </p>
         </div>
       </footer>

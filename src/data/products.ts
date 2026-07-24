@@ -5,32 +5,18 @@ export type CareLane = {
   summary: string
   startingAt: string
   compounds: string[]
-  why: string
   priority: 'hero' | 'supporting'
 }
 
-/**
- * Hero product strategy for Peptis telehealth.
- *
- * Competitive set (Ro, Hims, Musely, Nurx, Lemonaid, Trim, MensRX, FMmeds)
- * wins on GLP-1 weight loss and broad men's/women's Rx. Peptis differentiates
- * by leading with peptide-native care while still fielding metabolic GLP-1s
- * as the demand gateway.
- *
- * Fortes from existing Peptis catalog / brand:
- * Recovery (BPC-157, TB-500), Longevity (MOTS-c, Epitalon, GH secretagogues),
- * Skin (GHK-Cu), Cognitive (Semax/Selank), COA / quality trust.
- */
 export const careLanes: CareLane[] = [
   {
     id: 'metabolic',
     name: 'Metabolic Reset',
     eyebrow: 'Weight & appetite',
     summary:
-      'Clinician-guided GLP-1 care for sustainable weight change — the same demand lane as Trim and Ro, with Peptis protocol discipline.',
+      'Clinician-guided GLP-1 care for sustainable weight change, with a protocol tailored to your health history and goals.',
     startingAt: '$249/mo',
     compounds: ['Semaglutide', 'Tirzepatide'],
-    why: 'Table-stakes category to compete with top telemedicine merchants; highest conversion entry point.',
     priority: 'hero',
   },
   {
@@ -38,10 +24,9 @@ export const careLanes: CareLane[] = [
     name: 'Recovery Protocol',
     eyebrow: 'Repair & resilience',
     summary:
-      'Physician-reviewed recovery peptides for tissue support after training, travel, or wear — Peptis’ deepest catalog forte.',
+      'Physician-reviewed recovery peptides for tissue support after training, travel, or everyday wear.',
     startingAt: '$189/mo',
     compounds: ['BPC-157', 'TB-500', 'KPV'],
-    why: 'Signature differentiator vs Hims/Ro; strongest historical Peptis SKU strength.',
     priority: 'hero',
   },
   {
@@ -52,7 +37,6 @@ export const careLanes: CareLane[] = [
       'Growth-hormone support and mitochondrial peptides for energy, sleep quality, and long-horizon healthspan goals.',
     startingAt: '$199/mo',
     compounds: ['Sermorelin', 'Ipamorelin', 'MOTS-c'],
-    why: 'Owns the longevity niche competitors treat as an afterthought.',
     priority: 'hero',
   },
   {
@@ -60,10 +44,9 @@ export const careLanes: CareLane[] = [
     name: 'Skin Renewal',
     eyebrow: 'Glow & collagen',
     summary:
-      'Copper-peptide protocols for skin quality and collagen support — a clinical answer to Musely-style derm telehealth.',
+      'Copper-peptide protocols for skin quality and collagen support, guided by a licensed clinician.',
     startingAt: '$149/mo',
     compounds: ['GHK-Cu', 'KPV'],
-    why: 'Converts peptide expertise into a beauty/derm front door.',
     priority: 'hero',
   },
   {
@@ -74,7 +57,6 @@ export const careLanes: CareLane[] = [
       'Provider-guided nootropic peptides for mental clarity and stress resilience when clinically appropriate.',
     startingAt: '$129/mo',
     compounds: ['Semax', 'Selank'],
-    why: 'Supporting lane from existing cognitive catalog; secondary hero after core four.',
     priority: 'supporting',
   },
 ]
@@ -121,7 +103,7 @@ export const steps = [
 export const faqs = [
   {
     q: 'Is Peptis a research chemical store?',
-    a: 'No. This example site models doctor-guided telehealth: licensed providers evaluate you, and when appropriate prescribe therapies fulfilled by U.S. pharmacies.',
+    a: 'No. Peptis is doctor-guided telehealth: licensed providers evaluate you, and when appropriate prescribe therapies fulfilled by U.S. pharmacies.',
   },
   {
     q: 'Do I need insurance?',
@@ -129,14 +111,14 @@ export const faqs = [
   },
   {
     q: 'Which states are available?',
-    a: 'Availability depends on provider licensing and pharmacy partners. The live product would gate by state during intake.',
+    a: 'Availability depends on provider licensing and pharmacy partners. State eligibility is confirmed during intake.',
   },
   {
     q: 'Are compounded peptides FDA-approved?',
     a: 'Many peptide therapies are compounded and are not FDA-approved as finished drug products. Your provider will explain risks, alternatives, and whether treatment is appropriate for you.',
   },
   {
-    q: 'How is Peptis different from Ro or Hims?',
-    a: 'Those platforms lead with broad men’s/women’s Rx. Peptis leads with peptide-native protocols — recovery, longevity, and skin — while still offering metabolic GLP-1 care as a primary lane.',
+    q: 'How is Peptis different?',
+    a: 'Peptis leads with peptide-native protocols — recovery, longevity, and skin — while still offering metabolic GLP-1 care as a primary lane.',
   },
 ]
