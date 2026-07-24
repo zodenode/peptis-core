@@ -13,21 +13,23 @@ npm run dev
 
 - **GitHub:** https://github.com/zodenode/peptis-core (`main`)
 - **Railway:** project `peptis-core` / service `peptis-web`
-- **Live URL:** https://peptis-web-production.up.railway.app
+- **Live URL (working):** https://peptis-web-production.up.railway.app
+- **Custom domains:** `https://www.peptis.com` / `https://peptis.com` — require GoDaddy DNS below
 
-### Link GoDaddy (`peptis.com`)
+### Fix / link GoDaddy (`peptis.com`)
 
-Custom domains are attached in Railway. Add DNS in GoDaddy (full detail in `GODADDY-DNS.md`):
+The app on Railway is healthy. Custom domains fail when DNS is wrong: Railway returns `404 Application not found` and serves the `*.up.railway.app` certificate until **both** the CNAME and ownership TXT are correct.
 
-| Host | Type | Value |
-|------|------|-------|
-| `www` | CNAME | `z1iy4dgg.up.railway.app` |
-| `_railway-verify` | TXT | `railway-verify=635736643bc94d1c9d059ec607348617116d39b55102357d8dfd72927516fcd6` |
+In https://dcc.godaddy.com/control/peptis.com/dns:
 
-For apex `peptis.com`, forward to `https://www.peptis.com` (GoDaddy usually cannot CNAME `@`), or CNAME `@` → `rscpq1pp.up.railway.app` if flattening is available.
+| Action | Type | Name | Value |
+|--------|------|------|-------|
+| Edit | CNAME | `www` | `z1iy4dgg.up.railway.app` |
+| Add | TXT | `_railway-verify.www` | `railway-verify=635736643bc94d1c9d059ec607348617116d39b55102357d8dfd72927516fcd6` |
 
-DNS panel: https://dcc.godaddy.com/control/peptis.com/dns
+Forward apex `peptis.com` → `https://www.peptis.com` (301). Full diagnosis + verify commands: `GODADDY-DNS.md`.
 
+Railway networking UI: https://railway.com/project/30047a39-df52-4246-9e66-2eb3778dec09/service/73ffa477-2c55-45c5-aceb-b3708e6f2f3e/settings
 ## Brand
 
 - Wordmark: `Logos/peptis-logo-earthy-green.png` / `public/peptis-logo-green.png`
