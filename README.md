@@ -17,17 +17,16 @@ npm run dev
 
 ### Link GoDaddy (`peptis.com`)
 
-Railway CLI custom-domain create currently returns Unauthorized for this workspace, so add the domain in the Railway UI:
+Custom domains are attached in Railway. Add DNS in GoDaddy (full detail in `GODADDY-DNS.md`):
 
-1. Open [peptis-web → Settings → Networking](https://railway.com/project/30047a39-df52-4246-9e66-2eb3778dec09/service/73ffa477-2c55-45c5-aceb-b3708e6f2f3e/settings)
-2. **Custom Domain** → add `www.peptis.com` and `peptis.com`
-3. Copy the CNAME target Railway shows (often `peptis-web-production.up.railway.app`)
-4. In [GoDaddy DNS for peptis.com](https://dcc.godaddy.com/control/peptis.com/dns):
-   - **Type CNAME** · **Name** `www` · **Value** `<railway-cname-target>` · TTL 600
-   - **Apex `@`:** GoDaddy cannot CNAME the root. Either:
-     - Use Railway’s A/ALIAS records if shown, **or**
-     - Domain Forwarding: `peptis.com` → `https://www.peptis.com` (permanent / 301)
-5. Wait for DNS + Railway TLS (usually a few minutes; up to 48h for DNS)
+| Host | Type | Value |
+|------|------|-------|
+| `www` | CNAME | `z1iy4dgg.up.railway.app` |
+| `_railway-verify` | TXT | `railway-verify=635736643bc94d1c9d059ec607348617116d39b55102357d8dfd72927516fcd6` |
+
+For apex `peptis.com`, forward to `https://www.peptis.com` (GoDaddy usually cannot CNAME `@`), or CNAME `@` → `rscpq1pp.up.railway.app` if flattening is available.
+
+DNS panel: https://dcc.godaddy.com/control/peptis.com/dns
 
 ## Brand
 
