@@ -40,7 +40,7 @@ function App() {
           <div className="hero-inner">
             <img
               className="hero-brand"
-              src="/peptis-logo-green.png"
+              src="/peptis-logo-bronze.png"
               alt="Peptis"
             />
             <h1>Peptide care, guided by clinicians.</h1>
@@ -170,7 +170,7 @@ function App() {
       <footer className="footer">
         <div className="footer-inner">
           <div className="footer-top">
-            <img src="/peptis-logo-green.png" alt="Peptis" />
+            <img src="/peptis-logo-bronze.png" alt="Peptis" />
             <div className="footer-links">
               <a href="#care">Care</a>
               <a href="#how">How it works</a>

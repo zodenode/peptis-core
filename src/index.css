@@ -179,7 +179,6 @@ button {
   height: clamp(64px, 10vw, 92px);
   width: auto;
   margin-bottom: 1.35rem;
-  filter: brightness(1.15);
   opacity: 0;
   animation: rise 0.9s var(--ease) 0.1s forwards;
 }

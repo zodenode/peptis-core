@@ -2,17 +2,18 @@
 
 **Brand:** Peptis  
 **Company:** Information Edge Insights LLC  
-**Primary lockup:** Earthy green wordmark (`#3F5B3A`)
+**Primary lockup (light):** Earthy green wordmark (`#3F5B3A`)  
+**Primary lockup (dark):** Bronze soft wordmark (`#C4A882`)
 
 ## Logo
 
 | Asset | Use |
 |-------|-----|
-| `logos/peptis-wordmark-green.png` | Master transparent wordmark |
-| `logos/peptis-wordmark-on-paper.png` | Light UI / print |
-| `logos/peptis-wordmark-on-forest.png` | Dark UI / hero |
-| `logos/peptis-wordmark-on-white.png` / `on-black.png` | Print / decks |
-| `logos/peptis-og-1200x630.jpg` | Social / Open Graph |
+| `logos/peptis-wordmark-green.png` | Master green — light backgrounds |
+| `logos/peptis-wordmark-bronze.png` | Master bronze `#C4A882` — dark backgrounds |
+| `logos/peptis-wordmark-on-paper.png` / `on-mist.png` / `on-white.png` | Light UI / print (green) |
+| `logos/peptis-wordmark-on-forest.png` / `on-black.png` | Dark UI / hero (bronze) |
+| `logos/peptis-og-1200x630.jpg` | Social / Open Graph (bronze on forest) |
 | `logos/peptis-icon-1024.png` | App / avatar |
 | `logos/favicon-32.png` / `apple-touch-icon.png` | Favicons |
 
@@ -22,7 +23,8 @@ Keep clear space around the wordmark equal to the height of the lowercase “e�
 
 ### Colorways
 
-- **Primary:** Earthy sage green on transparent, paper, or forest
+- **Light surfaces** (paper, mist, white): green `#3F5B3A`
+- **Dark surfaces** (forest, black, photography scrims): bronze `#C4A882`
 - Do not use the legacy burgundy wordmark for Peptis consumer surfaces
 
 ## Palette

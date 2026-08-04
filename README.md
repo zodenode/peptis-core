@@ -36,7 +36,7 @@ Full kit (green logo lockups, palette, type, tokens):
 - Specs: [`brand-kit/BRAND.md`](./brand-kit/BRAND.md)
 - Tokens: [`brand-kit/tokens.css`](./brand-kit/tokens.css)
 - Logos: `brand-kit/logos/` (wordmark, on-paper/forest/white/black, OG, icons)
-- Primary: earthy sage `#3F5B3A` · Fraunces + Manrope · Information Edge Insights LLC
+- Light: sage `#3F5B3A` · Dark: bronze `#C4A882` · Fraunces + Manrope · Information Edge Insights LLC
 
 ## Recommended hero products
 
