@@ -28,11 +28,15 @@ For apex `peptis.com`, forward to `https://www.peptis.com` (GoDaddy usually cann
 
 DNS panel: https://dcc.godaddy.com/control/peptis.com/dns
 
-## Brand
+## Brand kit
 
-- Wordmark: `Logos/peptis-logo-earthy-green.png` / `public/peptis-logo-green.png`
-- Recolored from burgundy to earthy sage `#3F5B3A` (Sage Minimal pack)
-- Type: Fraunces (display) + Manrope (body)
+Full kit (green logo lockups, palette, type, tokens):
+
+- Visual board: [`brand-kit/index.html`](./brand-kit/index.html) · also served at `/brand-kit/`
+- Specs: [`brand-kit/BRAND.md`](./brand-kit/BRAND.md)
+- Tokens: [`brand-kit/tokens.css`](./brand-kit/tokens.css)
+- Logos: `brand-kit/logos/` (wordmark, on-paper/forest/white/black, OG, icons)
+- Primary: earthy sage `#3F5B3A` · Fraunces + Manrope · Information Edge Insights LLC
 
 ## Recommended hero products
 

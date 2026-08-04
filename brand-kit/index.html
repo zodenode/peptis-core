@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peptis Brand Kit — Information Edge Insights LLC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./tokens.css" />
+    <style>
+      :root {
+        --sage: var(--peptis-sage);
+        --sage-deep: var(--peptis-sage-deep);
+        --sage-soft: var(--peptis-sage-soft);
+        --bronze: var(--peptis-bronze);
+        --bronze-soft: var(--peptis-bronze-soft);
+        --ink: var(--peptis-ink);
+        --ink-muted: var(--peptis-ink-muted);
+        --mist: var(--peptis-mist);
+        --stone: var(--peptis-stone);
+        --paper: var(--peptis-paper);
+        --forest: var(--peptis-forest);
+        --white: var(--peptis-white);
+        --line: var(--peptis-line);
+        --display: var(--peptis-font-display);
+        --body: var(--peptis-font-body);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--body);
+        color: var(--ink);
+        background: var(--paper);
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .wrap {
+        width: min(1120px, calc(100% - 2.5rem));
+        margin: 0 auto;
+        padding: 3rem 0 5rem;
+      }
+
+      header.hero {
+        display: grid;
+        gap: 1.25rem;
+        padding: 2.5rem;
+        border-radius: 12px;
+        background:
+          radial-gradient(ellipse 70% 80% at 90% 10%, rgba(126, 143, 110, 0.22), transparent 50%),
+          var(--forest);
+        color: var(--paper);
+        margin-bottom: 3rem;
+      }
+
+      header.hero img {
+        height: 72px;
+        width: auto;
+      }
+
+      header.hero h1 {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        letter-spacing: -0.02em;
+      }
+
+      header.hero p {
+        margin: 0;
+        max-width: 42ch;
+        color: rgba(247, 249, 245, 0.78);
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+        font-size: 0.85rem;
+        color: var(--sage-soft);
+      }
+
+      section {
+        margin-bottom: 3.25rem;
+      }
+
+      .eyebrow {
+        margin: 0 0 0.5rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--sage-soft);
+      }
+
+      h2 {
+        margin: 0 0 1.25rem;
+        font-family: var(--display);
+        font-weight: 500;
+        font-size: clamp(1.6rem, 3vw, 2.1rem);
+        color: var(--sage-deep);
+        letter-spacing: -0.015em;
+      }
+
+      .logo-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .logo-card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--white);
+      }
+
+      .logo-card .stage {
+        display: grid;
+        place-items: center;
+        min-height: 160px;
+        padding: 1.5rem;
+      }
+
+      .logo-card .stage img {
+        max-width: 85%;
+        max-height: 72px;
+        width: auto;
+        height: auto;
+      }
+
+      .logo-card .stage.dark {
+        background: var(--forest);
+      }
+
+      .logo-card .stage.black {
+        background: #000;
+      }
+
+      .logo-card .stage.sage {
+        background: var(--sage);
+      }
+
+      .logo-card figcaption {
+        padding: 0.85rem 1rem;
+        font-size: 0.85rem;
+        color: var(--ink-muted);
+        border-top: 1px solid var(--line);
+      }
+
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.85rem;
+      }
+
+      .swatch {
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--white);
+      }
+
+      .swatch .chip {
+        height: 88px;
+      }
+
+      .swatch .info {
+        padding: 0.75rem 0.85rem 0.9rem;
+      }
+
+      .swatch strong {
+        display: block;
+        font-size: 0.92rem;
+        color: var(--sage-deep);
+      }
+
+      .swatch code {
+        font-size: 0.78rem;
+        color: var(--ink-muted);
+      }
+
+      .type-sample {
+        display: grid;
+        gap: 1.5rem;
+        padding: 1.75rem;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--white);
+      }
+
+      .type-sample .display {
+        font-family: var(--display);
+        font-size: clamp(2.2rem, 5vw, 3.4rem);
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        color: var(--sage-deep);
+        margin: 0;
+      }
+
+      .type-sample .body {
+        margin: 0;
+        max-width: 52ch;
+        color: var(--ink-muted);
+      }
+
+      .type-meta {
+        display: grid;
+        gap: 0.35rem;
+        font-size: 0.9rem;
+      }
+
+      .type-meta span {
+        color: var(--ink-muted);
+      }
+
+      .type-meta strong {
+        color: var(--sage-deep);
+      }
+
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.85rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.92rem;
+        text-decoration: none;
+        border: 1px solid transparent;
+      }
+
+      .btn-sage {
+        background: var(--sage);
+        color: var(--white);
+      }
+
+      .btn-bronze {
+        background: var(--bronze-soft);
+        color: var(--forest);
+      }
+
+      .btn-ghost {
+        border-color: var(--line);
+        color: var(--sage-deep);
+        background: var(--mist);
+      }
+
+      .rules {
+        display: grid;
+        gap: 0.75rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      .rules li {
+        padding: 0.9rem 1rem;
+        border-left: 3px solid var(--sage);
+        background: var(--mist);
+        color: var(--ink-muted);
+      }
+
+      .rules li strong {
+        color: var(--sage-deep);
+      }
+
+      footer {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.88rem;
+        color: var(--ink-muted);
+      }
+
+      @media print {
+        header.hero {
+          break-inside: avoid;
+        }
+        .logo-card,
+        .swatch {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <img src="./logos/peptis-wordmark-green.png" alt="Peptis" />
+        <h1>Brand kit</h1>
+        <p>
+          Earthy green identity for Peptis — logo lockups, palette, type, and UI
+          cues for product and marketing surfaces.
+        </p>
+        <div class="meta">
+          <span>Primary #3F5B3A</span>
+          <span>Fraunces + Manrope</span>
+          <span>Information Edge Insights LLC</span>
+        </div>
+      </header>
+
+      <section>
+        <p class="eyebrow">Logotype</p>
+        <h2>Green wordmark</h2>
+        <div class="logo-grid">
+          <figure class="logo-card">
+            <div class="stage" style="background: var(--paper)">
+              <img src="./logos/peptis-wordmark-green.png" alt="Peptis on paper" />
+            </div>
+            <figcaption>Transparent on paper — default digital</figcaption>
+          </figure>
+          <figure class="logo-card">
+            <div class="stage dark">
+              <img src="./logos/peptis-wordmark-green.png" alt="Peptis on forest" />
+            </div>
+            <figcaption>On forest — heroes & dark UI</figcaption>
+          </figure>
+          <figure class="logo-card">
+            <div class="stage black">
+              <img src="./logos/peptis-wordmark-green.png" alt="Peptis on black" />
+            </div>
+            <figcaption>On black — decks & video</figcaption>
+          </figure>
+          <figure class="logo-card">
+            <div class="stage" style="background: #fff">
+              <img src="./logos/peptis-wordmark-green.png" alt="Peptis on white" />
+            </div>
+            <figcaption>On white — print & docs</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">Palette</p>
+        <h2>Sage Minimal</h2>
+        <div class="swatches">
+          <div class="swatch">
+            <div class="chip" style="background: #3f5b3a"></div>
+            <div class="info"><strong>Sage</strong><code>#3F5B3A</code></div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: #2a3d27"></div>
+            <div class="info"><strong>Sage deep</strong><code>#2A3D27</code></div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: #7e8f6e"></div>
+            <div class="info"><strong>Sage soft</strong><code>#7E8F6E</code></div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: #a08260"></div>
+            <div class="info"><strong>Bronze</strong><code>#A08260</code></div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: #c4a882"></div>
+            <div class="info"><strong>Bronze soft</strong><code>#C4A882</code></div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: #142018"></div>
+            <div class="info"><strong>Forest</strong><code>#142018</code></div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: #f7f9f5; border-bottom: 1px solid var(--line)"></div>
+            <div class="info"><strong>Paper</strong><code>#F7F9F5</code></div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: #eef2eb; border-bottom: 1px solid var(--line)"></div>
+            <div class="info"><strong>Mist</strong><code>#EEF2EB</code></div>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="background: #1a2118"></div>
+            <div class="info"><strong>Ink</strong><code>#1A2118</code></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">Typography</p>
+        <h2>Fraunces & Manrope</h2>
+        <div class="type-sample">
+          <p class="display">Peptide care, guided by clinicians.</p>
+          <p class="body">
+            Doctor-reviewed protocols for metabolism, recovery, longevity, and
+            skin — shipped from U.S. pharmacies.
+          </p>
+          <div class="type-meta">
+            <div><strong>Display</strong> <span>Fraunces · 400–600 · −0.02em</span></div>
+            <div><strong>Body</strong> <span>Manrope · 400–700</span></div>
+            <div><strong>Labels</strong> <span>Manrope 700 · uppercase · 0.14em</span></div>
+          </div>
+          <div class="btn-row">
+            <span class="btn btn-sage">Primary action</span>
+            <span class="btn btn-bronze">CTA on dark</span>
+            <span class="btn btn-ghost">Secondary</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="eyebrow">Usage</p>
+        <h2>Do / don’t</h2>
+        <ul class="rules">
+          <li>
+            <strong>Do</strong> use the earthy green wordmark as the primary
+            lockup on paper, mist, forest, white, or black.
+          </li>
+          <li>
+            <strong>Do</strong> keep clear space around the mark and pair it
+            with Fraunces headlines + Manrope body.
+          </li>
+          <li>
+            <strong>Don’t</strong> recolor the logo outside the sage family, skew
+            it, or place it on low-contrast busy imagery without a scrim.
+          </li>
+          <li>
+            <strong>Don’t</strong> use the legacy burgundy lockup on Peptis
+            consumer or marketing surfaces.
+          </li>
+        </ul>
+      </section>
+
+      <footer>
+        Peptis is operated by Information Edge Insights LLC. Assets live in
+        <code>brand-kit/logos/</code>. Tokens in <code>brand-kit/tokens.css</code>.
+      </footer>
+    </div>
+  </body>
+</html>
