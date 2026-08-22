@@ -617,3 +617,229 @@ button {
   line-height: 1.6;
   font-size: 0.8rem;
 }
+
+/* —— Guides —— */
+.nav a.active {
+  color: var(--sage);
+}
+
+.guides-band {
+  background:
+    linear-gradient(180deg, rgba(238, 242, 235, 0.9), transparent 70%),
+    var(--paper);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.guide-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+  max-width: 40rem;
+}
+
+.guide-list li {
+  margin: 0;
+}
+
+.guide-list a {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+  font-weight: 500;
+  color: var(--sage-deep);
+  letter-spacing: -0.015em;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.75rem;
+  transition: color 0.25s var(--ease);
+}
+
+.guide-list a:hover {
+  color: var(--sage);
+}
+
+.guide-page {
+  background:
+    radial-gradient(ellipse 70% 40% at 0% 0%, rgba(126, 143, 110, 0.16), transparent 55%),
+    radial-gradient(ellipse 50% 35% at 100% 8%, rgba(160, 130, 96, 0.12), transparent 50%),
+    var(--paper);
+}
+
+.guide-hero {
+  padding: clamp(3.5rem, 9vw, 5.5rem) clamp(1.25rem, 4vw, 2.5rem) clamp(2rem, 5vw, 3rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.guide-hero-inner {
+  width: min(100%, 40rem);
+  margin: 0 auto;
+  opacity: 0;
+  animation: rise 0.85s var(--ease) 0.08s forwards;
+}
+
+.guide-hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--sage-deep);
+  max-width: 16ch;
+}
+
+.guide-dek {
+  margin: 1rem 0 0;
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  color: var(--ink-muted);
+  max-width: 38ch;
+}
+
+.guide-meta {
+  margin: 1.25rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+
+.guide-body {
+  padding-top: clamp(2rem, 5vw, 3rem);
+}
+
+.guide-narrow {
+  width: min(100%, 40rem);
+}
+
+.guide-disclaimer {
+  margin: 0 0 2rem;
+  padding: 1.15rem 1.25rem;
+  background: rgba(63, 91, 58, 0.07);
+  border-left: 3px solid var(--sage);
+}
+
+.guide-disclaimer-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+.guide-disclaimer p:last-child {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.guide-compliance-note {
+  margin: 0 0 2.25rem;
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+.guide-section {
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
+  opacity: 0;
+  animation: rise 0.75s var(--ease) 0.18s forwards;
+}
+
+.guide-section h2 {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+  letter-spacing: -0.015em;
+  color: var(--sage-deep);
+  line-height: 1.2;
+}
+
+.guide-section p {
+  margin: 0 0 0.9rem;
+  color: var(--ink-muted);
+  font-size: 1.02rem;
+}
+
+.guide-section ul {
+  margin: 0.35rem 0 0.9rem;
+  padding-left: 1.2rem;
+  color: var(--ink-muted);
+}
+
+.guide-section li {
+  margin-bottom: 0.45rem;
+}
+
+.guide-closing {
+  margin: 0 0 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 1.05rem;
+  color: var(--ink);
+  line-height: 1.65;
+}
+
+.guide-cta {
+  margin: 0 0 2.75rem;
+  padding: clamp(1.5rem, 3vw, 2rem) 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.guide-cta h2 {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.55rem;
+  color: var(--sage-deep);
+}
+
+.guide-cta p {
+  margin: 0 0 1.15rem;
+  color: var(--ink-muted);
+  max-width: 36ch;
+}
+
+.guide-related {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.guide-index-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.guide-index-list a {
+  display: grid;
+  gap: 0.45rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 1px solid var(--line);
+  transition: opacity 0.25s var(--ease);
+}
+
+.guide-index-list a:hover {
+  opacity: 0.82;
+}
+
+.guide-index-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3vw, 1.85rem);
+  font-weight: 500;
+  color: var(--sage-deep);
+  letter-spacing: -0.015em;
+}
+
+.guide-index-dek {
+  color: var(--ink-muted);
+  font-size: 1rem;
+  max-width: 42ch;
+}
