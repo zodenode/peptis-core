@@ -1,61 +1,45 @@
-# Peptis Core — Example Telehealth Storefront
+# Peptis
 
-Example marketing/store site for **Peptis**, positioned to compete with top telemedicine merchants (Ro, Hims, Musely, Nurx, Lemonaid) and partner-style sites (GetTrim, FMmeds, MensRX, StiffiesRx, For Humanity).
+Evidence-led body recomposition and GLP-1 continuity website for Peptis.
 
-## Run locally
+The project includes:
+
+- a cinematic, responsive body-recomposition landing page;
+- a six-step quiz that generates a detailed 12-week starting plan;
+- a GLP-1 continuity landing page with a five-phase scroll story;
+- an evidence library and eight long-form cornerstone articles;
+- structured Article, FAQ and breadcrumb data;
+- a lead-capture API backed by Cloudflare D1;
+- reduced-motion, reduced-transparency, higher-contrast and dark-mode support.
+
+## Local development
+
+Requires Node.js 22.13 or newer.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-## Production
+Production validation:
 
-- **GitHub:** https://github.com/zodenode/peptis-core (`main`)
-- **Railway:** project `peptis-core` / service `peptis-web`
-- **Live URL:** https://peptis-web-production.up.railway.app
+```bash
+npm run lint
+npm run build
+npm test
+```
 
-### Link GoDaddy (`peptis.com`)
+## Routes
 
-Custom domains are attached in Railway. Add DNS in GoDaddy (full detail in `GODADDY-DNS.md`):
+- `/` — body recomposition landing page, quiz and generated plan
+- `/glp-continuity` — GLP-1 continuity programme
+- `/blog` — evidence library
+- `/blog/[slug]` — evidence-based cornerstone guides
 
-| Host | Type | Value |
-|------|------|-------|
-| `www` | CNAME | `z1iy4dgg.up.railway.app` |
-| `_railway-verify` | TXT | `railway-verify=635736643bc94d1c9d059ec607348617116d39b55102357d8dfd72927516fcd6` |
+## Technology
 
-For apex `peptis.com`, forward to `https://www.peptis.com` (GoDaddy usually cannot CNAME `@`), or CNAME `@` → `rscpq1pp.up.railway.app` if flattening is available.
+Next.js-compatible React 19 source compiled with Vinext and Vite for Cloudflare Workers. Drizzle manages the D1 lead schema. The motion system uses native Pointer Events, `requestAnimationFrame`, CSS transforms and accessibility media queries.
 
-DNS panel: https://dcc.godaddy.com/control/peptis.com/dns
+## Medical boundary
 
-## Brand kit
-
-Full kit (green logo lockups, palette, type, tokens):
-
-- Visual board: [`brand-kit/index.html`](./brand-kit/index.html) · also served at `/brand-kit/`
-- Specs: [`brand-kit/BRAND.md`](./brand-kit/BRAND.md)
-- Tokens: [`brand-kit/tokens.css`](./brand-kit/tokens.css)
-- Logos: `brand-kit/logos/` (wordmark, on-paper/forest/white/black, OG, icons)
-- Light: sage `#3F5B3A` · Dark: bronze `#C4A882` · Fraunces + Manrope · Information Edge Insights LLC
-
-## Recommended hero products
-
-Based on Peptis fortes (recovery / longevity / skin / cognitive peptides + quality trust) and what converts in telemedicine:
-
-| Priority | Lane | Compounds | Why |
-|---|---|---|---|
-| 1 | **Metabolic Reset** | Semaglutide, Tirzepatide | Table-stakes vs Trim, FMmeds, Ro, Hims |
-| 2 | **Recovery Protocol** | BPC-157, TB-500, KPV | Strongest Peptis differentiator |
-| 3 | **Longevity Stack** | Sermorelin, Ipamorelin, MOTS-c | Owns healthspan niche |
-| 4 | **Skin Renewal** | GHK-Cu, KPV | Derm front door vs Musely |
-| Supporting | Cognitive Clarity | Semax, Selank | Secondary lane from catalog |
-
-**Do not lead with ED/hair like StiffiesRx/MensRX** — those are not Peptis fortes. Offer vitality later if needed (e.g. PT-141) after the four hero lanes convert.
-
-## Positioning
-
-Peptis wins by being **peptide-native telehealth**, not a generalist men’s/women’s Rx clone with peptides bolted on. GLP-1 is the demand gateway; recovery, longevity, and skin are the moat.
-
-## Note
-
-This is a front-end example only. Live prescribing requires licensed providers, pharmacy partners, state coverage, and compliance (HIPAA, LegitScript, compounding disclosures).
+Peptis provides general education and programme support. It does not diagnose, prescribe, guarantee eligibility or replace an individual clinician. All public medical claims require appropriate medical and legal review before a paid clinical launch.
