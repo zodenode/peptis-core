@@ -29,13 +29,13 @@ const phaseVisuals = [
     tags: ["Train", "Recover", "Measure"],
   },
   {
-    image: "/peptis-hero-recomposition.webp",
+    image: "/peptis-bridge-transition.webp",
     cue: "BRIDGE",
     signal: "Keep the system intact",
     tags: ["Navigate", "Monitor", "Escalate"],
   },
   {
-    image: "/peptis-skin-transition.webp",
+    image: "/peptis-maintenance-routine.webp",
     cue: "MAINTAIN",
     signal: "Prepare before the transition",
     tags: ["Routine", "Readiness", "Follow-up"],
