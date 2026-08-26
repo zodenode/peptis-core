@@ -3,22 +3,22 @@ import { useSectionView } from '../../hooks/useSectionView'
 const measures = [
   {
     label: 'The scale',
-    value: 'Limited',
+    value: 'Limited on its own',
     body: 'Body weight can fall while strength, protein intake and daily function stay hidden.',
   },
   {
     label: 'Strength',
-    value: 'Track this',
+    value: 'Track load and reps',
     body: 'Load, repetitions, grip or a timed chair rise show whether capability is holding.',
   },
   {
     label: 'Protein days',
-    value: 'Track this',
+    value: 'Track protein meals',
     body: 'Count meals that actually deliver a workable amount of protein when appetite is low.',
   },
   {
     label: 'Daily function',
-    value: 'Track this',
+    value: 'Track everyday tasks',
     body: 'Stairs, carrying, walking tolerance and recovery tell a clearer story than a single scan.',
   },
 ] as const

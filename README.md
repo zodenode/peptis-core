@@ -63,9 +63,9 @@ Copy `.env.example` → `.env`. Do not commit `.env`.
 
 Landing: `landing_viewed`, `hero_cta_clicked`, `section_viewed` `{ section }`, `trust_badge_viewed`, `quiz_cta_clicked` `{ location }`.
 
-Quiz: `quiz_started`, `quiz_step_viewed`, `quiz_option_selected`, `quiz_stop_block_viewed`, `quiz_stop_block_continued`, `quiz_explainer_viewed`, `quiz_explainer_auto_advanced`, `quiz_social_proof_viewed`, `quiz_social_proof_auto_advanced`, `quiz_back_clicked`, `quiz_completed`, `checkout_viewed`, `stripe_activation_block_viewed`, `wallet_preview_clicked`, `upsell_toggled`, `lean_mass_interest_toggled`, `checkout_submit_clicked`, `founding_reservation_submitted`, `quiz_abandoned`.
+Quiz: `quiz_started`, `quiz_step_viewed`, `quiz_option_selected`, `quiz_stop_block_viewed`, `quiz_stop_block_continued`, `quiz_explainer_viewed`, `quiz_social_proof_viewed`, `quiz_back_clicked`, `quiz_reached_checkout`, `quiz_completed`, `checkout_viewed`, `stripe_activation_block_viewed`, `upsell_toggled`, `lean_mass_interest_toggled`, `checkout_submit_clicked`, `founding_reservation_submitted`, `quiz_abandoned`.
 
-Identify: `posthog.identify(email, { first_name, state, plan })` when a valid checkout email is entered.
+Identify: `posthog.identify(email, { first_name, state, plan })` at reservation submit only. Raw quiz answers are not sent to analytics; only derived pathways are.
 
 Email abandonment copy and event → flow mapping: [`docs/EMAIL-ABANDONMENT.md`](./docs/EMAIL-ABANDONMENT.md).
 

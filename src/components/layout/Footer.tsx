@@ -13,6 +13,7 @@ export function Footer() {
             <a href="/#measures">Measures</a>
             <a href="/#offer">Founding offer</a>
             <a href="/#faq">FAQ</a>
+            <Link to="/blog">Blog</Link>
             <a href="/brand-kit/">Brand kit</a>
           </div>
         </div>

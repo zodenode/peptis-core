@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   derivePathways,
-  isCorrectOption,
   isQuestionId,
   isStepId,
   isStopStepId,
@@ -22,7 +21,6 @@ export type CheckoutForm = {
   lastName: string
   email: string
   phone: string
-  dob: string
   state: string
   resident: boolean
   attest: boolean
@@ -45,7 +43,6 @@ const emptyCheckout: CheckoutForm = {
   lastName: '',
   email: '',
   phone: '',
-  dob: '',
   state: '',
   resident: false,
   attest: false,
@@ -139,10 +136,7 @@ export function useQuizEngine() {
       track('checkout_viewed', { plan: 'core_founding_reservation', upsell_shown: true, due_today: 0 })
       if (!completedEvent.current) {
         completedEvent.current = true
-        track('quiz_completed', {
-          answers_summary: JSON.stringify(answers),
-          pathways: derivePathways(answers),
-        })
+        track('quiz_reached_checkout', { pathways: derivePathways(answers) })
       }
     }
   }, [answers, current, hydrated])
@@ -184,7 +178,6 @@ export function useQuizEngine() {
       track('quiz_option_selected', {
         step_id: current,
         option_id: optionId,
-        is_correct: isCorrectOption(current, optionId),
       })
     },
     [answers.q2, current],
@@ -238,6 +231,7 @@ export function useQuizEngine() {
 
   const submitCheckout = useCallback(() => {
     identifyIfReady()
+    track('quiz_completed', { pathways: derivePathways(answers) })
     track('checkout_submit_clicked', {
       plan: checkout.upsell ? 'core_founding_plus_lean_mass_interest' : 'core_founding_reservation',
       upsell: checkout.upsell,

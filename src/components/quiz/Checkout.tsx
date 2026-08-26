@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { StripeActivationBlock } from '../checkout/StripeActivationBlock'
 import { checkoutCopy } from '../../data/quiz'
-import { images } from '../../data/images'
 import { US_STATES } from '../../data/usStates'
 import type { CheckoutForm } from '../../hooks/useQuizEngine'
 import { isValidEmail } from '../../lib/validate'
@@ -9,7 +8,6 @@ import { isValidEmail } from '../../lib/validate'
 type Props = {
   form: CheckoutForm
   onChange: (patch: Partial<CheckoutForm>) => void
-  onIdentify: () => void
   onSubmit: () => void
   onBack: () => void
   canGoBack: boolean
@@ -17,21 +15,30 @@ type Props = {
 }
 
 const pathwayLabels: Record<string, string> = {
-  muscle_protection: 'Muscle preservation',
-  cellular_energy: 'Cellular energy',
-  gi_repair: 'GI comfort',
-  rebound_protection: 'Rebound protection',
+  muscle_protection: 'Strength and function',
+  cellular_energy: 'Energy and recovery',
+  gi_repair: 'Digestive comfort',
+  rebound_protection: 'Maintenance planning',
 }
 
-export function Checkout({ form, onChange, onIdentify, onSubmit, onBack, canGoBack, pathways }: Props) {
+export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways }: Props) {
   const [attempted, setAttempted] = useState(false)
+  const errors = {
+    firstName: form.firstName.trim().length > 1 ? '' : 'Enter your first name.',
+    lastName: form.lastName.trim().length > 1 ? '' : 'Enter your last name.',
+    email: isValidEmail(form.email) ? '' : 'Enter a valid email address, like name@example.com.',
+    phone:
+      form.phone.trim().length === 0 || form.phone.trim().length >= 7
+        ? ''
+        : 'Enter a valid phone number or leave this blank.',
+    state: form.state.length === 2 ? '' : 'Select your state of residence.',
+  }
   const ready =
-    form.firstName.trim().length > 1 &&
-    form.lastName.trim().length > 1 &&
-    isValidEmail(form.email) &&
-    form.phone.trim().length >= 7 &&
-    form.dob.length > 0 &&
-    form.state.length === 2 &&
+    !errors.firstName &&
+    !errors.lastName &&
+    !errors.email &&
+    !errors.phone &&
+    !errors.state &&
     form.resident &&
     form.attest
 
@@ -42,11 +49,10 @@ export function Checkout({ form, onChange, onIdentify, onSubmit, onBack, canGoBa
     onSubmit()
   }
 
+  const fieldError = (key: keyof typeof errors) => (attempted && errors[key] ? errors[key] : null)
+
   return (
     <div className="quiz-card checkout-card">
-      <div className="quiz-visual">
-        <img src={images.reservation} alt="A secure founding reservation still life" />
-      </div>
       <form className="quiz-body" onSubmit={handleSubmit} noValidate>
         <p className="quiz-kicker">{checkoutCopy.eyebrow}</p>
         <h1 className="quiz-title">Peptis Core Continuity Founding Reservation</h1>
@@ -68,8 +74,8 @@ export function Checkout({ form, onChange, onIdentify, onSubmit, onBack, canGoBa
             </div>
           </div>
           <p className="plan-savings">
-            Save $100 each month if the launch offer activates. The planned standard rate is $399
-            per month.
+            The planned standard rate is $399 per month. Planned rates apply only if services
+            launch, you are eligible and you choose to enroll under the final terms.
           </p>
 
           <div className="plan-section">
@@ -120,8 +126,13 @@ export function Checkout({ form, onChange, onIdentify, onSubmit, onBack, canGoBa
               autoComplete="given-name"
               value={form.firstName}
               onChange={(e) => onChange({ firstName: e.target.value })}
+              aria-invalid={Boolean(fieldError('firstName'))}
+              aria-describedby={fieldError('firstName') ? 'error-first-name' : undefined}
               required
             />
+            {fieldError('firstName') ? (
+              <span className="field-error" id="error-first-name">{errors.firstName}</span>
+            ) : null}
           </label>
           <label>
             Last name
@@ -129,8 +140,13 @@ export function Checkout({ form, onChange, onIdentify, onSubmit, onBack, canGoBa
               autoComplete="family-name"
               value={form.lastName}
               onChange={(e) => onChange({ lastName: e.target.value })}
+              aria-invalid={Boolean(fieldError('lastName'))}
+              aria-describedby={fieldError('lastName') ? 'error-last-name' : undefined}
               required
             />
+            {fieldError('lastName') ? (
+              <span className="field-error" id="error-last-name">{errors.lastName}</span>
+            ) : null}
           </label>
           <label className="span-2">
             Email
@@ -139,35 +155,35 @@ export function Checkout({ form, onChange, onIdentify, onSubmit, onBack, canGoBa
               autoComplete="email"
               value={form.email}
               onChange={(e) => onChange({ email: e.target.value })}
-              onBlur={onIdentify}
+              aria-invalid={Boolean(fieldError('email'))}
+              aria-describedby={fieldError('email') ? 'error-email' : undefined}
               required
             />
+            {fieldError('email') ? (
+              <span className="field-error" id="error-email">{errors.email}</span>
+            ) : null}
           </label>
           <label>
-            Mobile phone
+            Mobile phone (optional)
             <input
               type="tel"
               autoComplete="tel"
               value={form.phone}
               onChange={(e) => onChange({ phone: e.target.value })}
-              required
+              aria-invalid={Boolean(fieldError('phone'))}
+              aria-describedby={fieldError('phone') ? 'error-phone' : undefined}
             />
-          </label>
-          <label>
-            Date of birth
-            <input
-              type="date"
-              autoComplete="bday"
-              value={form.dob}
-              onChange={(e) => onChange({ dob: e.target.value })}
-              required
-            />
+            {fieldError('phone') ? (
+              <span className="field-error" id="error-phone">{errors.phone}</span>
+            ) : null}
           </label>
           <label className="span-2">
             State of residence
             <select
               value={form.state}
               onChange={(e) => onChange({ state: e.target.value })}
+              aria-invalid={Boolean(fieldError('state'))}
+              aria-describedby={fieldError('state') ? 'error-state' : undefined}
               required
             >
               <option value="">Select state</option>
@@ -177,6 +193,9 @@ export function Checkout({ form, onChange, onIdentify, onSubmit, onBack, canGoBa
                 </option>
               ))}
             </select>
+            {fieldError('state') ? (
+              <span className="field-error" id="error-state">{errors.state}</span>
+            ) : null}
           </label>
         </div>
 

@@ -15,8 +15,11 @@ export function QuizEmbed() {
         />
         <div>
           <p className="quiz-kicker">Continuity quiz</p>
-          <h3>A two minute check of what matters now</h3>
-          <p>Answer eight straightforward questions. Your progress saves automatically if you step away.</p>
+          <h3>A short check of what matters now</h3>
+          <p>
+            Answer eight straightforward questions in about three minutes. Your progress saves
+            automatically if you step away.
+          </p>
           <button
             type="button"
             className="btn btn-solid"

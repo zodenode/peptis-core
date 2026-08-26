@@ -59,7 +59,7 @@ and crisp commercial lighting. The existing strength-session photograph remains 
 | `problem-fatigue-studio.jpg` | 3:4 | Seated woman with a cup on deep emerald with a coral spotlight. |
 | `problem-gi-food-motion.jpg` | 3:4 | Leafy greens, red berries and milk frozen in motion on coral red. |
 | `protocol-nutrition-studio.jpg` | 16:9 | Woman holding a plated protein-forward meal on emerald and coral. |
-| `how-intake-studio.jpg` | 4:3 | Man completing a blank intake on coral with forest geometry. |
+| `how-intake-studio.jpg` | 4:3 | Man using an unbranded laptop on coral with forest geometry. |
 | `how-clinician-studio.jpg` | 4:3 | Professional reviewing a blank card on berry red with sage light. |
 | `testimonial-studio.jpg` | 3:4 | Woman in oatmeal and charcoal on berry red with a forest circle. |
 | `quiz-home-welcome-studio.jpg` | 3:4 | Approachable woman with a blank planning card on emerald and coral. |

@@ -23,7 +23,7 @@ export function QuizFlow({ embedded = false }: Props) {
   const meta = stepMeta(quiz.current)
   const question = isQuestionId(quiz.current) ? questions[quiz.current] : undefined
   const explainer = resolveExplainer(quiz.current, quiz.answers, terms)
-  const percent = progressPercent(quiz.current, quiz.historyLength)
+  const percent = progressPercent(quiz.current)
 
   if (!quiz.hydrated) {
     return (
@@ -37,7 +37,14 @@ export function QuizFlow({ embedded = false }: Props) {
 
   return (
     <div className={`quiz-shell${embedded ? ' is-embedded' : ''}`}>
-      <div className="quiz-progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}>
+      <div
+        className="quiz-progress"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={percent}
+        aria-valuetext={`About ${percent} percent complete`}
+      >
         <div className="quiz-progress-bar" style={{ width: `${percent}%` }} />
       </div>
 
@@ -68,7 +75,6 @@ export function QuizFlow({ embedded = false }: Props) {
           <Checkout
             form={quiz.checkout}
             onChange={quiz.patchCheckout}
-            onIdentify={() => quiz.identifyIfReady()}
             onSubmit={quiz.submitCheckout}
             onBack={quiz.goBack}
             canGoBack={quiz.canGoBack}

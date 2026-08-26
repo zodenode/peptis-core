@@ -51,17 +51,17 @@ export function LandingPage() {
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-inner">
             <div className="hero-copy">
-              <p className="eyebrow eyebrow-light">Founding reservations are open</p>
+              <p className="eyebrow eyebrow-light">For adults on or after GLP-1 weight loss</p>
               <h1 id="hero-heading">You reached a healthier weight. Now protect the strength that carries it.</h1>
               <p className="hero-lead">
-                Peptis Core Continuity is a future program built around strength, protein, recovery,
-                function and maintenance. Reserve your place for $0 today and get a practical
-                summary of what matters to you.
+                Answer a short continuity check, get a personalized summary of your strength,
+                protein and maintenance priorities, and reserve $0 founding access to
+                state-by-state launch updates. Not medical care today.
               </p>
               <div className="hero-actions">
-                <a className="btn btn-primary" href="#assessment" onClick={heroCta}>
-                  Reserve for $0
-                </a>
+                <Link className="btn btn-primary" to="/quiz" onClick={heroCta}>
+                  Start the free check
+                </Link>
                 <a className="btn btn-ghost" href="#evidence">
                   See the evidence
                 </a>
@@ -185,7 +185,7 @@ export function LandingPage() {
               />
             </figure>
             <blockquote>
-              <p className="eyebrow">Common member goal</p>
+              <p className="eyebrow">Illustrative planning goal</p>
               <h2 id="proof-heading">“I want to protect my strength, not only the number on the scale.”</h2>
               <p className="quote">
                 This illustrative goal reflects a pattern the quiz helps people organize. It is not
@@ -245,10 +245,10 @@ export function LandingPage() {
           <div className="section-inner closer-inner">
             <div className="closer-copy">
               <p className="eyebrow eyebrow-light">Peptis Core Continuity</p>
-              <h2 id="closer-heading">Start with a two minute continuity check</h2>
+              <h2 id="closer-heading">Start with a short continuity check</h2>
               <p>
-                Answer eight straightforward questions. You will receive a summary of your
-                priorities and can reserve your place for $0.
+                Answer eight straightforward questions in about three minutes. You will receive a
+                summary of your priorities and can reserve your place for $0.
               </p>
               <Link
                 className="btn btn-ghost"

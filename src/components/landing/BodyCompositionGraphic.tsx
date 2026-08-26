@@ -42,9 +42,9 @@ export function BodyCompositionGraphic() {
             <text className="donut-label" x="110" y="128" textAnchor="middle">fat and lean mass</text>
           </svg>
           <figcaption>
-            <strong>Lean mass needs context.</strong>
-            DEXA lean mass includes body water, organs, connective tissue, bone mineral and skeletal
-            muscle. A scan does not show strength or function on its own.
+            <strong>Lean mass is broader than muscle.</strong>
+            A DEXA lean mass estimate includes body water, organs, connective tissue, bone mineral
+            and skeletal muscle. It cannot show muscle loss, strength or function on its own.
           </figcaption>
         </figure>
 

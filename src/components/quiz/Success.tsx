@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { images } from '../../data/images'
 import type { CheckoutForm } from '../../hooks/useQuizEngine'
 
 type Props = {
@@ -10,8 +9,8 @@ type Props = {
 export function Success({ form, onReset }: Props) {
   return (
     <div className="quiz-card success-card">
-      <div className="quiz-visual">
-        <img src={images.success} alt="Two adults walking a sunlit forest path" />
+      <div className="success-mark" aria-hidden="true">
+        <span>✓</span>
       </div>
       <div className="quiz-body">
         <p className="quiz-kicker">Founding reservation confirmed</p>

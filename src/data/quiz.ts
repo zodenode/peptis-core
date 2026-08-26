@@ -1,4 +1,3 @@
-import { images } from './images'
 import type { ContinuityTerms } from './continuityConfig'
 
 export type StepType = 'question' | 'explainer' | 'social_proof' | 'stop_block' | 'checkout' | 'success'
@@ -44,8 +43,6 @@ export type QuestionStep = {
   topic: string
   prompt: string
   hint: string
-  image: string
-  imageAlt: string
   multi?: boolean
   options: QuizOption[]
 }
@@ -57,8 +54,6 @@ export type StopBlockStep = {
   eyebrow: string
   title: string
   cta: string
-  image: string
-  imageAlt: string
   paragraphs: (terms: ContinuityTerms | null) => string[]
 }
 
@@ -71,8 +66,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
     topic: 'Therapy timeline',
     prompt: 'Where are you in your current GLP-1 treatment timeline?',
     hint: 'Choose the answer that comes closest. You can confirm exact details with your current clinician.',
-    image: images.q1,
-    imageAlt: 'An adult organizing a long-term therapy timeline',
     options: [
       {
         id: 'q1_a',
@@ -107,8 +100,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
     topic: 'Current priorities',
     prompt: 'What would you most like to understand or support right now?',
     hint: 'Choose every answer that fits.',
-    image: images.q2,
-    imageAlt: 'An adult considering four continuity support pathways',
     multi: true,
     options: [
       {
@@ -143,8 +134,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
     topic: 'Strength and function',
     prompt: 'Have everyday strength tasks felt different since your weight began to change?',
     hint: 'Think about stairs, groceries, getting up from a chair or your usual workout.',
-    image: images.q3,
-    imageAlt: 'An adult carrying groceries upstairs',
     options: [
       {
         id: 'q3_a',
@@ -179,8 +168,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
     topic: 'Energy',
     prompt: 'How has your energy felt during a typical day?',
     hint: 'Consider timing, sleep, food, fluids and whether the pattern is new.',
-    image: images.q4,
-    imageAlt: 'An adult pausing during an afternoon energy slump',
     options: [
       {
         id: 'q4_a',
@@ -215,8 +202,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
     topic: 'Digestive comfort',
     prompt: 'How often do meals leave you uncomfortably full, bloated or nauseated?',
     hint: 'Think about frequency, meal size, timing and how long the feeling lasts.',
-    image: images.q5,
-    imageAlt: 'An adult reflecting on comfort after a meal',
     options: [
       {
         id: 'q5_a',
@@ -251,8 +236,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
     topic: 'Strength priority',
     prompt: 'What would make your body composition progress feel more complete?',
     hint: 'Choose the result that matters most to you.',
-    image: images.q6,
-    imageAlt: 'An adult using resistance bands for functional strength',
     options: [
       {
         id: 'q6_a',
@@ -287,8 +270,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
     topic: 'Recovery needs',
     prompt: 'Which change would help your day feel more manageable?',
     hint: 'Choose the answer that best reflects your current priority.',
-    image: images.q7,
-    imageAlt: 'An adult reflecting on mental clarity in morning light',
     options: [
       {
         id: 'q7_a',
@@ -323,8 +304,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
     topic: 'Digestive priority',
     prompt: 'What would better digestive comfort make easier for you?',
     hint: 'Choose the most practical benefit.',
-    image: images.q8,
-    imageAlt: 'An adult preparing a gentle meal for digestive comfort',
     options: [
       {
         id: 'q8_a',
@@ -363,8 +342,6 @@ export const stopBlocks: Record<StopBlockId, StopBlockStep> = {
     eyebrow: 'Strength and lean tissue',
     title: 'Make strength visible in your plan',
     cta: 'Add strength to my summary',
-    image: images.stopA,
-    imageAlt: 'An adult using a resistance band in a sunlit loft',
     paragraphs: () => [
       'Weight loss can include lean tissue as well as body fat. Lean mass includes water, organs, connective tissue and skeletal muscle, so it should not be read as muscle alone.',
       'Tracking strength, protein intake and resistance activity can make this part of continuity planning more useful.',
@@ -378,8 +355,6 @@ export const stopBlocks: Record<StopBlockId, StopBlockStep> = {
     eyebrow: 'Energy and recovery',
     title: 'Give fatigue the context it deserves',
     cta: 'Add energy to my summary',
-    image: images.stopB,
-    imageAlt: 'Dawn light over a still alpine lake',
     paragraphs: () => [
       'Persistent fatigue deserves careful context. Nutrition, fluids, sleep, current therapy, labs and other health factors can all matter.',
       'Your summary will organize energy observations for a future screening conversation. It is educational and does not diagnose a condition or promise treatment.',
@@ -392,8 +367,6 @@ export const stopBlocks: Record<StopBlockId, StopBlockStep> = {
     eyebrow: 'Digestive comfort',
     title: 'Clear notes make symptoms easier to explain',
     cta: 'Add comfort to my summary',
-    image: images.stopC,
-    imageAlt: 'An adult at a calm breakfast nook',
     paragraphs: () => [
       'Digestive changes can affect daily comfort and nutrition. Recording timing, meals, and current therapy details creates a clearer handoff for a future licensed provider.',
       'The reservation adds GI comfort to your pathway summary. It does not include diagnosis, prescribing, or pharmacy fulfillment today.',
@@ -476,11 +449,6 @@ export type Answers = {
   q6?: string
   q7?: string
   q8?: string
-}
-
-export function isCorrectOption(stepId: StepId, optionId: string) {
-  if (!isQuestionId(stepId)) return false
-  return Boolean(questions[stepId].options.find((o) => o.id === optionId)?.isCorrect)
 }
 
 export function derivePathways(answers: Answers): string[] {
@@ -604,11 +572,11 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
   }
 }
 
-const PROGRESS_DENOMINATOR = 17
+const MAX_STEP_INDEX = 18
 
-export function progressPercent(id: StepId, historyLength = 0) {
+export function progressPercent(id: StepId) {
   if (id === 'success') return 100
-  return Math.min(99, Math.round((historyLength / PROGRESS_DENOMINATOR) * 100))
+  return Math.min(99, Math.round((stepMeta(id).step_index / MAX_STEP_INDEX) * 100))
 }
 
 export function countWords(text: string) {
@@ -631,8 +599,6 @@ export type ResolvedExplainer = {
   title: string
   body: string[]
   cta: string
-  image: string
-  imageAlt: string
   block?: StopBlockId
   proofId?: 'muscle' | 'energy' | 'gi' | 'founding_trust'
   pathway?: string
@@ -674,8 +640,6 @@ function insightExplainer(questionId: QuestionId, answers: Answers): ResolvedExp
     title: 'What your answer tells us',
     body,
     cta: 'Continue',
-    image: q.image,
-    imageAlt: q.imageAlt,
   })
 }
 
@@ -688,8 +652,6 @@ function stopExplainer(block: StopBlockId, terms: ContinuityTerms | null): Resol
     title: step.title,
     body: step.paragraphs(terms),
     cta: step.cta,
-    image: step.image,
-    imageAlt: step.imageAlt,
     block,
   })
 }
@@ -714,8 +676,6 @@ export function resolveExplainer(
         'A practical next step is to organize strength changes, protein habits and current therapy details so a future provider can see the whole picture.',
       ],
       cta: 'Continue',
-      image: images.proofMuscle,
-      imageAlt: 'Adults practicing functional strength in a small class',
     })
   }
   if (id === 'proof_energy') {
@@ -730,8 +690,6 @@ export function resolveExplainer(
         'Tracking timing, sleep, nutrition, fluids, current therapy and lab readiness can make a future screening conversation more specific.',
       ],
       cta: 'Continue',
-      image: images.proofEnergy,
-      imageAlt: 'Adults organizing sustainable energy habits',
     })
   }
   if (id === 'proof_gi') {
@@ -746,8 +704,6 @@ export function resolveExplainer(
         'A meal and symptom record, along with a current therapy list, can make a future eligibility conversation more specific without self diagnosing.',
       ],
       cta: 'Continue',
-      image: images.proofGi,
-      imageAlt: 'Adults organizing gentle meal and comfort notes',
     })
   }
   if (id === 'reassure') {
@@ -760,8 +716,6 @@ export function resolveExplainer(
       title: 'Keep your place and decide later',
       body: checkoutCopy.steps.map((step) => `${step.title}. ${step.body}`),
       cta: 'Review founding reservation',
-      image: images.reservation,
-      imageAlt: 'A secure reservation still life',
     })
   }
   if (id.startsWith('explain_q')) {

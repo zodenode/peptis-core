@@ -43,6 +43,7 @@ export function Header({ variant = 'landing' }: HeaderProps) {
             <a href="/#measures">Measures</a>
             <a href="/#offer">Offer</a>
             <a href="/#faq">FAQ</a>
+            <Link to="/blog">Blog</Link>
             <Link className="nav-cta" to="/quiz" onClick={() => quizClick('nav_cta')}>
               Reserve for $0
             </Link>
@@ -66,6 +67,7 @@ export function Header({ variant = 'landing' }: HeaderProps) {
               <a href="/#measures">Measures</a>
               <a href="/#offer">Offer</a>
               <a href="/#faq">FAQ</a>
+              <Link to="/blog">Blog</Link>
               <Link className="nav-cta" to="/quiz" onClick={() => quizClick('nav_mobile_cta')}>
                 Reserve for $0
               </Link>

@@ -4,6 +4,7 @@ export const trustBadges = [
   '$0 reservation',
   'No payment details',
   'State-by-state launch',
+  'Not medical care today',
 ] as const
 
 export const problemItems = [
@@ -59,14 +60,14 @@ export const howSteps = [
     title: 'Complete the continuity quiz',
     body: 'Tell us what has changed and what you want to protect.',
     image: images.how1,
-    alt: 'Adult completing a written health intake in a colorful studio',
+    alt: 'Adult completing the continuity quiz on a laptop in a colorful studio',
   },
   {
     n: '02',
     title: 'Reserve for $0 today',
     body: 'Save your summary and join the state launch list. No payment details are needed.',
     image: images.how2,
-    alt: 'Professional reviewing continuity notes in a colorful studio',
+    alt: 'Adult organizing continuity notes in a colorful studio',
   },
   {
     n: '03',

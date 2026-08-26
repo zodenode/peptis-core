@@ -23,19 +23,12 @@ export function StripeActivationBlock() {
           services launch, you are eligible, and you affirmatively activate a paid plan.
         </p>
       </div>
-      <div className="wallet-preview" aria-label="Wallet options available at future activation">
+      <div className="wallet-preview" role="img" aria-label="Preview of wallet options available at future activation: Apple Pay, Google Pay and Link">
         {wallets.map((wallet) => (
-          <button
-            type="button"
-            className="wallet-pill"
-            key={wallet}
-            aria-disabled="true"
-            aria-label={`${wallet} preview. Available when you activate your plan.`}
-            onClick={() => track('wallet_preview_clicked', { wallet })}
-          >
+          <div className="wallet-pill" key={wallet} aria-hidden="true">
             <strong>{wallet}</strong>
             <span>Available at activation</span>
-          </button>
+          </div>
         ))}
       </div>
       <p className="activation-footnote">

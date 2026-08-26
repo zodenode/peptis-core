@@ -63,7 +63,12 @@ export function FoundingOfferVisual() {
         </div>
 
         <figure className="offer-visual" aria-labelledby="offer-chart-title">
-          <figcaption id="offer-chart-title">Planned monthly pricing comparison</figcaption>
+          <figcaption id="offer-chart-title">Planned monthly pricing</figcaption>
+          <p className="visually-hidden">
+            Reserving today costs nothing. The planned founding rate is $299 per month and the
+            planned standard rate is $399 per month. Both apply only if services launch, you are
+            eligible and you choose to enroll under the final terms.
+          </p>
           <div className="offer-today">
             <span>Today</span>
             <strong>$0</strong>
@@ -72,7 +77,7 @@ export function FoundingOfferVisual() {
           <div className="offer-bars">
             <div className="offer-bar-row founding">
               <div className="offer-bar-label">
-                <span>Founding rate</span>
+                <span>Planned founding rate</span>
                 <strong>$299 <small>per month</small></strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
@@ -90,8 +95,8 @@ export function FoundingOfferVisual() {
             </div>
           </div>
           <div className="offer-saving">
-            <strong>$100</strong>
-            <span>saved each month if the launch offer activates</span>
+            <strong>Planned</strong>
+            <span>rates apply only if services launch, you are eligible and you enroll</span>
           </div>
         </figure>
       </div>
