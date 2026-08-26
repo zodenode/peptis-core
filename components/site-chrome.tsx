@@ -31,7 +31,7 @@ export function SiteFooter() {
       </div>
       <div className="footer-links">
         <div><strong>Explore</strong><Link href="/">Body recomposition</Link><Link href="/glp-continuity">GLP-1 continuity</Link><Link href="/blog">Evidence library</Link><Link href="/editorial-policy">Editorial policy</Link></div>
-        <div><strong>Start</strong><Link href="/?start=1">Body-composition quiz</Link><Link href="/blog/what-happens-after-stopping-semaglutide">Maintenance guide</Link><Link href="/blog/how-much-protein-on-glp-1">Protein guide</Link></div>
+        <div><strong>Start</strong><Link href="/?start=1">Body-composition quiz</Link><Link href="/blog/cash-pay-glp-1-care">Cash-pay GLP-1 guide</Link><Link href="/blog/how-to-assess-an-online-provider">Assess an online provider</Link><Link href="/blog/what-happens-after-stopping-semaglutide">Maintenance guide</Link></div>
       </div>
       <div className="footer-disclaimer">
         <p>Peptis provides general education and programme support. It does not diagnose, prescribe, guarantee treatment eligibility or replace an individual clinician. Prescription decisions must be made by an appropriately licensed clinician. Compounded products are not FDA approved.</p>

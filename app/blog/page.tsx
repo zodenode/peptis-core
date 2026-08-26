@@ -8,7 +8,7 @@ import { absoluteUrl, siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "GLP-1 Evidence Library: Muscle, Nutrition and Maintenance",
-  description: "Evidence-led GLP-1 guides covering muscle and lean mass, protein, strength training, skin changes, side effects and weight maintenance.",
+  description: "Evidence-led GLP-1 guides covering muscle and lean mass, protein, strength training, skin changes, side effects, maintenance and how to assess cash-pay care.",
   alternates: { canonical: "/blog" },
   openGraph: {
     title: "Peptis GLP-1 Evidence Library",
@@ -67,7 +67,7 @@ export default function BlogPage() {
         <div>
           <p className="eyebrow">PEPTIS · EVIDENCE LIBRARY</p>
           <h1>Understand the treatment. Protect the outcome.</h1>
-          <p>Evidence-led guidance on GLP-1 treatment, body composition, low-appetite nutrition, training, appearance changes and what happens next.</p>
+          <p>Evidence-led guidance on GLP-1 treatment, body composition, low-appetite nutrition, training, appearance changes, care access and what happens next.</p>
         </div>
         <div className="editorial-hero-visual">
           <div className="editorial-standard">
@@ -145,7 +145,7 @@ export default function BlogPage() {
       <section className="blog-newsletter reveal-on-scroll">
         <p className="eyebrow">FOLLOW THE EVIDENCE, NOT THE HEADLINE</p>
         <h2>Start with the question that affects your next decision.</h2>
-        <div><Link href="/blog/does-ozempic-cause-muscle-loss">Muscle & lean mass <span>→</span></Link><Link href="/blog/how-much-protein-on-glp-1">Protein with low appetite <span>→</span></Link><Link href="/blog/what-happens-after-stopping-semaglutide">Life after stopping <span>→</span></Link></div>
+        <div><Link href="/blog/does-ozempic-cause-muscle-loss">Muscle & lean mass <span>→</span></Link><Link href="/blog/cash-pay-glp-1-care">Cash-pay GLP-1 care <span>→</span></Link><Link href="/blog/how-to-assess-an-online-provider">Assess an online provider <span>→</span></Link></div>
       </section>
 
       <SiteFooter />
