@@ -1,13 +1,19 @@
-# Peptis Core — Example Telehealth Storefront
+# Peptis Core Continuity — Founding Reservation
 
-Example marketing/store site for **Peptis**, positioned to compete with top telemedicine merchants (Ro, Hims, Musely, Nurx, Lemonaid) and partner-style sites (GetTrim, FMmeds, MensRX, StiffiesRx, For Humanity).
+Premium medical-wellness storefront for **Peptis Continuation & Optimization** (operated by Information Edge Insights LLC). Single-page landing plus an interactive qualification quiz. Vite + React + TypeScript.
 
 ## Run locally
 
 ```bash
 npm install
+cp .env.example .env
+# add VITE_PUBLIC_POSTHOG_KEY (optional for local UI work)
 npm run dev
 ```
+
+- Landing: `/`
+- Quiz: `/quiz`
+- Brand kit (static): `/brand-kit/`
 
 ## Production
 
@@ -15,47 +21,65 @@ npm run dev
 - **Railway:** project `peptis-core` / service `peptis-web`
 - **Live URL:** https://peptis-web-production.up.railway.app
 
-### Link GoDaddy (`peptis.com`)
-
-Custom domains are attached in Railway. Add DNS in GoDaddy (full detail in `GODADDY-DNS.md`):
-
-| Host | Type | Value |
-|------|------|-------|
-| `www` | CNAME | `z1iy4dgg.up.railway.app` |
-| `_railway-verify` | TXT | `railway-verify=635736643bc94d1c9d059ec607348617116d39b55102357d8dfd72927516fcd6` |
-
-For apex `peptis.com`, forward to `https://www.peptis.com` (GoDaddy usually cannot CNAME `@`), or CNAME `@` → `rscpq1pp.up.railway.app` if flattening is available.
-
-DNS panel: https://dcc.godaddy.com/control/peptis.com/dns
-
-## Brand kit
-
-Full kit (green logo lockups, palette, type, tokens):
-
-- Visual board: [`brand-kit/index.html`](./brand-kit/index.html) · also served at `/brand-kit/`
-- Specs: [`brand-kit/BRAND.md`](./brand-kit/BRAND.md)
-- Tokens: [`brand-kit/tokens.css`](./brand-kit/tokens.css)
-- Logos: `brand-kit/logos/` (wordmark, on-paper/forest/white/black, OG, icons)
-- Light: sage `#3F5B3A` · Dark: bronze `#C4A882` · Fraunces + Manrope · Information Edge Insights LLC
-
-## Recommended hero products
-
-Based on Peptis fortes (recovery / longevity / skin / cognitive peptides + quality trust) and what converts in telemedicine:
-
-| Priority | Lane | Compounds | Why |
-|---|---|---|---|
-| 1 | **Metabolic Reset** | Semaglutide, Tirzepatide | Table-stakes vs Trim, FMmeds, Ro, Hims |
-| 2 | **Recovery Protocol** | BPC-157, TB-500, KPV | Strongest Peptis differentiator |
-| 3 | **Longevity Stack** | Sermorelin, Ipamorelin, MOTS-c | Owns healthspan niche |
-| 4 | **Skin Renewal** | GHK-Cu, KPV | Derm front door vs Musely |
-| Supporting | Cognitive Clarity | Semax, Selank | Secondary lane from catalog |
-
-**Do not lead with ED/hair like StiffiesRx/MensRX** — those are not Peptis fortes. Offer vitality later if needed (e.g. PT-141) after the four hero lanes convert.
+Custom domain notes live in `GODADDY-DNS.md`.
 
 ## Positioning
 
-Peptis wins by being **peptide-native telehealth**, not a generalist men’s/women’s Rx clone with peptides bolted on. GLP-1 is the demand gateway; recovery, longevity, and skin are the moat.
+Peptis is building a future state-by-state continuity service. The current offer is a **$0 founding reservation** with a planned **$299/month** founding rate if services launch, the member is eligible, and they affirmatively enroll. The planned standard rate after founding enrollment is $399/month. Pricing and availability may change before activation. Optional Lean Mass Bundle interest is planned at +$59/month at launch.
+
+The reservation includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment. Stripe wallet UI is a future-activation preview; see [`docs/STRIPE-ACTIVATION.md`](./docs/STRIPE-ACTIVATION.md).
+
+## Evidence led homepage
+
+The homepage includes data driven body composition, continuity framework, evidence and founding
+offer visuals. Public statistics come from
+[`brand-kit/Peptis_GLP1_Body_Recomposition_Evidence_Dossier_Final.docx`](./brand-kit/Peptis_GLP1_Body_Recomposition_Evidence_Dossier_Final.docx)
+and carry nearby source and interpretation notes.
+
+Project copy guidance lives in
+[`.cursor/skills/peptis-evidence-copy/SKILL.md`](./.cursor/skills/peptis-evidence-copy/SKILL.md).
+Use it for Peptis claims, infographics, quiz copy, supplement messaging and continuity content.
+
+## Quiz
+
+Eight screening questions, branching educational stop-blocks and qualitative social-proof intersplices (muscle / energy / GI), a universal founding-trust page, then identity + state verification and a $0 reservation. Answers persist in `localStorage` (`peptis.continuity.quiz`) for abandonment resume.
+
+The legacy client-decoded restricted compound configuration remains isolated in `src/data/continuityConfig.ts`, but compound names are not shown in current patient-facing funnel copy.
+
+There is **no Meta Pixel** on the landing page or quiz.
+
+## PostHog
+
+Installed via `posthog-js`. Init: `src/lib/posthog.ts`. Components call `src/lib/analytics.ts` only.
+
+| Variable | Required | Default |
+|---|---|---|
+| `VITE_PUBLIC_POSTHOG_KEY` | Yes, to send events | — |
+| `VITE_PUBLIC_POSTHOG_HOST` | No | `https://us.i.posthog.com` |
+
+Copy `.env.example` → `.env`. Do not commit `.env`.
+
+### Events
+
+Landing: `landing_viewed`, `hero_cta_clicked`, `section_viewed` `{ section }`, `trust_badge_viewed`, `quiz_cta_clicked` `{ location }`.
+
+Quiz: `quiz_started`, `quiz_step_viewed`, `quiz_option_selected`, `quiz_stop_block_viewed`, `quiz_stop_block_continued`, `quiz_explainer_viewed`, `quiz_explainer_auto_advanced`, `quiz_social_proof_viewed`, `quiz_social_proof_auto_advanced`, `quiz_back_clicked`, `quiz_completed`, `checkout_viewed`, `stripe_activation_block_viewed`, `wallet_preview_clicked`, `upsell_toggled`, `lean_mass_interest_toggled`, `checkout_submit_clicked`, `founding_reservation_submitted`, `quiz_abandoned`.
+
+Identify: `posthog.identify(email, { first_name, state, plan })` when a valid checkout email is entered.
+
+Email abandonment copy and event → flow mapping: [`docs/EMAIL-ABANDONMENT.md`](./docs/EMAIL-ABANDONMENT.md).
+
+## Images
+
+37 generated editorial stills live in [`public/images/continuity/`](./public/images/continuity/) (including 12 new 3:4 funnel images). Prompts: [`public/images/continuity/PROMPTS.md`](./public/images/continuity/PROMPTS.md).
+
+## Brand
+
+- Light lockup: `/peptis-logo-green.png` (sage `#3F5B3A`)
+- Dark lockup: `/peptis-logo-bronze.png` (bronze `#C4A882`)
+- Type: Fraunces (display) + Manrope (body)
+- Full kit: [`brand-kit/`](./brand-kit/)
 
 ## Note
 
-This is a front-end example only. Live prescribing requires licensed providers, pharmacy partners, state coverage, and compliance (HIPAA, LegitScript, compounding disclosures).
+Front-end only. Live prescribing requires licensed providers, pharmacy partners, state coverage, and compliance (HIPAA, LegitScript, compounding disclosures). Compounded medications are not individually FDA-approved.
