@@ -14,6 +14,7 @@ export const images = {
   testimonial: `${base}/testimonial-studio.jpg`,
   closer: `${base}/closer-atmosphere.jpg`,
   trust: `${base}/trust-clinical.jpg`,
+  quizWelcome: `${base}/quiz-home-welcome-studio.jpg`,
   q1: `${base}/continuity-q1-reservation-timeline.jpg`,
   q2: `${base}/continuity-q2-pathways.jpg`,
   q3: `${base}/continuity-q3-everyday-strength.jpg`,

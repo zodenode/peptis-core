@@ -191,7 +191,13 @@ export function LandingPage() {
                 This illustrative goal reflects a pattern the quiz helps people organize. It is not
                 a customer testimonial or a claim of treatment results.
               </p>
-              <footer>Illustrative planning goal</footer>
+              <footer className="planning-goal">
+                <strong>Example planning goal</strong>
+                <span>
+                  Over the next four weeks, complete two resistance sessions each week and record
+                  whether climbing stairs and carrying groceries feel easier, the same or harder.
+                </span>
+              </footer>
             </blockquote>
           </div>
         </section>

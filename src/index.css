@@ -1256,9 +1256,27 @@ blockquote {
   color: var(--forest);
 }
 
-blockquote footer {
-  color: var(--muted);
-  font-weight: 600;
+.planning-goal {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-left: 3px solid var(--coral);
+  border-radius: 0 12px 12px 0;
+  background: var(--beige-warm);
+  color: var(--body);
+}
+
+.planning-goal strong {
+  color: var(--forest);
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.planning-goal span {
+  max-width: 48ch;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 /* FAQ */

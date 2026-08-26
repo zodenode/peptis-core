@@ -9,7 +9,10 @@ export function QuizEmbed() {
   if (!started) {
     return (
       <div className="quiz-gate">
-        <img src={images.q1} alt="" />
+        <img
+          src={images.quizWelcome}
+          alt="Approachable adult seated with a blank planning card in a colorful studio"
+        />
         <div>
           <p className="quiz-kicker">Continuity quiz</p>
           <h3>A two minute check of what matters now</h3>

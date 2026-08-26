@@ -62,5 +62,6 @@ and crisp commercial lighting. The existing strength-session photograph remains 
 | `how-intake-studio.jpg` | 4:3 | Man completing a blank intake on coral with forest geometry. |
 | `how-clinician-studio.jpg` | 4:3 | Professional reviewing a blank card on berry red with sage light. |
 | `testimonial-studio.jpg` | 3:4 | Woman in oatmeal and charcoal on berry red with a forest circle. |
+| `quiz-home-welcome-studio.jpg` | 3:4 | Approachable woman with a blank planning card on emerald and coral. |
 
-**Count: 46 images (12 continuity funnel images and 8 studio campaign images).**
+**Count: 47 images (12 continuity funnel images and 9 studio campaign images).**
