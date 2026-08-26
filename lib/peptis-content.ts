@@ -5,6 +5,7 @@ export const blogCategories = [
   "Skin, face & hair",
   "Side effects & adherence",
   "Continuation & maintenance",
+  "Care access & providers",
 ] as const;
 
 export type BlogCategory = (typeof blogCategories)[number];
@@ -475,6 +476,169 @@ export const blogPosts: BlogPost[] = [
     ],
     cta: { label: "Explore Continuity Care", href: "/glp-continuity" },
   },
+  {
+    slug: "cash-pay-glp-1-care",
+    title: "Cash-pay GLP-1 care guide",
+    dek: "What self-pay metabolic care usually includes, how clinician review works, and which questions to ask before you start.",
+    category: "Care access & providers",
+    readTime: "14 min read",
+    published: "26 August 2026",
+    reviewed: "Compliance language review completed; independent clinician review pending",
+    image: "/peptis-glp-continuity-hero.webp",
+    imageAlt: "Calm outdoor path suggesting continuity of care beyond a single prescription",
+    keyTakeaway:
+      "Cash-pay GLP-1 care can be a clear path when insurance coverage is limited—but clarity, clinician oversight, and honest compounding disclosures matter more than a low sticker price.",
+    sections: [
+      {
+        heading: "What “cash-pay” means in telehealth",
+        paragraphs: [
+          "Cash-pay (also called self-pay) means you pay the clinic or membership directly rather than submitting a claim to insurance for the visit or medication. It does not mean care is unsupervised. In a clinician-guided model, a licensed provider still reviews your intake, decides whether treatment is appropriate, and documents that decision.",
+          "Membership pricing often bundles clinical review, ongoing messaging, and—when prescribed—pharmacy fulfillment into one transparent monthly amount. Exact inclusions vary by program; always confirm what is covered before you enroll.",
+        ],
+      },
+      {
+        heading: "How clinician-guided GLP-1 care typically works",
+        paragraphs: [
+          "GLP-1 receptor agonists (including products that contain semaglutide or tirzepatide ingredients, when clinically appropriate) are prescription therapies. Online programs that offer them should start with a structured health intake—not a one-click cart checkout.",
+        ],
+        bullets: [
+          "You share goals, medical history, current medications, and relevant labs when requested.",
+          "A U.S.-licensed clinician reviews eligibility, contraindications, and alternatives.",
+          "If treatment is appropriate, the clinician may prescribe a protocol and arrange fulfillment through a pharmacy partner.",
+          "Follow-up covers tolerance, dose adjustments when indicated, and whether to continue, pause, or stop.",
+        ],
+      },
+      {
+        heading: "What cash-pay often covers—and what it may not",
+        paragraphs: [
+          "Transparent programs list what is included in the membership (for example clinical review and medication when prescribed) and what is separate (lab work, primary-care visits, or brand-name retail pharmacy fills). Ask for a plain-language breakdown before you pay.",
+        ],
+        bullets: [
+          "Included: clinician evaluation and messaging during active membership, when the program says so.",
+          "Often included when prescribed: medication shipped from a partner pharmacy.",
+          "Often separate: outside lab orders, in-person specialty care, or brand products filled at a retail pharmacy.",
+          "Never assumed: insurance reimbursement, prior authorization, or a guaranteed prescription.",
+        ],
+      },
+      {
+        heading: "Compounded vs. commercially available products",
+        paragraphs: [
+          "Some telehealth pathways use compounded formulations when a clinician and pharmacy determine that approach is appropriate for a patient. Compounded medications are prepared by a pharmacy for an individual patient and are not FDA-approved as finished drug products. Your clinician should explain risks, benefits, alternatives, and whether a commercially available option is suitable for you.",
+          "Marketing that implies compounded products are identical to brand-name FDA-approved drugs, or that overstates results, is a red flag. Prefer programs that use measured, disclosure-first language.",
+        ],
+        studyLimit:
+          "This guide is educational. It cannot determine whether a compounded or commercially available product is appropriate for any individual.",
+      },
+      {
+        heading: "Safety and who may not be a candidate",
+        paragraphs: [
+          "GLP-1 therapies are not appropriate for everyone. Personal history—such as certain thyroid conditions, pancreatitis history, pregnancy plans, or interacting medications—can change eligibility. Only a licensed clinician who has reviewed your information can decide.",
+          "If you develop severe abdominal pain, signs of an allergic reaction, or other urgent symptoms while on therapy, seek emergency care and contact your prescribing clinician. This guide cannot replace that judgment.",
+        ],
+      },
+      {
+        heading: "Questions worth asking before you enroll",
+        paragraphs: [
+          "A careful program should answer these without pressure. If answers are vague, keep looking.",
+        ],
+        bullets: [
+          "Which states are the clinicians licensed in, and how is my visit documented?",
+          "Which pharmacy fulfills prescriptions, and how are compounded products disclosed?",
+          "What does the monthly price include if I am not prescribed medication?",
+          "How are dose changes and side-effect follow-up handled?",
+          "How do I cancel, pause, or transfer records if I leave the program?",
+        ],
+      },
+    ],
+    sources: [
+      { label: "FDA questions and answers on human drug compounding", url: "https://www.fda.gov/drugs/human-drug-compounding/compounding-and-fda-questions-and-answers" },
+      { label: "FDA Wegovy prescribing information", url: "https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/215256s021lbl.pdf" },
+      { label: "FDA Zepbound prescribing information", url: "https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/217806s020lbl.pdf" },
+    ],
+    cta: { label: "Explore Continuity Care", href: "/glp-continuity" },
+  },
+  {
+    slug: "how-to-assess-an-online-provider",
+    title: "How to assess an online provider",
+    dek: "A practical checklist for evaluating telehealth clinics: licensing, clinical standards, pharmacy partners, privacy, and transparency.",
+    category: "Care access & providers",
+    readTime: "13 min read",
+    published: "26 August 2026",
+    reviewed: "Compliance language review completed; independent clinician review pending",
+    image: "/peptis-bridge-transition.webp",
+    imageAlt: "Quiet bridge crossing suggesting a careful transition into online care",
+    keyTakeaway:
+      "Strong telehealth programs make licensing, clinical review, pharmacy partners, and pricing easy to understand—and they can say no when treatment is not appropriate.",
+    sections: [
+      {
+        heading: "Start with licensure and accountability",
+        paragraphs: [
+          "Legitimate online care is delivered by clinicians licensed where you are located (or otherwise permitted under applicable telehealth rules). Ask who will review your case, what credentials they hold, and how the visit is recorded. A brand name on a website is not a license.",
+          "Prefer programs operated by a clearly identified legal entity, with a working support channel and a path to request your records. Vague “medical team” language without accountability is a caution signal.",
+        ],
+      },
+      {
+        heading: "Look for a real clinical evaluation",
+        paragraphs: [
+          "An appropriate telehealth visit collects enough history to decide whether treatment is indicated—and when it is not. Auto-approvals, questionnaire-only checkouts with no clinician touchpoint, or pressure to select a drug before intake review are inconsistent with careful practice.",
+        ],
+        bullets: [
+          "Intake covers history, medications, allergies, and relevant conditions.",
+          "A licensed clinician reviews and can decline or recommend alternatives.",
+          "You can ask questions and receive follow-up after a prescription decision.",
+          "Marketing does not promise results, weight targets, or that you will receive a specific drug.",
+        ],
+      },
+      {
+        heading: "Pharmacy fulfillment and product transparency",
+        paragraphs: [
+          "When medication is part of care, ask which pharmacy ships it and how product quality is overseen. For compounded therapies, disclosures should state that the finished compounded product may not be FDA-approved and that your clinician will discuss risks and alternatives.",
+          "Discreet packaging is common; secrecy about the pharmacy partner is not. You should know who is dispensing what you receive.",
+        ],
+      },
+      {
+        heading: "Pricing, memberships, and cancellation",
+        paragraphs: [
+          "Clear programs explain cash-pay pricing up front: what happens if you are not a candidate, what renews automatically, and how to cancel. Hidden fees, hard-to-find cancellation paths, or charges framed as “guaranteed medication” deserve scrutiny.",
+          "Transparent memberships separate clinical care from product hype. You are paying for evaluation and, when appropriate, a prescribed protocol—not for a promised outcome.",
+        ],
+      },
+      {
+        heading: "Privacy and data handling",
+        paragraphs: [
+          "Health information deserves careful handling. Ask how your intake data is stored, who can access it, and how messaging with clinicians is secured. Be wary of clinics that treat a medical intake like a marketing lead form with aggressive follow-up unrelated to care.",
+        ],
+      },
+      {
+        heading: "Red flags checklist",
+        paragraphs: [
+          "Any single issue may need context; several together suggest walking away.",
+        ],
+        bullets: [
+          "No named clinical model, no licensing explanation, or no way to contact support.",
+          "Guaranteed prescriptions, dramatic before/after claims, or “research chemical” framing.",
+          "No compounding disclosure when compounded products are offered.",
+          "Pressure to pay before any clinician review.",
+          "Unclear pharmacy partner or inability to explain what you will receive.",
+        ],
+      },
+      {
+        heading: "A calm way to decide",
+        paragraphs: [
+          "Assess online providers the way you would assess any clinic: credentials, clinical process, fulfillment transparency, and whether you feel informed enough to consent. Take notes during intake. If something feels rushed or opaque, pause.",
+          "Educational checklists like this one cannot certify a specific clinic. They help you ask better questions so a licensed professional—and your own judgment—can do the rest.",
+        ],
+        studyLimit:
+          "This checklist is general education. It does not endorse, certify, or rank any clinic, and it cannot replace state licensing verification or clinical judgment.",
+      },
+    ],
+    sources: [
+      { label: "FDA questions and answers on human drug compounding", url: "https://www.fda.gov/drugs/human-drug-compounding/compounding-and-fda-questions-and-answers" },
+      { label: "HHS telehealth policy resources", url: "https://telehealth.hhs.gov/" },
+      { label: "FDA Wegovy prescribing information", url: "https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/215256s021lbl.pdf" },
+    ],
+    cta: { label: "Read the cash-pay GLP-1 care guide", href: "/blog/cash-pay-glp-1-care" },
+  },
 ];
 
 export type ArticleQuickFact = {
@@ -575,6 +739,22 @@ export const articleSeoBySlug: Record<string, ArticleSeo> = {
     relatedKeywords: ["what to eat on GLP-1", "Ozempic nausea food", "semaglutide meal plan", "GLP-1 diet plan"],
     publishedAt: "2026-08-23",
     updatedAt: "2026-08-24",
+  },
+  "cash-pay-glp-1-care": {
+    title: "Cash-Pay GLP-1 Care Guide: What Self-Pay Usually Includes",
+    description: "Learn what cash-pay GLP-1 telehealth usually covers, how clinician review works, compounding disclosures, and the questions to ask before you enroll.",
+    primaryKeyword: "cash-pay GLP-1 care",
+    relatedKeywords: ["self-pay GLP-1", "GLP-1 without insurance", "cash pay semaglutide", "telehealth GLP-1 membership"],
+    publishedAt: "2026-08-26",
+    updatedAt: "2026-08-26",
+  },
+  "how-to-assess-an-online-provider": {
+    title: "How to Assess an Online GLP-1 Provider",
+    description: "Use a practical checklist to evaluate online GLP-1 clinics: licensing, clinical review, pharmacy partners, pricing transparency, privacy and red flags.",
+    primaryKeyword: "how to assess an online provider",
+    relatedKeywords: ["evaluate telehealth clinic", "online GLP-1 provider checklist", "telehealth red flags", "compounded GLP-1 pharmacy"],
+    publishedAt: "2026-08-26",
+    updatedAt: "2026-08-26",
   },
 };
 
@@ -1119,6 +1299,120 @@ const articleEnhancements: Record<string, ArticleEnhancement> = {
       { label: "Full multi-society nutrition and lifestyle advisory for GLP-1 therapy", url: "https://onlinelibrary.wiley.com/doi/full/10.1002/oby.24336" },
       { label: "Current FDA Wegovy prescribing information", url: "https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/215256s021lbl.pdf" },
       { label: "Current FDA Zepbound prescribing information", url: "https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/217806s020lbl.pdf" },
+    ],
+  },
+  "cash-pay-glp-1-care": {
+    quickFacts: [
+      { value: "Rx only", label: "clinical decision", context: "Cash-pay pricing does not replace a licensed clinician’s evaluation. A membership fee is not a prescription guarantee." },
+      { value: "2 paths", label: "product types", context: "Programs may use commercially available FDA-approved products, compounded formulations, or both depending on clinical and pharmacy context." },
+      { value: "Ask 5", label: "pre-enroll questions", context: "Licensure, pharmacy partner, inclusions when not prescribed, follow-up, and cancellation are the minimum clarity checks." },
+    ],
+    sections: [
+      {
+        heading: "How cash-pay differs from insurance-billed care",
+        paragraphs: [
+          "Insurance-billed care routes claims through a payer and may require prior authorization, formulary checks and specific pharmacy networks. Cash-pay care settles the visit and, when prescribed, medication cost with the program or pharmacy directly.",
+          "Neither model removes the need for informed consent, contraindication review or ongoing monitoring. The payment method changes the billing path, not the clinical standard that careful practice requires.",
+        ],
+      },
+      {
+        heading: "What “membership” should make explicit",
+        paragraphs: ["Before you pay, request a written or clearly presented summary of inclusions and exclusions."],
+        bullets: [
+          "Whether the fee covers clinician review only, or review plus medication when prescribed.",
+          "What happens financially if you are declined, paused or waiting on labs.",
+          "Whether shipping, supplies, messaging and dose changes are included.",
+          "How renewals work and how to cancel without friction.",
+          "Which pharmacy partners are used and how compounded products are disclosed.",
+        ],
+      },
+      {
+        heading: "Compounding disclosures that should never be soft-pedaled",
+        paragraphs: [
+          "FDA materials distinguish compounding from FDA-approved finished drug products. Educational programs should not imply sameness with brand-name medicines or invent certainty about supply, potency or outcomes.",
+          "If a clinic cannot explain the difference in plain language, treat that as a transparency problem rather than a minor marketing detail.",
+        ],
+        studyLimit: "Public FDA compounding Q&A is educational background, not a determination that any specific compounded product is appropriate for a reader.",
+      },
+      {
+        heading: "Pair access questions with outcome-quality questions",
+        paragraphs: [
+          "Getting a prescription is only one part of a durable plan. Ask how the program supports nutrition, side-effect escalation and what happens if treatment is interrupted.",
+          "Evidence-library topics such as protein intake, strength training and maintenance planning remain relevant whether care is cash-pay or insurance-billed.",
+        ],
+      },
+    ],
+    faqs: [
+      { question: "Does cash-pay mean I will automatically get a GLP-1?", answer: "No. Payment for an assessment or membership is not a guarantee of eligibility or a specific medication. A licensed clinician must still decide." },
+      { question: "Is compounded medication the same as Ozempic or Wegovy?", answer: "No. Compounded products are not FDA-approved as finished drug products. Your clinician should explain risks, alternatives and whether a commercially available option is suitable." },
+      { question: "Can I use HSA or FSA funds?", answer: "Sometimes, depending on the product, documentation and your plan rules. Ask the program what receipts they provide and confirm with your administrator." },
+      { question: "What if I am not prescribed medication?", answer: "Ask before enrolling whether the fee is refundable, credited, or still owed for the clinical review alone." },
+      { question: "Should I stop seeing my primary clinician?", answer: "No. Telehealth GLP-1 care should complement, not silently replace, your broader medical relationships—especially for chronic conditions and interacting medicines." },
+    ],
+    pathway: [
+      { slug: "how-to-assess-an-online-provider", label: "Evaluate the clinic itself", context: "Use the licensing, pharmacy and red-flag checklist before you pay." },
+      { slug: "how-much-protein-on-glp-1", label: "Plan nutrition support", context: "Access without a protein-aware eating structure is incomplete care." },
+      { slug: "what-happens-after-stopping-semaglutide", label: "Think beyond the first month", context: "Ask how continuity works if treatment is paused or stopped." },
+    ],
+    sources: [
+      { label: "FDA compounding Q&A", url: "https://www.fda.gov/drugs/human-drug-compounding/compounding-and-fda-questions-and-answers" },
+      { label: "HHS telehealth consumer resources", url: "https://telehealth.hhs.gov/" },
+    ],
+  },
+  "how-to-assess-an-online-provider": {
+    quickFacts: [
+      { value: "License", label: "first filter", context: "Confirm clinicians are permitted to treat people in your location before comparing prices or marketing claims." },
+      { value: "No auto-Rx", label: "process signal", context: "Real evaluation includes the possibility of decline, delay, labs or alternatives—not guaranteed checkout of a named drug." },
+      { value: "Named Rx", label: "pharmacy partner", context: "You should know who dispenses your medication and how compounded products are disclosed." },
+    ],
+    sections: [
+      {
+        heading: "A 15-minute diligence script",
+        paragraphs: ["Use these questions in chat, email or a pre-enrollment call. Vague answers are data."],
+        bullets: [
+          "Who reviews my case, and in which states are they licensed?",
+          "Can treatment be declined after payment for the assessment?",
+          "Which pharmacy fulfills prescriptions, and is compounding involved?",
+          "What follow-up exists for side effects and dose changes?",
+          "How do I get my records if I leave?",
+        ],
+      },
+      {
+        heading: "Separate brand polish from clinical process",
+        paragraphs: [
+          "High-production websites can coexist with careful medicine—or with thin clinical oversight. Judge the intake depth, clinician accountability, pharmacy transparency and cancellation clarity more heavily than testimonials or before-and-after imagery.",
+          "Be especially cautious of language that guarantees a prescription, promises a specific amount of weight loss, or frames compounded products as identical to FDA-approved finished drugs.",
+        ],
+      },
+      {
+        heading: "When “research chemical” language appears",
+        paragraphs: [
+          "Consumer telehealth for prescription metabolic care should not look like a research-chemical storefront. If a site markets injectable peptides without a clinician pathway, or uses research-only disclaimers while selling for human use, walk away.",
+        ],
+      },
+      {
+        heading: "Document what you were told",
+        paragraphs: [
+          "Keep screenshots or emails describing price inclusions, pharmacy partners and clinical process. If the story changes after payment, you have a clearer basis for support requests or complaints to the appropriate regulator.",
+        ],
+        studyLimit: "This guide cannot provide legal advice about refunds, consumer complaints or malpractice. It is a practical education checklist only.",
+      },
+    ],
+    faqs: [
+      { question: "Is a questionnaire enough for a GLP-1 prescription?", answer: "A questionnaire can start an intake, but careful practice still requires a licensed clinician review with the ability to decline or request more information." },
+      { question: "Why does pharmacy identity matter?", answer: "The pharmacy is who prepares or dispenses what you receive. You should know the partner and how quality and compounding disclosures are handled." },
+      { question: "What if prices are much lower than everywhere else?", answer: "Low price is not automatically illegitimate, but it should prompt sharper questions about inclusions, product type, clinical staffing and cancellation terms." },
+      { question: "Can an online clinic replace my primary care clinician?", answer: "It should not silently replace broader care. Share relevant history and keep your other clinicians informed about new prescriptions." },
+      { question: "What is the biggest single red flag?", answer: "Guaranteed prescribing or pressure to pay before any clinician review. Either breaks the basic logic of individualized care." },
+    ],
+    pathway: [
+      { slug: "cash-pay-glp-1-care", label: "Understand cash-pay inclusions", context: "Clarify what membership covers before comparing clinics on price alone." },
+      { slug: "glp-1-low-appetite-food-plan", label: "Ask about symptom support", context: "Side-effect guidance is part of responsible ongoing care." },
+      { slug: "what-happens-after-stopping-semaglutide", label: "Ask about continuity", context: "Good clinics plan for pauses, switches and maintenance—not only initiation." },
+    ],
+    sources: [
+      { label: "HHS telehealth resources", url: "https://telehealth.hhs.gov/" },
+      { label: "FDA compounding Q&A", url: "https://www.fda.gov/drugs/human-drug-compounding/compounding-and-fda-questions-and-answers" },
     ],
   },
 };

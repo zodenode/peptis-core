@@ -15,6 +15,8 @@ const articleSeo = [
   ["what-happens-after-stopping-semaglutide", "What Happens After Stopping Semaglutide?"],
   ["creatine-and-glp-1-medication", "Creatine and GLP-1 Medication: Safety and Evidence"],
   ["glp-1-low-appetite-food-plan", "GLP-1 Low-Appetite Food Plan: What to Eat"],
+  ["cash-pay-glp-1-care", "Cash-Pay GLP-1 Care Guide: What Self-Pay Usually Includes"],
+  ["how-to-assess-an-online-provider", "How to Assess an Online GLP-1 Provider"],
 ];
 
 async function fetchFromWorker(path, accept = "text/html") {
