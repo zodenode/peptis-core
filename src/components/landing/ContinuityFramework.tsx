@@ -1,3 +1,4 @@
+import { useEffect, useState, type CSSProperties } from 'react'
 import { useSectionView } from '../../hooks/useSectionView'
 
 const framework = [
@@ -30,10 +31,28 @@ const framework = [
 
 export function ContinuityFramework() {
   const sectionRef = useSectionView<HTMLElement>('continuity_framework')
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const element = sectionRef.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        setVisible(true)
+        observer.disconnect()
+      },
+      { threshold: 0.3 },
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [sectionRef])
 
   return (
     <section
-      className="section section-forest framework-section"
+      className={`section section-forest framework-section${visible ? ' is-visible' : ''}`}
       id="framework"
       ref={sectionRef}
       aria-labelledby="framework-heading"
@@ -48,8 +67,12 @@ export function ContinuityFramework() {
           </p>
         </div>
         <ol className="framework-grid">
-          {framework.map((item) => (
-            <li className="framework-card" key={item.title}>
+          {framework.map((item, index) => (
+            <li
+              className="framework-card"
+              key={item.title}
+              style={{ '--wave-index': index } as CSSProperties}
+            >
               <span className="framework-number" aria-hidden="true">{item.number}</span>
               <h3>{item.title}</h3>
               <p>{item.body}</p>
