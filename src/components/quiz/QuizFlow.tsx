@@ -12,6 +12,7 @@ import { Checkout } from './Checkout'
 import { ExplainerPage } from './ExplainerPage'
 import { QuizQuestion } from './QuizQuestion'
 import { Success } from './Success'
+import { SummaryReveal } from './SummaryReveal'
 
 type Props = {
   embedded?: boolean
@@ -71,6 +72,15 @@ export function QuizFlow({ embedded = false }: Props) {
           />
         ) : null}
 
+        {quiz.current === 'summary_mid' ? (
+          <SummaryReveal
+            pathways={quiz.pathways}
+            onContinue={quiz.goNext}
+            onBack={quiz.goBack}
+            canGoBack={quiz.canGoBack}
+          />
+        ) : null}
+
         {quiz.current === 'checkout' ? (
           <Checkout
             form={quiz.checkout}
@@ -79,10 +89,18 @@ export function QuizFlow({ embedded = false }: Props) {
             onBack={quiz.goBack}
             canGoBack={quiz.canGoBack}
             pathways={quiz.pathways}
+            submitState={quiz.submitState}
           />
         ) : null}
 
-        {quiz.current === 'success' ? <Success form={quiz.checkout} onReset={quiz.reset} /> : null}
+        {quiz.current === 'success' ? (
+          <Success
+            form={quiz.checkout}
+            pathways={quiz.pathways}
+            reservationId={quiz.reservationId}
+            onReset={quiz.reset}
+          />
+        ) : null}
       </div>
 
       <p className="quiz-trust">

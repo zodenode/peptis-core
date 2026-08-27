@@ -7,12 +7,14 @@ import { ContinuityFramework } from '../components/landing/ContinuityFramework'
 import { EvidenceCards } from '../components/landing/EvidenceCards'
 import { FoundingOfferVisual } from '../components/landing/FoundingOfferVisual'
 import { MeasuresBeyondWeight } from '../components/landing/MeasuresBeyondWeight'
+import { PricingStrip } from '../components/landing/PricingStrip'
 import { ProteinTargetGraphic } from '../components/landing/ProteinTargetGraphic'
+import { StickyQuizCta } from '../components/landing/StickyQuizCta'
 import { QuizEmbed } from '../components/quiz/QuizEmbed'
 import { faqs, howSteps, problemItems, protocolRows, trustBadges } from '../data/landing'
 import { images } from '../data/images'
 import { useSectionView } from '../hooks/useSectionView'
-import { track } from '../lib/analytics'
+import { setQuizSource, track } from '../lib/analytics'
 
 export function LandingPage() {
   const heroRef = useSectionView<HTMLElement>('hero')
@@ -33,6 +35,7 @@ export function LandingPage() {
   }, [])
 
   const heroCta = () => {
+    setQuizSource('hero')
     track('hero_cta_clicked')
     track('quiz_cta_clicked', { location: 'hero' })
   }
@@ -65,7 +68,11 @@ export function LandingPage() {
                 <Link className="btn btn-primary" to="/quiz" onClick={heroCta}>
                   Start the free check
                 </Link>
-                <a className="btn btn-ghost" href="#evidence">
+                <a
+                  className="btn btn-ghost"
+                  href="#evidence"
+                  onClick={() => track('evidence_cta_clicked', { location: 'hero' })}
+                >
                   See the evidence
                 </a>
               </div>
@@ -101,6 +108,8 @@ export function LandingPage() {
             </div>
           </div>
         </section>
+
+        <PricingStrip />
 
         <ContinuityFramework />
 
@@ -224,7 +233,14 @@ export function LandingPage() {
             </div>
             <div className="faq-list">
               {faqs.map((item) => (
-                <details key={item.q}>
+                <details
+                  key={item.q}
+                  onToggle={(e) => {
+                    if ((e.target as HTMLDetailsElement).open) {
+                      track('faq_opened', { question: item.q })
+                    }
+                  }}
+                >
                   <summary>{item.q}</summary>
                   <p>{item.a}</p>
                 </details>
@@ -250,7 +266,10 @@ export function LandingPage() {
               <Link
                 className="btn btn-ghost"
                 to="/quiz"
-                onClick={() => track('quiz_cta_clicked', { location: 'closer' })}
+                onClick={() => {
+                  setQuizSource('closer')
+                  track('quiz_cta_clicked', { location: 'closer' })
+                }}
               >
                 Open the full quiz
               </Link>
@@ -259,6 +278,7 @@ export function LandingPage() {
           </div>
         </section>
       </main>
+      <StickyQuizCta />
       <Footer />
     </div>
   )

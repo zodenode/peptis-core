@@ -12,6 +12,7 @@ type Props = {
   onBack: () => void
   canGoBack: boolean
   pathways: string[]
+  submitState: 'idle' | 'submitting' | 'error'
 }
 
 const pathwayLabels: Record<string, string> = {
@@ -21,7 +22,7 @@ const pathwayLabels: Record<string, string> = {
   rebound_protection: 'Maintenance planning',
 }
 
-export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways }: Props) {
+export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways, submitState }: Props) {
   const [attempted, setAttempted] = useState(false)
   const errors = {
     firstName: form.firstName.trim().length > 1 ? '' : 'Enter your first name.',
@@ -45,7 +46,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     setAttempted(true)
-    if (!ready) return
+    if (!ready || submitState === 'submitting') return
     onSubmit()
   }
 
@@ -246,12 +247,18 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
           after services launch, eligibility and state availability are confirmed, and you
           affirmatively enroll.
         </p>
+        {submitState === 'error' ? (
+          <p className="form-error" role="alert">
+            We could not save your reservation just now. Your answers are still here. Please check
+            your connection and try again.
+          </p>
+        ) : null}
         <div className="quiz-actions">
           <button type="button" className="btn-text" onClick={onBack} disabled={!canGoBack}>
             ← Back
           </button>
-          <button type="submit" className="btn btn-solid">
-            Reserve for $0 today
+          <button type="submit" className="btn btn-solid" disabled={submitState === 'submitting'}>
+            {submitState === 'submitting' ? 'Saving your reservation…' : 'Reserve for $0 today'}
           </button>
         </div>
       </form>

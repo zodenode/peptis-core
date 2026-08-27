@@ -1,6 +1,13 @@
 import type { ContinuityTerms } from './continuityConfig'
 
-export type StepType = 'question' | 'explainer' | 'social_proof' | 'stop_block' | 'checkout' | 'success'
+export type StepType =
+  | 'question'
+  | 'explainer'
+  | 'social_proof'
+  | 'stop_block'
+  | 'summary'
+  | 'checkout'
+  | 'success'
 
 export type QuestionId = 'q1' | 'q2' | 'q3' | 'q4' | 'q5' | 'q6' | 'q7' | 'q8'
 
@@ -20,7 +27,7 @@ export type ExplainerId =
 
 export type StopStepId = 'stop_a' | 'stop_b' | 'stop_c'
 
-export type StepId = QuestionId | ExplainerId | StopStepId | 'checkout' | 'success'
+export type StepId = QuestionId | ExplainerId | StopStepId | 'summary_mid' | 'checkout' | 'success'
 
 export type StopBlockId = 'A' | 'B' | 'C'
 
@@ -34,7 +41,6 @@ export type QuizOption = {
   letter: string
   label: string
   insight: string
-  isCorrect?: boolean
 }
 
 export type QuestionStep = {
@@ -74,21 +80,26 @@ export const questions: Record<QuestionId, QuestionStep> = {
         insight: 'You are still early in treatment. Keep your current clinician informed about any changes.',
       },
       {
-        id: 'q1_b',
+        id: 'q1_e',
         letter: 'B',
+        label: 'I have been in treatment for one to three months.',
+        insight: 'Appetite and routine often shift in this window. It is a good time to start simple strength and protein notes.',
+      },
+      {
+        id: 'q1_b',
+        letter: 'C',
         label: 'I have been in treatment for three months or longer.',
         insight: 'This is a useful time to notice changes in strength, food intake, comfort and routine.',
-        isCorrect: true,
       },
       {
         id: 'q1_c',
-        letter: 'C',
+        letter: 'D',
         label: 'I recently stopped treatment.',
         insight: 'A change in treatment deserves follow up with your current clinician. This summary can help organize your questions.',
       },
       {
         id: 'q1_d',
-        letter: 'D',
+        letter: 'E',
         label: 'I am not sure of my timeline or dose schedule.',
         insight: 'That is fine for this quiz. Confirm the details with your current clinician when you can.',
       },
@@ -158,7 +169,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
         letter: 'D',
         label: 'Yes. Some everyday tasks or workouts feel harder.',
         insight: 'A change in function is worth discussing with your current clinician, especially if it is new or getting worse.',
-        isCorrect: true,
       },
     ],
   },
@@ -174,7 +184,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
         letter: 'A',
         label: 'I often feel drained, and rest does not fully help.',
         insight: 'Persistent fatigue can have many causes. Record the pattern and discuss it with your current clinician.',
-        isCorrect: true,
       },
       {
         id: 'q4_b',
@@ -220,7 +229,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
         letter: 'C',
         label: 'Regularly. Discomfort can last well after I eat.',
         insight: 'Ongoing symptoms deserve clinical guidance. Your summary can help you describe the pattern clearly.',
-        isCorrect: true,
       },
       {
         id: 'q5_d',
@@ -248,7 +256,6 @@ export const questions: Record<QuestionId, QuestionStep> = {
         letter: 'B',
         label: 'Protecting strength and staying capable in daily life.',
         insight: 'Resistance training and adequate protein are the strongest practical priorities for that goal.',
-        isCorrect: true,
       },
       {
         id: 'q6_c',
@@ -274,27 +281,26 @@ export const questions: Record<QuestionId, QuestionStep> = {
       {
         id: 'q7_a',
         letter: 'A',
-        label: 'Sore joints and stiffness after waking up in the morning.',
-        insight: 'Joint stiffness can have many causes. A clinician can help assess a persistent change.',
+        label: 'Less soreness and stiffness after everyday activity.',
+        insight: 'We will add recovery and activity comfort notes to your summary.',
       },
       {
         id: 'q7_b',
         letter: 'B',
-        label: 'Brittle fingernails and dry skin patches.',
-        insight: 'Skin and nail changes can have several causes and may deserve clinical review.',
+        label: 'Better sleep and an easier wind down at night.',
+        insight: 'We will add sleep and evening routine patterns to your summary.',
       },
       {
         id: 'q7_c',
         letter: 'C',
-        label: 'Frequent muscle cramps during physical exercise.',
-        insight: 'Exercise cramps have several possible causes. Note the timing and discuss persistent symptoms.',
+        label: 'Fewer energy dips in the afternoon.',
+        insight: 'We will add energy timing, meals and fluids to your summary.',
       },
       {
         id: 'q7_d',
         letter: 'D',
         label: 'Clearer thinking and steadier energy through the day.',
         insight: 'We will add energy, nutrition, sleep and recovery patterns to your summary.',
-        isCorrect: true,
       },
     ],
   },
@@ -310,25 +316,24 @@ export const questions: Record<QuestionId, QuestionStep> = {
         letter: 'A',
         label: 'Eating comfortable portions and meeting nutrition needs more consistently.',
         insight: 'Meal size, timing, fluids and symptom notes can support a better conversation with your clinician.',
-        isCorrect: true,
       },
       {
         id: 'q8_b',
         letter: 'B',
-        label: 'Boosting physical workout performance and cardiovascular endurance.',
-        insight: 'Performance belongs in your strength and recovery summary.',
+        label: 'Planning meals with less worry about symptoms.',
+        insight: 'We will add meal planning and symptom timing notes to your summary.',
       },
       {
         id: 'q8_c',
         letter: 'C',
-        label: 'Increasing overall systemic body temperature and caloric burn rate.',
-        insight: 'Calorie burn is separate from understanding digestive comfort.',
+        label: 'Feeling more comfortable being active after meals.',
+        insight: 'We will add post-meal comfort and activity notes to your summary.',
       },
       {
         id: 'q8_d',
         letter: 'D',
-        label: 'Using a quick fix without changing anything else.',
-        insight: 'Persistent digestive symptoms need appropriate clinical guidance, not a one size fits all fix.',
+        label: 'Enjoying meals away from home with more confidence.',
+        insight: 'We will add eating-out comfort and preparation notes to your summary.',
       },
     ],
   },
@@ -423,15 +428,16 @@ export function stepMeta(id: StepId): { type: StepType; step_id: string; step_in
     explain_q5: { type: 'explainer', step_index: 9 },
     stop_c: { type: 'stop_block', step_index: 9, block: 'C' },
     proof_gi: { type: 'social_proof', step_index: 10 },
-    q6: { type: 'question', step_index: 10 },
-    explain_q6: { type: 'explainer', step_index: 11 },
-    q7: { type: 'question', step_index: 12 },
-    explain_q7: { type: 'explainer', step_index: 13 },
-    q8: { type: 'question', step_index: 14 },
-    explain_q8: { type: 'explainer', step_index: 15 },
-    reassure: { type: 'social_proof', step_index: 16 },
-    checkout: { type: 'checkout', step_index: 17 },
-    success: { type: 'success', step_index: 18 },
+    summary_mid: { type: 'summary', step_index: 10 },
+    q6: { type: 'question', step_index: 11 },
+    explain_q6: { type: 'explainer', step_index: 12 },
+    q7: { type: 'question', step_index: 13 },
+    explain_q7: { type: 'explainer', step_index: 14 },
+    q8: { type: 'question', step_index: 15 },
+    explain_q8: { type: 'explainer', step_index: 16 },
+    reassure: { type: 'social_proof', step_index: 17 },
+    checkout: { type: 'checkout', step_index: 18 },
+    success: { type: 'success', step_index: 19 },
   }
   return { ...map[id], step_id: id }
 }
@@ -455,7 +461,8 @@ export function derivePathways(answers: Answers): string[] {
   const pathways = new Set<string>()
   const q2 = answers.q2 ?? []
   if (q2.includes('a') || answers.q3 === 'q3_d' || answers.q6 === 'q6_b') pathways.add('muscle_protection')
-  if (q2.includes('b') || answers.q4 === 'q4_a' || answers.q7 === 'q7_d') pathways.add('cellular_energy')
+  if (q2.includes('b') || answers.q4 === 'q4_a' || answers.q7 === 'q7_c' || answers.q7 === 'q7_d')
+    pathways.add('cellular_energy')
   if (q2.includes('c') || answers.q5 === 'q5_c' || answers.q8 === 'q8_a') pathways.add('gi_repair')
   if (q2.includes('d')) pathways.add('rebound_protection')
   return [...pathways]
@@ -544,8 +551,10 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
       if (shouldShowStopC(answers) && !shownSet.has('C')) return 'stop_c'
       return 'explain_q5'
     case 'explain_q5':
-      return shouldShowStopC(answers) ? 'proof_gi' : 'q6'
+      return shouldShowStopC(answers) ? 'proof_gi' : 'summary_mid'
     case 'proof_gi':
+      return 'summary_mid'
+    case 'summary_mid':
       return 'q6'
     case 'q6':
       return 'explain_q6'
@@ -572,7 +581,7 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
   }
 }
 
-const MAX_STEP_INDEX = 18
+const MAX_STEP_INDEX = 19
 
 export function progressPercent(id: StepId) {
   if (id === 'success') return 100

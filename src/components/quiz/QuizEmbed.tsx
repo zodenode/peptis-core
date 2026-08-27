@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { images } from '../../data/images'
-import { track } from '../../lib/analytics'
+import { setQuizSource, track } from '../../lib/analytics'
 import { QuizFlow } from './QuizFlow'
 
 export function QuizEmbed() {
@@ -24,7 +24,9 @@ export function QuizEmbed() {
             type="button"
             className="btn btn-solid"
             onClick={() => {
+              setQuizSource('embed')
               track('quiz_cta_clicked', { location: 'embed' })
+              track('quiz_embed_started')
               setStarted(true)
             }}
           >

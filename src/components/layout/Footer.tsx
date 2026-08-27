@@ -14,6 +14,8 @@ export function Footer() {
             <a href="/#offer">Founding offer</a>
             <a href="/#faq">FAQ</a>
             <Link to="/blog">Blog</Link>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/health-data">Health data notice</Link>
             <a href="/brand-kit/">Brand kit</a>
           </div>
         </div>

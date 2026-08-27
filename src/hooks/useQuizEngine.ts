@@ -11,7 +11,9 @@ import {
   type StepId,
   type StopBlockId,
 } from '../data/quiz'
-import { identifyPerson, track } from '../lib/analytics'
+import { getQuizSource, identifyPerson, track } from '../lib/analytics'
+import { pixelTrack } from '../lib/pixel'
+import { submitReservation } from '../lib/reservations'
 import { isValidEmail } from '../lib/validate'
 
 export const QUIZ_STORAGE_KEY = 'peptis.continuity.quiz'
@@ -83,6 +85,8 @@ export function useQuizEngine() {
   const [completed, setCompleted] = useState(false)
   const [identifiedEmail, setIdentifiedEmail] = useState<string | undefined>()
   const [hydrated, setHydrated] = useState(false)
+  const [submitState, setSubmitState] = useState<'idle' | 'submitting' | 'error'>('idle')
+  const [reservationId, setReservationId] = useState<string | null>(null)
 
   useEffect(() => {
     const saved = loadSnapshot()
@@ -118,7 +122,7 @@ export function useQuizEngine() {
     if (!hydrated) return
     if (!startedEvent.current) {
       startedEvent.current = true
-      track('quiz_started')
+      track('quiz_started', { source: getQuizSource() })
     }
     if (lastViewed.current === current) return
     lastViewed.current = current
@@ -229,26 +233,51 @@ export function useQuizEngine() {
     [checkout.email, checkout.firstName, checkout.state, checkout.upsell, identifiedEmail],
   )
 
-  const submitCheckout = useCallback(() => {
-    identifyIfReady()
-    track('quiz_completed', { pathways: derivePathways(answers) })
+  const submitCheckout = useCallback(async () => {
+    if (submitState === 'submitting') return
+    setSubmitState('submitting')
     track('checkout_submit_clicked', {
       plan: checkout.upsell ? 'core_founding_plus_lean_mass_interest' : 'core_founding_reservation',
       upsell: checkout.upsell,
       state: checkout.state,
       due_today: 0,
     })
+
+    const result = await submitReservation({
+      firstName: checkout.firstName,
+      lastName: checkout.lastName,
+      email: checkout.email,
+      phone: checkout.phone,
+      state: checkout.state,
+      resident: checkout.resident,
+      attest: checkout.attest,
+      upsell: checkout.upsell,
+      pathways: derivePathways(answers),
+    })
+
+    if (!result.ok) {
+      setSubmitState('error')
+      track('reservation_submit_failed', { error: result.error })
+      return
+    }
+
+    setSubmitState('idle')
+    setReservationId(result.id)
+    identifyIfReady()
+    track('quiz_completed', { pathways: derivePathways(answers) })
     track('founding_reservation_submitted', {
       state: checkout.state,
       lean_mass_interest: checkout.upsell,
       pathways: derivePathways(answers),
       due_today: 0,
+      reservation_id: result.id,
     })
+    pixelTrack('Lead')
     setCompleted(true)
     abandonedSent.current = true
     setHistory((h) => [...h, current])
     setCurrent('success')
-  }, [answers, checkout.state, checkout.upsell, current, identifyIfReady])
+  }, [answers, checkout, current, identifyIfReady, submitState])
 
   const reset = useCallback(() => {
     localStorage.removeItem(QUIZ_STORAGE_KEY)
@@ -260,6 +289,8 @@ export function useQuizEngine() {
     setStartedAt(Date.now())
     setCompleted(false)
     setIdentifiedEmail(undefined)
+    setSubmitState('idle')
+    setReservationId(null)
     lastViewed.current = null
     abandonedSent.current = false
     completedEvent.current = false
@@ -272,6 +303,8 @@ export function useQuizEngine() {
     answers,
     checkout,
     completed,
+    submitState,
+    reservationId,
     canGoBack: history.length > 0 && current !== 'success',
     pathways: derivePathways(answers),
     selectOption,

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Header } from '../components/layout/Header'
 import { QuizFlow } from '../components/quiz/QuizFlow'
 
@@ -11,7 +12,8 @@ export function QuizPage() {
           The founding reservation is a waitlist, not medical care. It does not include clinician
           review, prescribing, medication or pharmacy fulfillment. Quiz answers are used to build
           your summary and improve this experience. Peptis is operated by Information Edge
-          Insights LLC.
+          Insights LLC. See our <Link to="/privacy">Privacy Notice</Link> and{' '}
+          <Link to="/health-data">Consumer Health Data Notice</Link>.
         </p>
       </main>
     </div>

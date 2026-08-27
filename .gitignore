@@ -25,3 +25,7 @@ Logos/try1.png
 *.njsproj
 *.sln
 *.sw?
+data/
+.tmp.driveupload/
+.tmp.drivedownload/
+Icon?

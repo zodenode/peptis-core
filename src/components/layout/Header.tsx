@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { track } from '../../lib/analytics'
+import { setQuizSource, track } from '../../lib/analytics'
 
 type HeaderProps = {
   variant?: 'landing' | 'quiz'
@@ -23,6 +23,7 @@ export function Header({ variant = 'landing' }: HeaderProps) {
   }, [location.pathname])
 
   const quizClick = (place: string) => {
+    setQuizSource(place)
     track('quiz_cta_clicked', { location: place })
   }
 

@@ -3,10 +3,12 @@ import { createRoot } from 'react-dom/client'
 import { PostHogProvider } from 'posthog-js/react'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
+import { initMetaPixel } from './lib/pixel.ts'
 import { getPostHog, initPostHog, posthog } from './lib/posthog.ts'
 import './index.css'
 
 initPostHog()
+initMetaPixel()
 
 const root = createRoot(document.getElementById('root')!)
 const app = (

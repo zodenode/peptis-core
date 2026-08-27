@@ -1,6 +1,6 @@
 # Peptis Core Continuity — Founding Reservation
 
-Premium medical-wellness storefront for **Peptis Continuation & Optimization** (operated by Information Edge Insights LLC). Single-page landing plus an interactive qualification quiz. Vite + React + TypeScript.
+Premium medical-wellness storefront for **Peptis Continuation & Optimization** (operated by Information Edge Insights LLC). Landing page, interactive qualification quiz, evidence blog and a small reservation API. Vite + React + TypeScript + Express.
 
 ## Run locally
 
@@ -8,12 +8,31 @@ Premium medical-wellness storefront for **Peptis Continuation & Optimization** (
 npm install
 cp .env.example .env
 # add VITE_PUBLIC_POSTHOG_KEY (optional for local UI work)
-npm run dev
+npm run build          # the API server serves dist/
+npm start              # API + static on http://localhost:8787
+npm run dev            # or Vite dev server (proxies /api to :8787)
 ```
 
 - Landing: `/`
 - Quiz: `/quiz`
+- Blog: `/blog`
+- Privacy: `/privacy`, health data notice: `/health-data`, cancellation: `/cancel?token=…`
 - Brand kit (static): `/brand-kit/`
+
+## Reservation API
+
+`server.mjs` (Express) serves the built SPA and a durable reservation store:
+
+- `POST /api/reservations` validates and appends to `DATA_DIR/reservations.jsonl` with fsync, then sends a confirmation email with a cancellation link. The quiz shows success only after this write is confirmed.
+- `POST /api/reservations/cancel` appends a cancellation event (idempotent).
+- `GET /api/health` for monitoring.
+
+| Server variable | Required | Purpose |
+|---|---|---|
+| `DATA_DIR` | Yes in production | Point at a mounted Railway volume so reservations survive deploys |
+| `RESEND_API_KEY` | For email | Resend API key for confirmation emails |
+| `RESERVATION_EMAIL_FROM` | No | Defaults to `Peptis <reservations@peptis.com>` |
+| `PUBLIC_BASE_URL` | No | Cancellation link base, defaults to `https://www.peptis.com` |
 
 ## Production
 
@@ -46,7 +65,7 @@ Eight screening questions, branching educational stop-blocks and qualitative soc
 
 The legacy client-decoded restricted compound configuration remains isolated in `src/data/continuityConfig.ts`, but compound names are not shown in current patient-facing funnel copy.
 
-There is **no Meta Pixel** on the landing page or quiz.
+A Meta Pixel scaffold exists in `src/lib/pixel.ts` but stays inactive unless `VITE_META_PIXEL_ID` is set at build time. It fires `PageView` and a `Lead` event on confirmed reservation.
 
 ## PostHog
 
@@ -61,9 +80,11 @@ Copy `.env.example` → `.env`. Do not commit `.env`.
 
 ### Events
 
-Landing: `landing_viewed`, `hero_cta_clicked`, `section_viewed` `{ section }`, `trust_badge_viewed`, `quiz_cta_clicked` `{ location }`.
+Landing: `landing_viewed`, `hero_cta_clicked`, `evidence_cta_clicked`, `section_viewed` `{ section }`, `trust_badge_viewed`, `faq_opened` `{ question }`, `quiz_cta_clicked` `{ location }` (hero, nav, embed, closer, pricing_strip, sticky_mobile).
 
-Quiz: `quiz_started`, `quiz_step_viewed`, `quiz_option_selected`, `quiz_stop_block_viewed`, `quiz_stop_block_continued`, `quiz_explainer_viewed`, `quiz_social_proof_viewed`, `quiz_back_clicked`, `quiz_reached_checkout`, `quiz_completed`, `checkout_viewed`, `stripe_activation_block_viewed`, `upsell_toggled`, `lean_mass_interest_toggled`, `checkout_submit_clicked`, `founding_reservation_submitted`, `quiz_abandoned`.
+Quiz: `quiz_started` `{ source }`, `quiz_embed_started`, `quiz_step_viewed`, `quiz_option_selected`, `quiz_stop_block_viewed`, `quiz_stop_block_continued`, `quiz_explainer_viewed`, `quiz_social_proof_viewed`, `quiz_summary_viewed`, `quiz_back_clicked`, `quiz_reached_checkout`, `quiz_completed`, `checkout_viewed`, `stripe_activation_block_viewed`, `upsell_toggled`, `lean_mass_interest_toggled`, `checkout_submit_clicked`, `founding_reservation_submitted` `{ reservation_id }`, `reservation_submit_failed`, `reservation_cancelled`, `quiz_abandoned`.
+
+Blog: `blog_viewed`, `blog_article_viewed` `{ slug, category }`.
 
 Identify: `posthog.identify(email, { first_name, state, plan })` at reservation submit only. Raw quiz answers are not sent to analytics; only derived pathways are.
 
