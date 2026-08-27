@@ -1,6 +1,6 @@
 # Continuity image prompts
 
-Style bible applied to every prompt: photorealistic, premium medical-wellness, Lifeforce/Hims editorial; deep forest green, warm beige, charcoal, soft natural light; no logos, no readable drug brand names, no text in image, no UI chrome; diverse adults 35–55, healthy, calm, not stock-smile cheesy.
+Style bible applied to every prompt: photorealistic, premium medical-wellness, Lifeforce/Hims editorial; deep forest green, warm beige, charcoal, soft natural light; no logos, no readable drug brand names, no text in image, no UI chrome; healthy, calm, not stock-smile cheesy. Casting direction as of August 2026: people-forward images use adults in their mid 30s, generally white, matching the primary target demographic.
 
 Generated with Cursor `GenerateImage`, then compressed to JPEG (max 1600px, quality 72) for the storefront.
 The 12 `continuity-*` funnel images were generated at the tool's nearest supported portrait ratio (3:4), then center-cropped to the requested 4:5 output (768×960).
@@ -56,13 +56,14 @@ and crisp commercial lighting. The existing strength-session photograph remains 
 |---|---|---|
 | `hero-studio-adult.jpg` | 16:9 | Woman in oatmeal and charcoal on deep emerald with a coral spotlight. Retired from the hero. |
 | `hero-studio-strength.jpg` | 4:3 | Man holding a kettlebell on burnt orange with a forest floor. Retired from the hero. |
-| `hero-studio-duo.jpg` | 16:9 | Woman in oatmeal knit and man in charcoal knit holding a kettlebell, together on deep emerald with one coral circle spotlight, subjects right of center with negative space left for copy. Replaces the two overlaid hero images. |
-| `problem-fatigue-studio.jpg` | 3:4 | Seated woman with a cup on deep emerald with a coral spotlight. |
+| `hero-studio-duo.jpg` | 16:9 | White woman and man, mid 30s, in oatmeal and charcoal knits, the man holding a kettlebell, together on deep emerald with one coral circle spotlight, subjects right of center with negative space left for copy. Replaces the two overlaid hero images. |
+| `problem-fatigue-studio.jpg` | 3:4 | Seated white woman, mid 30s, with a cup on deep emerald with a coral spotlight. |
 | `problem-gi-food-motion.jpg` | 3:4 | Leafy greens, red berries and milk frozen in motion on coral red. |
-| `protocol-nutrition-studio.jpg` | 16:9 | Woman holding a plated protein-forward meal on emerald and coral. |
-| `how-intake-studio.jpg` | 4:3 | Man using an unbranded laptop on coral with forest geometry. |
-| `how-clinician-studio.jpg` | 4:3 | Professional reviewing a blank card on berry red with sage light. |
-| `testimonial-studio.jpg` | 3:4 | Woman in oatmeal and charcoal on berry red with a forest circle. |
-| `quiz-home-welcome-studio.jpg` | 3:4 | Approachable woman with a blank planning card on emerald and coral. |
+| `protocol-nutrition-studio.jpg` | 16:9 | White woman, mid 30s, holding a plated protein-forward meal on emerald and coral. |
+| `how-intake-studio.jpg` | 4:3 | White man, mid 30s, using an unbranded laptop on coral with forest geometry. |
+| `how-clinician-studio.jpg` | 4:3 | White professional woman, mid 30s, reviewing a blank card on berry red with sage light. |
+| `testimonial-studio.jpg` | 3:4 | White woman, mid 30s, in oatmeal and charcoal on berry red with a forest circle. |
+| `quiz-home-welcome-studio.jpg` | 3:4 | Approachable white woman, mid 30s, with a blank planning card on emerald and coral. |
+| `problem-muscle.jpg` (recast) | 3:4 | White man, mid 30s, in a home gym checking his forearm while holding a kettlebell, forest green wall and beige wood floor. |
 
 **Count: 47 images (12 continuity funnel images and 9 studio campaign images).**
