@@ -1,9 +1,8 @@
 const base = '/images/continuity'
 
 export const images = {
-  heroOutdoor: `${base}/hero-studio-adult.jpg`,
+  heroDuo: `${base}/hero-studio-duo.jpg`,
   heroVial: `${base}/hero-vial-protein.jpg`,
-  heroForestStrength: `${base}/hero-studio-strength.jpg`,
   problemMuscle: `${base}/problem-muscle.jpg`,
   problemFatigue: `${base}/problem-fatigue-studio.jpg`,
   problemGi: `${base}/problem-gi-food-motion.jpg`,

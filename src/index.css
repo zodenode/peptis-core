@@ -376,6 +376,13 @@ button {
 
 .hero-media img {
   filter: saturate(1.08) contrast(1.04) brightness(0.92);
+  object-position: 66% 30%;
+}
+
+@media (max-width: 959px) {
+  .hero-media img {
+    object-position: 74% 24%;
+  }
 }
 
 .hero-grain {
@@ -383,9 +390,9 @@ button {
   background: linear-gradient(
     115deg,
     rgba(18, 22, 14, 0.88) 0%,
-    rgba(26, 30, 18, 0.58) 42%,
-    rgba(48, 40, 22, 0.34) 70%,
-    rgba(20, 24, 14, 0.7) 100%
+    rgba(26, 30, 18, 0.52) 42%,
+    rgba(48, 40, 22, 0.18) 70%,
+    rgba(20, 24, 14, 0.38) 100%
   );
   opacity: 1;
 }
@@ -455,41 +462,6 @@ button {
   height: 0.4rem;
   border-radius: 50%;
   background: var(--bronze);
-}
-
-.hero-still {
-  position: relative;
-  margin: 0;
-  border-radius: 18px;
-  overflow: hidden;
-  isolation: isolate;
-  background: #1a2114;
-  border: 1px solid rgba(196, 168, 130, 0.22);
-  box-shadow: 0 22px 56px rgba(12, 16, 10, 0.48);
-}
-
-.hero-still::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent 62%, rgba(18, 22, 14, 0.18) 100%);
-}
-
-.hero-still img {
-  width: 100%;
-  aspect-ratio: 860 / 674;
-  object-fit: cover;
-  object-position: 50% 38%;
-  display: block;
-  background: #1a2114;
-}
-
-@media (max-width: 959px) {
-  .hero-still {
-    max-width: 28rem;
-  }
 }
 
 /* Problem */

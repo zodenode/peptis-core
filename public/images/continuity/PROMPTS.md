@@ -54,8 +54,9 @@ and crisp commercial lighting. The existing strength-session photograph remains 
 
 | File | Aspect | Subject and palette |
 |---|---|---|
-| `hero-studio-adult.jpg` | 16:9 | Woman in oatmeal and charcoal on deep emerald with a coral spotlight. |
-| `hero-studio-strength.jpg` | 4:3 | Man holding a kettlebell on burnt orange with a forest floor. |
+| `hero-studio-adult.jpg` | 16:9 | Woman in oatmeal and charcoal on deep emerald with a coral spotlight. Retired from the hero. |
+| `hero-studio-strength.jpg` | 4:3 | Man holding a kettlebell on burnt orange with a forest floor. Retired from the hero. |
+| `hero-studio-duo.jpg` | 16:9 | Woman in oatmeal knit and man in charcoal knit holding a kettlebell, together on deep emerald with one coral circle spotlight, subjects right of center with negative space left for copy. Replaces the two overlaid hero images. |
 | `problem-fatigue-studio.jpg` | 3:4 | Seated woman with a cup on deep emerald with a coral spotlight. |
 | `problem-gi-food-motion.jpg` | 3:4 | Leafy greens, red berries and milk frozen in motion on coral red. |
 | `protocol-nutrition-studio.jpg` | 16:9 | Woman holding a plated protein-forward meal on emerald and coral. |

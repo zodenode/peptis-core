@@ -45,8 +45,11 @@ export function LandingPage() {
       <Header />
       <main id="main">
         <section className="hero" ref={heroRef} aria-labelledby="hero-heading">
-          <div className="hero-media" aria-hidden="true">
-            <img src={images.heroOutdoor} alt="" />
+          <div className="hero-media">
+            <img
+              src={images.heroDuo}
+              alt="A woman and a man in knitwear standing together against a deep green studio wall with a warm coral circle of light, the man holding a kettlebell"
+            />
           </div>
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-inner">
@@ -72,12 +75,6 @@ export function LandingPage() {
                 ))}
               </ul>
             </div>
-            <figure className="hero-still">
-              <img
-                src={images.heroForestStrength}
-                alt="Adult holding a kettlebell against a warm orange studio background"
-              />
-            </figure>
           </div>
         </section>
 
