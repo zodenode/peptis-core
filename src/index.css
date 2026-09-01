@@ -1520,6 +1520,34 @@ blockquote {
   font-weight: 500;
 }
 
+.walkaway-list {
+  margin: 1.2rem 0 1.4rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.walkaway-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--beige-warm);
+  border-left: 3px solid var(--sage);
+  border-radius: 0 12px 12px 0;
+}
+
+.walkaway-list strong {
+  color: var(--forest-ink);
+  font-size: 0.95rem;
+}
+
+.walkaway-list span {
+  color: var(--body);
+  font-size: 0.9rem;
+}
+
 /* FAQ */
 .faq-list {
   display: grid;

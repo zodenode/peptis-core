@@ -190,21 +190,35 @@ export function LandingPage() {
                 alt="Adult reflecting against a vivid berry-red studio background"
               />
             </figure>
-            <blockquote>
-              <p className="eyebrow">Illustrative planning goal</p>
-              <h2 id="proof-heading">“I want to protect my strength, not only the number on the scale.”</h2>
-              <p className="quote">
-                This illustrative goal reflects a pattern the quiz helps people organize. It is not
-                a customer testimonial or a claim of treatment results.
+            <div>
+              <p className="eyebrow">What you walk away with</p>
+              <h2 id="proof-heading">A written summary of the priorities the scale cannot show</h2>
+              <p>
+                After eight questions you receive a personal record of strength, protein and
+                maintenance notes, plus a $0 place on the state launch list. It is a planning
+                document, not a diagnosis or a promise of treatment results.
               </p>
-              <footer className="planning-goal">
-                <strong>Example planning goal</strong>
-                <span>
-                  Over the next four weeks, complete two resistance sessions each week and record
-                  whether climbing stairs and carrying groceries feel easier, the same or harder.
-                </span>
-              </footer>
-            </blockquote>
+              <ul className="walkaway-list">
+                <li>
+                  <strong>Your priorities, named</strong>
+                  <span>Strength, energy, digestive comfort and maintenance, based on your answers.</span>
+                </li>
+                <li>
+                  <strong>A $0 reservation</strong>
+                  <span>No payment details. Cancel any time from the confirmation email.</span>
+                </li>
+              </ul>
+              <Link
+                className="btn btn-primary"
+                to="/quiz"
+                onClick={() => {
+                  setQuizSource('walkaway')
+                  track('quiz_cta_clicked', { location: 'walkaway' })
+                }}
+              >
+                Start the free check
+              </Link>
+            </div>
           </div>
         </section>
 
