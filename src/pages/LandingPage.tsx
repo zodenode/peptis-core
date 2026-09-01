@@ -16,6 +16,13 @@ import { images } from '../data/images'
 import { useSectionView } from '../hooks/useSectionView'
 import { setQuizSource, track } from '../lib/analytics'
 
+const heroPrompts = [
+  { id: 'strength', label: 'I want to keep my strength' },
+  { id: 'energy', label: 'My energy is lower than before' },
+  { id: 'digestive', label: 'My stomach is uncomfortable' },
+  { id: 'maintenance', label: 'I want to keep the weight off' },
+] as const
+
 export function LandingPage() {
   const heroRef = useSectionView<HTMLElement>('hero')
   const problemRef = useSectionView<HTMLElement>('problem')
@@ -58,23 +65,44 @@ export function LandingPage() {
           <div className="hero-inner">
             <div className="hero-copy">
               <p className="eyebrow eyebrow-light">For adults on or after GLP-1 weight loss</p>
-              <h1 id="hero-heading">You reached a healthier weight. Now protect the strength that carries it.</h1>
+              <h1 id="hero-heading">You can see the weight loss. Can you see what happened to your strength?</h1>
               <p className="hero-lead">
-                Answer a short continuity check, get a personalized summary of your strength,
-                protein and maintenance priorities, and reserve $0 founding access to
-                state-by-state launch updates. Not medical care today.
+                Eight quick questions show you what deserves attention now. You walk away with a
+                written summary of your strength, protein and maintenance priorities, free, in
+                about three minutes.
               </p>
-              <div className="hero-actions">
-                <Link className="btn btn-primary" to="/quiz" onClick={heroCta}>
-                  Start the free check
-                </Link>
-                <a
-                  className="btn btn-ghost"
-                  href="#evidence"
-                  onClick={() => track('evidence_cta_clicked', { location: 'hero' })}
-                >
-                  See the evidence
-                </a>
+              <div className="hero-quiz-start">
+                <p className="hero-quiz-q">Which of these sounds most like you?</p>
+                <div className="hero-quiz-options">
+                  {heroPrompts.map((prompt) => (
+                    <Link
+                      key={prompt.id}
+                      className="hero-quiz-chip"
+                      to="/quiz"
+                      onClick={() => {
+                        setQuizSource('hero_prompt')
+                        track('hero_prompt_clicked', { prompt: prompt.id })
+                        track('quiz_cta_clicked', { location: 'hero_prompt' })
+                      }}
+                    >
+                      {prompt.label}
+                    </Link>
+                  ))}
+                </div>
+                <div className="hero-actions">
+                  <Link className="btn btn-primary" to="/quiz" onClick={heroCta}>
+                    Start the free check
+                  </Link>
+                </div>
+                <p className="hero-micro">
+                  Free. About 3 minutes. No payment details.{' '}
+                  <a
+                    href="#evidence"
+                    onClick={() => track('evidence_cta_clicked', { location: 'hero' })}
+                  >
+                    See the evidence
+                  </a>
+                </p>
               </div>
               <ul className="trust-row" ref={trustRef}>
                 {trustBadges.map((badge) => (
