@@ -13,7 +13,7 @@ import {
 } from '../data/quiz'
 import { getQuizSource, identifyPerson, track } from '../lib/analytics'
 import { pixelTrack } from '../lib/pixel'
-import { submitReservation } from '../lib/reservations'
+import { postQuizProgress, submitReservation } from '../lib/reservations'
 import { isValidEmail } from '../lib/validate'
 
 export const QUIZ_STORAGE_KEY = 'peptis.continuity.quiz'
@@ -30,6 +30,7 @@ export type CheckoutForm = {
 }
 
 export type QuizSnapshot = {
+  quizId?: string
   current: StepId
   history: StepId[]
   answers: Answers
@@ -38,6 +39,14 @@ export type QuizSnapshot = {
   startedAt: number
   completed: boolean
   identifiedEmail?: string
+}
+
+function newQuizId() {
+  try {
+    return crypto.randomUUID()
+  } catch {
+    return `${Date.now().toString(16)}-0000-4000-8000-000000000000`
+  }
 }
 
 const emptyCheckout: CheckoutForm = {
@@ -76,6 +85,7 @@ export function useQuizEngine() {
   const lastViewed = useRef<StepId | null>(null)
   const completedEvent = useRef(false)
 
+  const [quizId, setQuizId] = useState<string>(() => newQuizId())
   const [current, setCurrent] = useState<StepId>('q1')
   const [history, setHistory] = useState<StepId[]>([])
   const [answers, setAnswers] = useState<Answers>({})
@@ -91,6 +101,7 @@ export function useQuizEngine() {
   useEffect(() => {
     const saved = loadSnapshot()
     if (saved && !saved.completed && isStepId(saved.current)) {
+      if (saved.quizId) setQuizId(saved.quizId)
       setCurrent(saved.current)
       setHistory(saved.history)
       setAnswers(saved.answers)
@@ -107,6 +118,7 @@ export function useQuizEngine() {
   useEffect(() => {
     if (!hydrated) return
     persist({
+      quizId,
       current,
       history,
       answers,
@@ -116,7 +128,7 @@ export function useQuizEngine() {
       completed,
       identifiedEmail,
     })
-  }, [answers, checkout, completed, current, history, hydrated, identifiedEmail, shown, startedAt])
+  }, [answers, checkout, completed, current, history, hydrated, identifiedEmail, quizId, shown, startedAt])
 
   useEffect(() => {
     if (!hydrated) return
@@ -144,6 +156,21 @@ export function useQuizEngine() {
       }
     }
   }, [answers, current, hydrated])
+
+  // Durable per-step capture so drop-offs can be retargeted, not only completions.
+  useEffect(() => {
+    if (!hydrated || current === 'success') return
+    postQuizProgress({
+      quizId,
+      step: current,
+      email: isValidEmail(checkout.email) ? checkout.email.trim() : undefined,
+      firstName: checkout.firstName || undefined,
+      pathways: derivePathways(answers),
+      answers,
+    })
+    // Only re-post when the step changes; answers ride along with the latest step.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, hydrated, quizId])
 
   useEffect(() => {
     if (!hydrated) return
@@ -233,6 +260,31 @@ export function useQuizEngine() {
     [checkout.email, checkout.firstName, checkout.state, checkout.upsell, identifiedEmail],
   )
 
+  const captureEmail = useCallback(
+    (email: string, skipped: boolean) => {
+      if (skipped) {
+        track('quiz_email_skipped', { step_id: current })
+        return
+      }
+      const clean = email.trim()
+      if (!isValidEmail(clean)) return
+      setCheckout((c) => ({ ...c, email: clean }))
+      track('quiz_email_captured', { step_id: current })
+      pixelTrack('Lead')
+      identifyPerson(clean, { quiz_source: getQuizSource() })
+      setIdentifiedEmail(clean)
+      postQuizProgress({
+        quizId,
+        step: current,
+        email: clean,
+        pathways: derivePathways(answers),
+        answers,
+        sendGuide: true,
+      })
+    },
+    [answers, current, quizId],
+  )
+
   const submitCheckout = useCallback(async () => {
     if (submitState === 'submitting') return
     setSubmitState('submitting')
@@ -272,7 +324,7 @@ export function useQuizEngine() {
       due_today: 0,
       reservation_id: result.id,
     })
-    pixelTrack('Lead')
+    pixelTrack('CompleteRegistration')
     setCompleted(true)
     abandonedSent.current = true
     setHistory((h) => [...h, current])
@@ -281,6 +333,7 @@ export function useQuizEngine() {
 
   const reset = useCallback(() => {
     localStorage.removeItem(QUIZ_STORAGE_KEY)
+    setQuizId(newQuizId())
     setCurrent('q1')
     setHistory([])
     setAnswers({})
@@ -312,6 +365,7 @@ export function useQuizEngine() {
     goBack,
     patchCheckout,
     identifyIfReady,
+    captureEmail,
     submitCheckout,
     reset,
   }

@@ -9,6 +9,7 @@ import {
 import { useContinuityTerms } from '../../hooks/useContinuityTerms'
 import { useQuizEngine } from '../../hooks/useQuizEngine'
 import { Checkout } from './Checkout'
+import { EmailGate } from './EmailGate'
 import { ExplainerPage } from './ExplainerPage'
 import { QuizQuestion } from './QuizQuestion'
 import { Success } from './Success'
@@ -66,6 +67,16 @@ export function QuizFlow({ embedded = false }: Props) {
             key={explainer.stepId}
             content={explainer}
             terms={terms}
+            onContinue={quiz.goNext}
+            onBack={quiz.goBack}
+            canGoBack={quiz.canGoBack}
+          />
+        ) : null}
+
+        {quiz.current === 'email_gate' ? (
+          <EmailGate
+            initialEmail={quiz.checkout.email}
+            onCapture={quiz.captureEmail}
             onContinue={quiz.goNext}
             onBack={quiz.goBack}
             canGoBack={quiz.canGoBack}

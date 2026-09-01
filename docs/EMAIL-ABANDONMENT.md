@@ -2,7 +2,7 @@
 
 Do not wire a live ESP in this repo. Use these flows in Klaviyo, Customer.io, or similar. First name comes from checkout identify traits; if missing, drop the greeting token.
 
-Recommended capture: persist quiz state in `localStorage` (`peptis.continuity.quiz`) and identify the person when a reservation is submitted (`posthog.identify` fires from `submitCheckout`). Most drop-offs before checkout have no email; keep the local snapshot for resume and skip the send.
+Recommended capture: the quiz asks for an email at step 3 (email gate) in exchange for the personalized summary and the two day strength starter plan. When entered, `posthog.identify` fires immediately and `quiz_email_captured` is tracked, so most drop-offs after step 3 are addressable. Every step is also saved server-side to `DATA_DIR/quiz-progress.jsonl` (quizId, step, answers, pathways, email once known) for retargeting exports. Quiz state additionally persists in `localStorage` (`peptis.continuity.quiz`) for same-device resume.
 
 All copy below must follow `.cursor/skills/peptis-evidence-copy/SKILL.md`. Never imply live medical care, prescriptions, medication side-effect treatment, guaranteed muscle preservation, or a "40% muscle" figure.
 
@@ -20,7 +20,7 @@ All copy below must follow `.cursor/skills/peptis-evidence-copy/SKILL.md`. Never
 | `quiz_reached_checkout` | `pathways` | Enrich profile; do not send drop-off mail |
 | `quiz_completed` | `pathways` | Enrich profile; reservation submitted |
 
-Cancel any flow if `checkout_submit_clicked` or `checkout_viewed` fires before send. Prefer sending only if an email is known (identify happens at reservation submit). If they abandon before email, keep the local snapshot for resume and skip the send.
+Cancel any flow if `checkout_submit_clicked` or `checkout_viewed` fires before send. Prefer sending only if an email is known (identify happens at the email gate, or at reservation submit if the gate was skipped). If they abandon before providing an email, keep the local snapshot for resume and skip the send.
 
 Suggested wait: **15 minutes** after the stop-block view without `checkout_viewed`.
 

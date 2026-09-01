@@ -97,12 +97,20 @@ export function LandingPage() {
                 The quiz helps you gather that information without trying to diagnose the cause.
               </p>
             </div>
-            <div className="problem-grid">
-              {problemItems.map((item) => (
-                <article className="problem-card" key={item.id}>
+            <div className="problem-mosaic">
+              {problemItems.map((item, index) => (
+                <article
+                  className={`mosaic-card${index === 0 ? ' is-feature' : ''}`}
+                  key={item.id}
+                >
                   <img src={item.image} alt={item.alt} />
-                  <h3>{item.title}</h3>
-                  <p>{item.body}</p>
+                  <div className="mosaic-copy">
+                    <span className="mosaic-index" aria-hidden="true">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <h3>{item.title}</h3>
+                    <p>{item.body}</p>
+                  </div>
                 </article>
               ))}
             </div>
@@ -163,16 +171,20 @@ export function LandingPage() {
               <p className="eyebrow">How founding access works</p>
               <h2 id="how-heading">Reserve now and decide when the facts are clear</h2>
             </div>
-            <div className="how-grid">
+            <ol className="how-timeline">
               {howSteps.map((step) => (
-                <article className="how-card" key={step.n}>
+                <li className="how-step" key={step.n}>
+                  <span className="how-node" aria-hidden="true">
+                    {step.n}
+                  </span>
+                  <div className="how-step-copy">
+                    <h3>{step.title}</h3>
+                    <p>{step.body}</p>
+                  </div>
                   <img src={step.image} alt={step.alt} />
-                  <span className="step-n">{step.n}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.body}</p>
-                </article>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
@@ -184,7 +196,10 @@ export function LandingPage() {
 
         <section className="section" id="proof" ref={proofRef} aria-labelledby="proof-heading">
           <div className="section-inner proof-layout">
-            <figure>
+            <figure className="proof-figure">
+              <span className="proof-sticker" aria-hidden="true">
+                Free summary
+              </span>
               <img
                 src={images.testimonial}
                 alt="Adult reflecting against a vivid berry-red studio background"

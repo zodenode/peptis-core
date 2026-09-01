@@ -8,7 +8,7 @@ export function track(event: string, properties?: AnalyticsProps) {
 
 export function identifyPerson(
   email: string,
-  traits: { first_name?: string; state?: string; plan?: string },
+  traits: { first_name?: string; state?: string; plan?: string; quiz_source?: string },
 ) {
   getPostHog()?.identify(email, traits)
 }

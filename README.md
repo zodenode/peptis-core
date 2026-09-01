@@ -25,6 +25,7 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 
 - `POST /api/reservations` validates and appends to `DATA_DIR/reservations.jsonl` with fsync, then sends a confirmation email with a cancellation link. The quiz shows success only after this write is confirmed.
 - `POST /api/reservations/cancel` appends a cancellation event (idempotent).
+- `POST /api/quiz-progress` appends a per-step snapshot to `DATA_DIR/quiz-progress.jsonl` (quizId, step, answers, pathways, email once captured). This is the drop-off retargeting source. When called with `sendGuide: true` at the email gate, it sends the two day strength starter plan email once per address.
 - `GET /api/health` for monitoring.
 
 | Server variable | Required | Purpose |
@@ -86,7 +87,9 @@ Quiz: `quiz_started` `{ source }`, `quiz_embed_started`, `quiz_step_viewed`, `qu
 
 Blog: `blog_viewed`, `blog_article_viewed` `{ slug, category }`.
 
-Identify: `posthog.identify(email, { first_name, state, plan })` at reservation submit only. Raw quiz answers are not sent to analytics; only derived pathways are.
+Email gate (step 3 of the quiz): `quiz_email_captured` or `quiz_email_skipped`. A valid email triggers `posthog.identify(email, { quiz_source })` and a Meta Pixel `Lead`; reservation submit fires `CompleteRegistration`.
+
+Identify: at the quiz email gate when an email is entered, otherwise at reservation submit via `posthog.identify(email, { first_name, state, plan })`. Raw quiz answers are not sent to analytics; only derived pathways are. Full answers are stored server-side in `quiz-progress.jsonl`, covered by the Privacy and Consumer Health Data notices.
 
 Email abandonment copy and event → flow mapping: [`docs/EMAIL-ABANDONMENT.md`](./docs/EMAIL-ABANDONMENT.md).
 

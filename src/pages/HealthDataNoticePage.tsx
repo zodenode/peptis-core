@@ -39,8 +39,10 @@ export function HealthDataNoticePage() {
               <li>Your interest in optional future wellness products.</li>
             </ul>
             <p>
-              We collect this data directly from you when you choose to answer the quiz. We do not
-              collect health data from third parties, and we do not use geofencing.
+              We collect this data directly from you when you choose to answer the quiz, and we
+              save your answers to our servers at each step so your summary can be completed if
+              you step away. We do not collect health data from third parties, and we do not use
+              geofencing.
             </p>
 
             <h2>Why we collect it</h2>

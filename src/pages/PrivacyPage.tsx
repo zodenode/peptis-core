@@ -35,7 +35,9 @@ export function PrivacyPage() {
               <li>
                 <strong>Quiz responses:</strong> your answers about strength, energy, digestive
                 comfort and maintenance priorities, and the summary categories derived from them.
-                Quiz progress is also stored in your browser so you can resume on the same device.
+                Quiz progress is stored in your browser so you can resume on the same device, and
+                each step is also saved to our servers with a random quiz identifier, together
+                with your email address if you choose to provide it during the quiz.
               </li>
               <li>
                 <strong>Usage information:</strong> pages viewed, buttons clicked, quiz steps
@@ -48,6 +50,10 @@ export function PrivacyPage() {
             <ul>
               <li>To create and manage your founding reservation and send launch updates.</li>
               <li>To build the personalized summary shown at the end of the quiz.</li>
+              <li>
+                To send the resources you request during the quiz, such as the strength starter
+                plan, and to follow up if you start the quiz but do not finish.
+              </li>
               <li>To understand how the website is used and improve the experience.</li>
               <li>To send a reservation confirmation email with a cancellation link.</li>
             </ul>

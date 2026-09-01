@@ -32,6 +32,30 @@ export async function submitReservation(payload: ReservationPayload): Promise<Re
   }
 }
 
+export type ProgressPayload = {
+  quizId: string
+  step: string
+  email?: string
+  firstName?: string
+  pathways: string[]
+  answers: Record<string, unknown>
+  sendGuide?: boolean
+}
+
+/* Fire-and-forget: progress capture must never block or break the quiz. */
+export function postQuizProgress(payload: ProgressPayload) {
+  try {
+    void fetch('/api/quiz-progress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    }).catch(() => {})
+  } catch {
+    // ignore
+  }
+}
+
 export async function cancelReservation(token: string): Promise<{ ok: boolean; error?: string }> {
   try {
     const res = await fetch('/api/reservations/cancel', {

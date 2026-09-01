@@ -6,6 +6,7 @@ export type StepType =
   | 'social_proof'
   | 'stop_block'
   | 'summary'
+  | 'email_gate'
   | 'checkout'
   | 'success'
 
@@ -27,7 +28,14 @@ export type ExplainerId =
 
 export type StopStepId = 'stop_a' | 'stop_b' | 'stop_c'
 
-export type StepId = QuestionId | ExplainerId | StopStepId | 'summary_mid' | 'checkout' | 'success'
+export type StepId =
+  | QuestionId
+  | ExplainerId
+  | StopStepId
+  | 'email_gate'
+  | 'summary_mid'
+  | 'checkout'
+  | 'success'
 
 export type StopBlockId = 'A' | 'B' | 'C'
 
@@ -414,30 +422,31 @@ export function stepMeta(id: StepId): { type: StepType; step_id: string; step_in
   const map: Record<StepId, { type: StepType; step_index: number; block?: StopBlockId }> = {
     q1: { type: 'question', step_index: 0 },
     explain_q1: { type: 'explainer', step_index: 1 },
-    q2: { type: 'question', step_index: 2 },
-    explain_q2: { type: 'explainer', step_index: 3 },
-    q3: { type: 'question', step_index: 4 },
-    explain_q3: { type: 'explainer', step_index: 5 },
-    stop_a: { type: 'stop_block', step_index: 5, block: 'A' },
-    proof_muscle: { type: 'social_proof', step_index: 6 },
-    q4: { type: 'question', step_index: 6 },
-    explain_q4: { type: 'explainer', step_index: 7 },
-    stop_b: { type: 'stop_block', step_index: 7, block: 'B' },
-    proof_energy: { type: 'social_proof', step_index: 8 },
-    q5: { type: 'question', step_index: 8 },
-    explain_q5: { type: 'explainer', step_index: 9 },
-    stop_c: { type: 'stop_block', step_index: 9, block: 'C' },
-    proof_gi: { type: 'social_proof', step_index: 10 },
-    summary_mid: { type: 'summary', step_index: 10 },
-    q6: { type: 'question', step_index: 11 },
-    explain_q6: { type: 'explainer', step_index: 12 },
-    q7: { type: 'question', step_index: 13 },
-    explain_q7: { type: 'explainer', step_index: 14 },
-    q8: { type: 'question', step_index: 15 },
-    explain_q8: { type: 'explainer', step_index: 16 },
-    reassure: { type: 'social_proof', step_index: 17 },
-    checkout: { type: 'checkout', step_index: 18 },
-    success: { type: 'success', step_index: 19 },
+    email_gate: { type: 'email_gate', step_index: 2 },
+    q2: { type: 'question', step_index: 3 },
+    explain_q2: { type: 'explainer', step_index: 4 },
+    q3: { type: 'question', step_index: 5 },
+    explain_q3: { type: 'explainer', step_index: 6 },
+    stop_a: { type: 'stop_block', step_index: 6, block: 'A' },
+    proof_muscle: { type: 'social_proof', step_index: 7 },
+    q4: { type: 'question', step_index: 7 },
+    explain_q4: { type: 'explainer', step_index: 8 },
+    stop_b: { type: 'stop_block', step_index: 8, block: 'B' },
+    proof_energy: { type: 'social_proof', step_index: 9 },
+    q5: { type: 'question', step_index: 9 },
+    explain_q5: { type: 'explainer', step_index: 10 },
+    stop_c: { type: 'stop_block', step_index: 10, block: 'C' },
+    proof_gi: { type: 'social_proof', step_index: 11 },
+    summary_mid: { type: 'summary', step_index: 11 },
+    q6: { type: 'question', step_index: 12 },
+    explain_q6: { type: 'explainer', step_index: 13 },
+    q7: { type: 'question', step_index: 14 },
+    explain_q7: { type: 'explainer', step_index: 15 },
+    q8: { type: 'question', step_index: 16 },
+    explain_q8: { type: 'explainer', step_index: 17 },
+    reassure: { type: 'social_proof', step_index: 18 },
+    checkout: { type: 'checkout', step_index: 19 },
+    success: { type: 'success', step_index: 20 },
   }
   return { ...map[id], step_id: id }
 }
@@ -528,6 +537,8 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
     case 'q1':
       return 'explain_q1'
     case 'explain_q1':
+      return 'email_gate'
+    case 'email_gate':
       return 'q2'
     case 'q2':
       return nextAfterQ2(answers, shownSet)
@@ -581,7 +592,7 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
   }
 }
 
-const MAX_STEP_INDEX = 19
+const MAX_STEP_INDEX = 20
 
 export function progressPercent(id: StepId) {
   if (id === 'success') return 100
