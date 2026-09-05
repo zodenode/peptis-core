@@ -30,3 +30,22 @@ export function getQuizSource(): string {
     return 'direct'
   }
 }
+
+const QUIZ_PROMPT_KEY = 'peptis.quiz.prompt'
+
+/* Which hero prompt chip (strength, energy, digestive, maintenance) started the quiz. */
+export function setQuizPrompt(prompt: string) {
+  try {
+    sessionStorage.setItem(QUIZ_PROMPT_KEY, prompt)
+  } catch {
+    // private mode
+  }
+}
+
+export function getQuizPrompt(): string | undefined {
+  try {
+    return sessionStorage.getItem(QUIZ_PROMPT_KEY) ?? undefined
+  } catch {
+    return undefined
+  }
+}

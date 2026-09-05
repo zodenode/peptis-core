@@ -11,7 +11,7 @@ import {
   type StepId,
   type StopBlockId,
 } from '../data/quiz'
-import { getQuizSource, identifyPerson, track } from '../lib/analytics'
+import { getQuizPrompt, getQuizSource, identifyPerson, track } from '../lib/analytics'
 import { pixelTrack } from '../lib/pixel'
 import { postQuizProgress, submitReservation } from '../lib/reservations'
 import { isValidEmail } from '../lib/validate'
@@ -29,8 +29,17 @@ export type CheckoutForm = {
   upsell: boolean
 }
 
+/* Hero prompt chip → matching q2 priority option. */
+const PROMPT_TO_Q2: Record<string, string> = {
+  strength: 'a',
+  energy: 'b',
+  digestive: 'c',
+  maintenance: 'd',
+}
+
 export type QuizSnapshot = {
   quizId?: string
+  entryPrompt?: string
   current: StepId
   history: StepId[]
   answers: Answers
@@ -86,6 +95,7 @@ export function useQuizEngine() {
   const completedEvent = useRef(false)
 
   const [quizId, setQuizId] = useState<string>(() => newQuizId())
+  const [entryPrompt, setEntryPrompt] = useState<string | undefined>()
   const [current, setCurrent] = useState<StepId>('q1')
   const [history, setHistory] = useState<StepId[]>([])
   const [answers, setAnswers] = useState<Answers>({})
@@ -102,6 +112,7 @@ export function useQuizEngine() {
     const saved = loadSnapshot()
     if (saved && !saved.completed && isStepId(saved.current)) {
       if (saved.quizId) setQuizId(saved.quizId)
+      setEntryPrompt(saved.entryPrompt ?? getQuizPrompt())
       setCurrent(saved.current)
       setHistory(saved.history)
       setAnswers(saved.answers)
@@ -110,6 +121,14 @@ export function useQuizEngine() {
       setStartedAt(saved.startedAt)
       setCompleted(saved.completed)
       setIdentifiedEmail(saved.identifiedEmail)
+    } else {
+      // Fresh quiz: carry the hero prompt chip in as a pre-selected q2 priority.
+      const prompt = getQuizPrompt()
+      if (prompt) {
+        setEntryPrompt(prompt)
+        const option = PROMPT_TO_Q2[prompt]
+        if (option) setAnswers((a) => ({ ...a, q2: [option] }))
+      }
     }
     restored.current = true
     setHydrated(true)
@@ -119,6 +138,7 @@ export function useQuizEngine() {
     if (!hydrated) return
     persist({
       quizId,
+      entryPrompt,
       current,
       history,
       answers,
@@ -128,13 +148,13 @@ export function useQuizEngine() {
       completed,
       identifiedEmail,
     })
-  }, [answers, checkout, completed, current, history, hydrated, identifiedEmail, quizId, shown, startedAt])
+  }, [answers, checkout, completed, current, entryPrompt, history, hydrated, identifiedEmail, quizId, shown, startedAt])
 
   useEffect(() => {
     if (!hydrated) return
     if (!startedEvent.current) {
       startedEvent.current = true
-      track('quiz_started', { source: getQuizSource() })
+      track('quiz_started', { source: getQuizSource(), entry_prompt: getQuizPrompt() ?? 'none' })
     }
     if (lastViewed.current === current) return
     lastViewed.current = current
@@ -167,6 +187,7 @@ export function useQuizEngine() {
       firstName: checkout.firstName || undefined,
       pathways: derivePathways(answers),
       answers,
+      entryPrompt,
     })
     // Only re-post when the step changes; answers ride along with the latest step.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -279,10 +300,11 @@ export function useQuizEngine() {
         email: clean,
         pathways: derivePathways(answers),
         answers,
+        entryPrompt,
         sendGuide: true,
       })
     },
-    [answers, current, quizId],
+    [answers, current, entryPrompt, quizId],
   )
 
   const submitCheckout = useCallback(async () => {

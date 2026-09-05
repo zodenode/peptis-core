@@ -39,6 +39,7 @@ export type ProgressPayload = {
   firstName?: string
   pathways: string[]
   answers: Record<string, unknown>
+  entryPrompt?: string
   sendGuide?: boolean
 }
 

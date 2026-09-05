@@ -187,6 +187,7 @@ app.post('/api/quiz-progress', async (req, res) => {
   const step = String(body.step ?? '').slice(0, 40)
   const email = String(body.email ?? '').trim().toLowerCase()
   const firstName = String(body.firstName ?? '').trim().slice(0, 80)
+  const entryPrompt = String(body.entryPrompt ?? '').slice(0, 30)
   const sendGuide = body.sendGuide === true
   const pathways = Array.isArray(body.pathways)
     ? body.pathways.filter((p) => typeof p === 'string').slice(0, 8)
@@ -211,6 +212,7 @@ app.post('/api/quiz-progress', async (req, res) => {
         step,
         email: email || undefined,
         firstName: firstName || undefined,
+        entryPrompt: entryPrompt || undefined,
         pathways,
         answers,
         at: new Date().toISOString(),

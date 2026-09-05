@@ -14,7 +14,7 @@ import { QuizEmbed } from '../components/quiz/QuizEmbed'
 import { faqs, howSteps, problemItems, protocolRows, trustBadges } from '../data/landing'
 import { images } from '../data/images'
 import { useSectionView } from '../hooks/useSectionView'
-import { setQuizSource, track } from '../lib/analytics'
+import { setQuizPrompt, setQuizSource, track } from '../lib/analytics'
 
 const heroPrompts = [
   { id: 'strength', label: 'I want to keep my strength' },
@@ -81,6 +81,7 @@ export function LandingPage() {
                       to="/quiz"
                       onClick={() => {
                         setQuizSource('hero_prompt')
+                        setQuizPrompt(prompt.id)
                         track('hero_prompt_clicked', { prompt: prompt.id })
                         track('quiz_cta_clicked', { location: 'hero_prompt' })
                       }}
