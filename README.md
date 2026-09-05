@@ -93,6 +93,12 @@ Identify: at the quiz email gate when an email is entered, otherwise at reservat
 
 Email abandonment copy and event → flow mapping: [`docs/EMAIL-ABANDONMENT.md`](./docs/EMAIL-ABANDONMENT.md).
 
+## Training plan generator
+
+`/plan` builds an archetype-based starter program (experience × equipment × days × joint sensitivities) from a one-minute intake: full-body sessions across six movement patterns with GLP-1-aware rules (low appetite days, progression, stop rules). Exports: print-friendly PDF, an 8-week `.ics` calendar, and Hevy-shaped routine JSON. Events: `plan_page_viewed`, `plan_generated { archetype }`, `plan_exported { type }`; generation is also appended to the quiz progress record when a quiz exists.
+
+Exercise illustrations are self-hosted in `public/images/exercises` (regenerate with `node scripts/copy-exercise-assets.mjs`), sourced from `@bryllim/workout-guide` (Everkinetic-derived, CC BY-SA 4.0). Attribution is rendered on the plan page and must remain.
+
 ## Images
 
 37 generated editorial stills live in [`public/images/continuity/`](./public/images/continuity/) (including 12 new 3:4 funnel images). Prompts: [`public/images/continuity/PROMPTS.md`](./public/images/continuity/PROMPTS.md).

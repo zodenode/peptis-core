@@ -14,6 +14,7 @@
     "start": "node server.mjs"
   },
   "dependencies": {
+    "@bryllim/workout-guide": "^1.0.0",
     "express": "^5.2.1",
     "posthog-js": "^1.418.16",
     "react": "^19.2.7",

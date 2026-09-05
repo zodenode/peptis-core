@@ -6,12 +6,14 @@ import { HealthDataNoticePage } from './pages/HealthDataNoticePage'
 import { LandingPage } from './pages/LandingPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { QuizPage } from './pages/QuizPage'
+import { TrainingPlanPage } from './pages/TrainingPlanPage'
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/quiz" element={<QuizPage />} />
+      <Route path="/plan" element={<TrainingPlanPage />} />
       <Route path="/blog" element={<BlogIndexPage />} />
       <Route path="/blog/:slug" element={<BlogArticlePage />} />
       <Route path="/privacy" element={<PrivacyPage />} />

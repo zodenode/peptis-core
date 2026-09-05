@@ -70,6 +70,16 @@ export function Success({ form, pathways, reservationId, onReset }: Props) {
           fulfillment has started. If services become available and you are eligible, you will
           choose whether to activate and enroll.
         </p>
+        <div className="success-next">
+          <h2>Start this week</h2>
+          <p>
+            Build your personalized starter program in one minute. It shows every movement with
+            illustrations and exports to PDF, your calendar or the Hevy app.
+          </p>
+          <Link className="btn btn-primary" to="/plan">
+            Build my strength program
+          </Link>
+        </div>
         <div className="quiz-actions">
           <Link className="btn-text" to="/">
             Return home
