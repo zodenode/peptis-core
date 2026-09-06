@@ -3676,8 +3676,15 @@ input:disabled {
 
 @media (min-width: 860px) {
   .plan-guidance {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.plan-weight-note {
+  margin: 0.35rem 0 0;
+  color: var(--forest);
+  font-size: 0.84rem;
+  font-weight: 600;
 }
 
 .plan-guidance h2 {

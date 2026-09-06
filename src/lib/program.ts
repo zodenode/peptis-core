@@ -30,6 +30,7 @@ export type ProgramSlot = {
   sets: number
   reps: string
   note?: string
+  weightNote?: string
 }
 
 export type ProgramDay = {
@@ -40,11 +41,29 @@ export type ProgramDay = {
 export type Program = {
   archetype: string
   days: ProgramDay[]
+  weightRules: string[]
   weeklyNotes: string[]
   progression: string[]
   appetiteRules: string[]
   stopRules: string[]
 }
+
+/* Movements where the member has to choose an external load. */
+const WEIGHTED_SLUGS = new Set([
+  'goblet-squat',
+  'leg-press',
+  'romanian-deadlift',
+  'dumbbell-bench-press',
+  'machine-chest-press',
+  'lat-pulldown',
+  'seated-row',
+  'one-arm-dumbbell-row',
+  'banded-row',
+  'farmer-carry',
+])
+
+const WEIGHT_NOTE =
+  'Starting weight: one you are confident you could lift about 15 times with clean form.'
 
 const EX: Record<string, Exercise> = {
   gobletSquat: {
@@ -263,6 +282,7 @@ export function generateProgram(intake: PlanIntake): Program {
           pattern === 'brace' && exercise.slug === 'farmer-carry'
             ? 'Walk 20 to 30 steps per set instead of counting repetitions.'
             : undefined,
+        weightNote: WEIGHTED_SLUGS.has(exercise.slug) ? WEIGHT_NOTE : undefined,
       }
     }),
   }))
@@ -272,6 +292,12 @@ export function generateProgram(intake: PlanIntake): Program {
   return {
     archetype,
     days,
+    weightRules: [
+      'Treat your first session as a rehearsal. For each weighted movement, pick a weight you are confident you could lift about 15 times with clean form, then do your working sets with it.',
+      'End every set feeling you had 2 or 3 clean repetitions left. Grinding to failure is not required for progress.',
+      'Felt easy? Add the smallest available increment next set or next session. Form broke down? Go down one step and rebuild.',
+      'Machines: start with the lightest setting that lets you feel the movement. Bands: pick a thickness that makes the last repetitions slow but smooth. Write your weights down or log them in your app; after two sessions your own history is the guide.',
+    ],
     weeklyNotes: [
       `Train ${intake.days} days per week with at least one rest day between sessions.`,
       'Leave 2 to 3 repetitions in reserve on every set while technique is settling.',
@@ -311,7 +337,7 @@ export function hevyRoutines(program: Program) {
         exercise_name: slot.exercise.hevyTitle,
         exercise_template_id: null,
         superset_id: null,
-        notes: slot.exercise.cue,
+        notes: slot.weightNote ? `${slot.exercise.cue} ${slot.weightNote}` : slot.exercise.cue,
         sets: Array.from({ length: slot.sets }, () => ({
           type: 'normal',
           weight_kg: null,

@@ -293,6 +293,9 @@ export function TrainingPlanPage() {
                           </p>
                           <p className="plan-cue">{slot.exercise.cue}</p>
                           {slot.note ? <p className="plan-cue">{slot.note}</p> : null}
+                          {slot.weightNote ? (
+                            <p className="plan-weight-note">{slot.weightNote}</p>
+                          ) : null}
                         </div>
                       </li>
                     ))}
@@ -301,6 +304,14 @@ export function TrainingPlanPage() {
               ))}
 
               <div className="plan-guidance">
+                <div>
+                  <h2>Choosing your weights</h2>
+                  <ul>
+                    {program.weightRules.map((n) => (
+                      <li key={n}>{n}</li>
+                    ))}
+                  </ul>
+                </div>
                 <div>
                   <h2>Weekly rhythm</h2>
                   <ul>
