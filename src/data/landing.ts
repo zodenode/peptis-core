@@ -81,7 +81,7 @@ export const howSteps = [
 export const faqs = [
   {
     q: 'What does Peptis offer?',
-    a: 'Peptis is organised around coaching, nutrition guidance, dietary supplements for people on GLP-1 therapies, exercise and movement programmes, training tips, and—when clinical services launch—clinician-directed medications aimed at problems that can arise while taking GLPs. See /offerings for the full scope.',
+    a: 'Peptis is a continuity programme for adults on or after GLP-1 therapy: coaching and nutrition, exercise programmes with training tips, one curated Lean Mass / GLP support supplement bundle, and—when clinical services launch—clinician-directed adjunct medications for problems that can arise while taking GLPs. See /offerings.',
   },
   {
     q: 'Is this medical care or a replacement for my current therapy?',

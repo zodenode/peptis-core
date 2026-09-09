@@ -1,15 +1,34 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
-import { offeringAudience, offeringPillars } from '../data/offerings'
-import { suplifulCorePickSkus, suplifulStockLists } from '../data/suplifulStock'
+import {
+  insuranceCapabilityNotes,
+  offeringAudience,
+  offeringPillars,
+} from '../data/offerings'
+import { suplifulStockLists } from '../data/suplifulStock'
 import { track } from '../lib/analytics'
-import { useEffect } from 'react'
+
+const publicBundleListIds = [
+  'protein-lean-mass',
+  'strength-training-support',
+  'micronutrient-repletion',
+  'glp-digestive-comfort',
+] as const
 
 export function OfferingsPage() {
   useEffect(() => {
     track('offerings_viewed', { page: '/offerings' })
   }, [])
+
+  const publicLists = publicBundleListIds
+    .map((id) => suplifulStockLists.find((list) => list.id === id))
+    .filter((list): list is NonNullable<typeof list> => Boolean(list))
+    .map((list) => ({
+      ...list,
+      items: list.items.filter((item) => item.pickPriority === 'core'),
+    }))
 
   return (
     <div className="site">
@@ -17,12 +36,12 @@ export function OfferingsPage() {
       <main id="main" className="offerings-page">
         <section className="section offerings-hero">
           <div className="section-inner guide-narrow">
-            <p className="eyebrow">Peptis offerings · Insurance and programme scope</p>
-            <h1>What Peptis is built to deliver</h1>
+            <p className="eyebrow">Peptis offerings</p>
+            <h1>Continuity care, not a catalog</h1>
             <p className="offerings-lead">
-              Peptis focuses on coaching, nutrition, supplements for people on GLP-1 therapies,
-              exercise and movement programmes, training tips, and clinician-directed medications
-              aimed at problems that can arise while taking GLPs. {offeringAudience}
+              Peptis focuses on coaching and nutrition, training programmes, one curated Lean Mass /
+              GLP support supplement bundle, and clinician-directed adjunct medications when
+              services launch. {offeringAudience}
             </p>
             <p className="offerings-status-note">
               The $0 founding reservation is planning access today. Live prescribing and pharmacy
@@ -34,8 +53,8 @@ export function OfferingsPage() {
         <section className="section section-mist" id="pillars" aria-labelledby="pillars-heading">
           <div className="section-inner">
             <div className="section-head">
-              <p className="eyebrow">Six pillars</p>
-              <h2 id="pillars-heading">Programme scope at a glance</h2>
+              <p className="eyebrow">Product offer</p>
+              <h2 id="pillars-heading">Four things Peptis is built to deliver</h2>
             </div>
             <div className="offering-grid">
               {offeringPillars.map((pillar) => (
@@ -64,57 +83,41 @@ export function OfferingsPage() {
           </div>
         </section>
 
-        <section className="section" id="supplements" aria-labelledby="stock-heading">
+        <section className="section" id="lean-mass-bundle" aria-labelledby="bundle-heading">
           <div className="section-inner">
             <div className="section-head">
-              <p className="eyebrow">Supliful private-label stock</p>
-              <h2 id="stock-heading">Curated stock lists you can pick from</h2>
+              <p className="eyebrow">Supliful private-label</p>
+              <h2 id="bundle-heading">Core Lean Mass / GLP support bundle</h2>
               <p>
-                These lists map Supliful catalog SKUs to GLP continuity problems. Use them to
-                assemble the Lean Mass / GLP Support bundles. Full markdown tables also live in{' '}
-                <code>docs/SUPFUL-STOCK-LISTS.md</code>.
+                Public assortment stays narrow: protein, creatine, hydration, foundational
+                micronutrients and digestive-comfort support. Appearance and metabolic add-ons stay
+                off the customer offer.
               </p>
-            </div>
-
-            <div className="stock-core">
-              <h3>Core first-wave SKUs</h3>
-              <p>
-                Start with these {suplifulCorePickSkus.length} core picks across digestive comfort,
-                protein, training support and micronutrients.
-              </p>
-              <p className="stock-core-skus">{suplifulCorePickSkus.join(' · ')}</p>
             </div>
 
             <div className="stock-lists">
-              {suplifulStockLists.map((list) => (
+              {publicLists.map((list) => (
                 <article className="stock-list" key={list.id} id={list.id}>
                   <header>
                     <h3>{list.title}</h3>
                     <p className="stock-problem">
-                      <strong>GLP problem:</strong> {list.glpProblem}
+                      <strong>For:</strong> {list.glpProblem}
                     </p>
-                    <p>{list.intendedUse}</p>
                     <p className="stock-compliance">{list.complianceNote}</p>
                   </header>
-                  <div className="stock-table-wrap" role="region" aria-label={`${list.title} SKUs`}>
+                  <div className="stock-table-wrap" role="region" aria-label={`${list.title} core SKUs`}>
                     <table className="stock-table">
                       <thead>
                         <tr>
-                          <th scope="col">Priority</th>
                           <th scope="col">SKU</th>
                           <th scope="col">Product</th>
                           <th scope="col">Form</th>
-                          <th scope="col">Why it is on the list</th>
+                          <th scope="col">Why</th>
                         </tr>
                       </thead>
                       <tbody>
                         {list.items.map((item) => (
                           <tr key={item.sku}>
-                            <td>
-                              <span className={`pick-pill is-${item.pickPriority}`}>
-                                {item.pickPriority}
-                              </span>
-                            </td>
                             <td>
                               <code>{item.sku}</code>
                             </td>
@@ -139,12 +142,11 @@ export function OfferingsPage() {
         <section className="section section-mist" id="medications" aria-labelledby="meds-heading">
           <div className="section-inner guide-narrow">
             <p className="eyebrow">Medications scope</p>
-            <h2 id="meds-heading">Medications aimed at GLP-related problems</h2>
+            <h2 id="meds-heading">Clinician-directed adjunct medications</h2>
             <p>
-              Peptis separates dietary supplements from prescription medications. Supliful stock
-              covers wellness supplements only. Medications aimed at problems that can arise while
-              taking GLP-1 therapies are evaluated only by licensed clinicians after services
-              launch, state coverage and eligibility are confirmed.
+              Supliful stock covers dietary supplements only. Medications aimed at problems that can
+              arise while taking GLP-1 therapies are evaluated only by licensed clinicians after
+              services launch, state coverage and eligibility are confirmed.
             </p>
             <ul className="walkaway-list">
               <li>
@@ -152,17 +154,34 @@ export function OfferingsPage() {
                 <span>No clinician review, prescription or pharmacy fulfillment today.</span>
               </li>
               <li>
-                <strong>Not a substitute for the prescribing GLP-1 clinician</strong>
-                <span>Members should keep working with their current care team.</span>
-              </li>
-              <li>
-                <strong>Distinct from supplements</strong>
+                <strong>Distinct from the supplement bundle</strong>
                 <span>
                   Protein, digestive comfort and creatine products are dietary supplements, not
                   treatments for medication side effects.
                 </span>
               </li>
             </ul>
+          </div>
+        </section>
+
+        <section className="section" id="insurance-scope" aria-labelledby="insurance-heading">
+          <div className="section-inner guide-narrow">
+            <p className="eyebrow">Insurance application note</p>
+            <h2 id="insurance-heading">Capability coverage without a marketplace layout</h2>
+            <p>
+              For underwriting and programme description, Peptis covers the following capabilities.
+              They are delivered through the four product offers above, not as six separate shops.
+            </p>
+            <ul>
+              {insuranceCapabilityNotes.map((note) => (
+                <li key={note}>{note}</li>
+              ))}
+            </ul>
+            <p className="offerings-status-note">
+              Fuller Supliful pick lists (including secondary and optional SKUs) live in the repo
+              for ops and labeling: <code>docs/SUPFUL-STOCK-LISTS.md</code> and{' '}
+              <code>docs/SUPFUL-CATALOG-INDEX.md</code>.
+            </p>
           </div>
         </section>
       </main>

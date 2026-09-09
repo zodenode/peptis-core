@@ -47,16 +47,14 @@ Custom domain notes live in `GODADDY-DNS.md`.
 
 ## Positioning
 
-Peptis is building a future state-by-state continuity service for adults on or after GLP-1 therapy. Public offerings are organised around:
+Peptis is a **GLP continuity / body recomposition** programme for adults on or after GLP-1 therapy. The public offer is intentionally narrow:
 
-1. **Coaching**
-2. **Nutrition**
-3. **Supplements for people on GLPs** (curated Supliful private-label stock)
-4. **Exercise and movement programmes** (`/plan`)
-5. **Training tips**
-6. **Medications aimed at problems that can arise while taking GLPs** (clinician-directed when services launch)
+1. **Continuity coaching and nutrition**
+2. **Exercise programmes and training tips** (`/plan`)
+3. **One Lean Mass / GLP support supplement bundle** (curated Supliful private-label stock)
+4. **Clinician-directed adjunct medications** for problems that can arise while taking GLPs, when services launch
 
-See [`/offerings`](./src/pages/OfferingsPage.tsx), [`docs/SUPFUL-STOCK-LISTS.md`](./docs/SUPFUL-STOCK-LISTS.md) and [`docs/SUPFUL-CATALOG-INDEX.md`](./docs/SUPFUL-CATALOG-INDEX.md).
+Insurance/programme descriptions may still reference coaching, nutrition, supplements, exercise, training tips and adjunct medications as capabilities; they are not six equal consumer shops. Fuller Supliful pick lists for ops live in [`docs/SUPFUL-STOCK-LISTS.md`](./docs/SUPFUL-STOCK-LISTS.md) and [`docs/SUPFUL-CATALOG-INDEX.md`](./docs/SUPFUL-CATALOG-INDEX.md). Public page: [`/offerings`](./src/pages/OfferingsPage.tsx).
 
 The current consumer offer is a **$0 founding reservation** with a planned **$299/month** founding rate if services launch, the member is eligible, and they affirmatively enroll. The planned standard rate after founding enrollment is $399/month. Pricing and availability may change before activation. Optional Lean Mass Bundle interest is planned at +$59/month at launch.
 

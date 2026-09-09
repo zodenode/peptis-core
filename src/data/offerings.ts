@@ -1,8 +1,6 @@
 /**
- * Peptis commercial offering pillars for public site + insurance application review.
- * Keep capability language honest: coaching / nutrition / movement / training tips /
- * dietary supplements available or planned as programme support; adjunct medications
- * only via licensed clinicians when services launch and are eligible.
+ * Peptis public offering pillars — tight continuity strategy.
+ * Insurance/ops still keep fuller Supliful pick lists in docs/SUPFUL-STOCK-LISTS.md.
  */
 
 export type OfferingPillar = {
@@ -19,13 +17,13 @@ export type OfferingPillar = {
 export const offeringPillars: OfferingPillar[] = [
   {
     id: 'coaching',
-    title: 'Coaching',
-    eyebrow: 'Continuity coaching',
+    title: 'Continuity coaching and nutrition',
+    eyebrow: 'Core programme',
     summary:
-      'Structured coaching around strength, protein, digestive comfort and maintenance while on or after GLP-1 therapy. The free quiz and written summary start the coaching record today.',
+      'One continuity offer: coaching around strength, protein, digestive comfort and maintenance, with practical nutrition for low-appetite days. The free quiz and written summary start that record today.',
     includes: [
-      'Priority and pathway mapping from the continuity quiz',
-      'Written strength, nutrition and maintenance summary',
+      'Continuity quiz with strength, protein and maintenance priorities',
+      'Low-appetite nutrition guidance',
       'Ongoing coaching workflows as state programmes launch',
     ],
     status: 'available-now',
@@ -33,75 +31,45 @@ export const offeringPillars: OfferingPillar[] = [
     cta: 'Start the continuity check',
   },
   {
-    id: 'nutrition',
-    title: 'Nutrition',
-    eyebrow: 'Low-appetite nutrition',
+    id: 'training',
+    title: 'Exercise programmes and training tips',
+    eyebrow: 'Movement system',
     summary:
-      'Practical nutrition guidance for smaller eating occasions: protein-forward structure, fluids, fibre and micronutrient awareness when appetite falls.',
+      'GLP-1-aware progressive training on /plan: starter programmes, illustrated movements, weight-selection tips, low-appetite session rules and app exports.',
     includes: [
-      'Protein target education and meal-structure coaching',
-      'Low-appetite day planning',
-      'Evidence library guides on protein and food tolerance',
-    ],
-    status: 'available-now',
-    href: '/blog/protein-on-glp1',
-    cta: 'Read the protein guide',
-  },
-  {
-    id: 'supplements',
-    title: 'Supplements for people on GLPs',
-    eyebrow: 'Private-label support stack',
-    summary:
-      'Dietary supplements sourced from Supliful stock for digestive comfort, protein, hydration, micronutrients, creatine and appearance support. Supplements are not medicines and do not treat medication side effects.',
-    includes: [
-      'GLP-1 Support, gut and digestive enzyme formulas',
-      'Whey, plant protein and collagen powders',
-      'Creatine, electrolytes, multivitamin and magnesium picks',
-    ],
-    status: 'programme-planned',
-    href: '/offerings#supplements',
-    cta: 'See Supliful stock lists',
-  },
-  {
-    id: 'exercise',
-    title: 'Exercise and movement programmes',
-    eyebrow: 'Progressive training',
-    summary:
-      'GLP-1-aware movement programmes focused on progressive resistance training, joint-sensitive substitutions and sustainable weekly structure.',
-    includes: [
-      'Personalised starter programmes on /plan',
-      'Illustrated movement library',
-      'Exports for calendar and training apps',
+      'Personalised starter programmes',
+      'Starting-weight and progression tips',
+      'Calendar and training-app exports',
     ],
     status: 'available-now',
     href: '/plan',
     cta: 'Build a training plan',
   },
   {
-    id: 'training-tips',
-    title: 'Training tips',
-    eyebrow: 'Coaching cues',
+    id: 'supplements',
+    title: 'Lean Mass / GLP support supplements',
+    eyebrow: 'Curated add-on',
     summary:
-      'Practical training tips for adults losing weight on GLP-1s: starting weights, reps in reserve, low-appetite session rules and progression without ego loading.',
+      'One optional private-label bundle from Supliful stock: protein, creatine, hydration, foundational micronutrients and digestive-comfort support. Dietary supplements are not medicines and do not treat medication side effects.',
     includes: [
-      'Weight-selection and calibration guidance',
-      'Low-appetite and recovery session rules',
-      'Evidence explainers on lean mass and strength',
+      'Protein powder and collagen options',
+      'Creatine and electrolytes',
+      'Multivitamin, magnesium and GLP-1 Support / gut formulas',
     ],
-    status: 'available-now',
-    href: '/plan',
-    cta: 'Open training tips',
+    status: 'programme-planned',
+    href: '/offerings#lean-mass-bundle',
+    cta: 'See the core bundle',
   },
   {
     id: 'medications',
-    title: 'Medications for GLP-related problems',
-    eyebrow: 'Clinician-directed adjunct care',
+    title: 'Clinician-directed adjunct medications',
+    eyebrow: 'When services launch',
     summary:
-      'When clinical services launch in a member’s state, licensed clinicians may evaluate medications aimed at problems that can arise while taking GLP-1 therapies (for example nausea or constipation pathways), only when appropriate. This is separate from dietary supplements and is not available through the $0 founding reservation today.',
+      'When clinical services launch in a member’s state, licensed clinicians may evaluate medications aimed at problems that can arise while taking GLP-1 therapies, only when appropriate. Separate from supplements and not part of the $0 reservation today.',
     includes: [
       'Future eligibility screening by licensed clinicians',
-      'Adjunct medication evaluation for GLP-related problems when indicated',
-      'Clear separation from over-the-counter supplement bundles',
+      'Adjunct evaluation for GLP-related problems when indicated',
+      'Clear separation from the supplement bundle',
     ],
     status: 'programme-planned',
     href: '/offerings#medications',
@@ -109,5 +77,15 @@ export const offeringPillars: OfferingPillar[] = [
   },
 ]
 
+/** Short insurance-facing capability list (not equal product pillars). */
+export const insuranceCapabilityNotes = [
+  'Coaching for adults on or after GLP-1 therapy',
+  'Nutrition guidance for low appetite and protein intake',
+  'Dietary supplements curated for GLP continuity support',
+  'Exercise and movement programmes',
+  'Training tips for strength and progression',
+  'Clinician-directed medications for problems that can arise while taking GLPs, when services launch',
+] as const
+
 export const offeringAudience =
-  'Adults on or after GLP-1 weight-loss therapy who need coaching, nutrition, training, supplements and—when clinically available—medication support for problems that can arise during treatment.'
+  'Adults on or after GLP-1 weight-loss therapy who need continuity coaching, training and lean-mass support—not a general supplement marketplace.'

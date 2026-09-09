@@ -1,9 +1,17 @@
 # Supliful stock lists for Peptis
 
+**Audience:** ops, labeling, and insurance/programme documentation.  
+**Not** the full public product assortment on peptis.com.
+
 Private-label catalog source: [supliful.com/catalog](https://supliful.com/catalog) (191 in-stock products).  
-Machine-readable copy: `src/data/suplifulStock.ts` · Browseable on site: `/offerings#supplements`
+Machine-readable copy: `src/data/suplifulStock.ts`  
+Public site shows only the **core** Lean Mass / GLP support SKUs on `/offerings#lean-mass-bundle`.
 
 **Compliance:** Dietary supplements are not medications. Do not claim they prevent, treat or reverse GLP-1 medication side effects. Medications for GLP-related problems remain clinician-directed when clinical services launch.
+
+## Public assortment rule
+
+Ship one optional **Lean Mass / GLP support** bundle from **core** SKUs in lists 1–4 below. Keep appearance (list 5) and metabolic add-ons (list 6) off the customer-facing offer unless strategy expands later.
 
 ## How to use these lists
 
