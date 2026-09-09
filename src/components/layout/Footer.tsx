@@ -8,9 +8,10 @@ export function Footer() {
           <img src="/peptis-logo-bronze.png" alt="Peptis" />
           <div className="footer-links">
             <Link to="/quiz">Founding reservation</Link>
+            <Link to="/offerings">Offerings</Link>
+            <Link to="/plan">Training plans</Link>
             <a href="/#how">How it works</a>
             <a href="/#evidence">Evidence</a>
-            <a href="/#measures">Measures</a>
             <a href="/#offer">Founding offer</a>
             <a href="/#faq">FAQ</a>
             <Link to="/blog">Blog</Link>

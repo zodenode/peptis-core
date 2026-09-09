@@ -7,6 +7,7 @@ import { ContinuityFramework } from '../components/landing/ContinuityFramework'
 import { EvidenceCards } from '../components/landing/EvidenceCards'
 import { FoundingOfferVisual } from '../components/landing/FoundingOfferVisual'
 import { MeasuresBeyondWeight } from '../components/landing/MeasuresBeyondWeight'
+import { OfferingsGrid } from '../components/landing/OfferingsGrid'
 import { PricingStrip } from '../components/landing/PricingStrip'
 import { ProteinTargetGraphic } from '../components/landing/ProteinTargetGraphic'
 import { StickyQuizCta } from '../components/landing/StickyQuizCta'
@@ -147,6 +148,8 @@ export function LandingPage() {
         </section>
 
         <PricingStrip />
+
+        <OfferingsGrid />
 
         <ContinuityFramework />
 

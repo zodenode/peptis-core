@@ -25,7 +25,8 @@ Logos/try1.png
 *.njsproj
 *.sln
 *.sw?
-data/
+# Runtime reservation / quiz progress store (not source modules under src/data/)
+/data/
 .tmp.driveupload/
 .tmp.drivedownload/
 Icon?

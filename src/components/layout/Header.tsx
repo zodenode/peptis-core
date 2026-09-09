@@ -39,9 +39,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
             <Link to="/quiz" onClick={() => quizClick('nav')}>
               Continuity quiz
             </Link>
+            <Link to="/offerings">Offerings</Link>
+            <Link to="/plan">Training</Link>
             <a href="/#evidence">Evidence</a>
-            <a href="/#framework">Framework</a>
-            <a href="/#measures">Measures</a>
             <a href="/#offer">Offer</a>
             <a href="/#faq">FAQ</a>
             <Link to="/blog">Blog</Link>
@@ -63,9 +63,9 @@ export function Header({ variant = 'landing' }: HeaderProps) {
               <Link to="/quiz" onClick={() => quizClick('nav_mobile')}>
                 Continuity quiz
               </Link>
+              <Link to="/offerings">Offerings</Link>
+              <Link to="/plan">Training</Link>
               <a href="/#evidence">Evidence</a>
-              <a href="/#framework">Framework</a>
-              <a href="/#measures">Measures</a>
               <a href="/#offer">Offer</a>
               <a href="/#faq">FAQ</a>
               <Link to="/blog">Blog</Link>
