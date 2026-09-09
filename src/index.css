@@ -3802,3 +3802,236 @@ input:disabled {
     font-size: 0.65rem;
   }
 }
+
+/* —— Offerings (insurance / programme scope) —— */
+.offerings-hero {
+  padding-top: clamp(4.5rem, 10vw, 6.5rem);
+  background:
+    radial-gradient(ellipse 70% 45% at 0% 0%, rgba(126, 143, 110, 0.18), transparent 55%),
+    var(--paper);
+}
+
+.offerings-lead {
+  margin: 1rem 0 0;
+  max-width: 48ch;
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  color: var(--ink-muted);
+}
+
+.offerings-status-note {
+  margin: 1.25rem 0 0;
+  max-width: 52ch;
+  font-size: 0.92rem;
+  color: var(--ink-muted);
+}
+
+.offerings-page h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  letter-spacing: -0.02em;
+  color: var(--sage-deep);
+  max-width: 16ch;
+  line-height: 1.1;
+}
+
+.offering-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+@media (min-width: 800px) {
+  .offering-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.offering-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: clamp(1.35rem, 3vw, 2rem);
+  background: var(--paper);
+}
+
+.offering-card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  color: var(--sage-deep);
+  letter-spacing: -0.015em;
+}
+
+.offering-card > p {
+  margin: 0;
+  color: var(--ink-muted);
+  flex: 1;
+}
+
+.offering-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+}
+
+.offering-card li {
+  margin-bottom: 0.35rem;
+}
+
+.offering-card-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+
+.offering-status {
+  letter-spacing: 0.06em;
+}
+
+.offering-status.is-now {
+  color: var(--sage);
+}
+
+.offering-status.is-planned {
+  color: var(--ink-muted);
+}
+
+.offerings-more {
+  margin: 1.75rem 0 0;
+}
+
+.guide-narrow {
+  width: min(100%, 42rem);
+}
+
+.stock-core {
+  margin-bottom: 2.5rem;
+  padding: 1.25rem 1.35rem;
+  background: rgba(63, 91, 58, 0.07);
+  border-left: 3px solid var(--sage);
+}
+
+.stock-core h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--sage-deep);
+}
+
+.stock-core p {
+  margin: 0 0 0.65rem;
+  color: var(--ink-muted);
+}
+
+.stock-core-skus {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  color: var(--sage-deep);
+  line-height: 1.6;
+}
+
+.stock-lists {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3rem);
+}
+
+.stock-list header h3 {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.55rem;
+  color: var(--sage-deep);
+}
+
+.stock-problem {
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+}
+
+.stock-compliance {
+  margin: 0.65rem 0 1rem;
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+.stock-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.stock-table th,
+.stock-table td {
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+.stock-table th {
+  background: var(--mist);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+.stock-table a {
+  color: var(--sage-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pick-pill {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pick-pill.is-core {
+  background: rgba(63, 91, 58, 0.12);
+  color: var(--sage-deep);
+}
+
+.pick-pill.is-secondary {
+  background: rgba(160, 130, 96, 0.16);
+  color: #6b5338;
+}
+
+.pick-pill.is-optional {
+  background: rgba(74, 85, 70, 0.1);
+  color: var(--ink-muted);
+}
+
+.editorial-link {
+  align-self: flex-start;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--sage-deep);
+}
+
+.editorial-link:hover {
+  color: var(--sage);
+}

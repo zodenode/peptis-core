@@ -15,6 +15,8 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 
 - Landing: `/`
 - Quiz: `/quiz`
+- Offerings + Supliful stock lists: `/offerings`
+- Training plan: `/plan`
 - Blog: `/blog`
 - Privacy: `/privacy`, health data notice: `/health-data`, cancellation: `/cancel?token=…`
 - Brand kit (static): `/brand-kit/`
@@ -45,7 +47,18 @@ Custom domain notes live in `GODADDY-DNS.md`.
 
 ## Positioning
 
-Peptis is building a future state-by-state continuity service. The current offer is a **$0 founding reservation** with a planned **$299/month** founding rate if services launch, the member is eligible, and they affirmatively enroll. The planned standard rate after founding enrollment is $399/month. Pricing and availability may change before activation. Optional Lean Mass Bundle interest is planned at +$59/month at launch.
+Peptis is building a future state-by-state continuity service for adults on or after GLP-1 therapy. Public offerings are organised around:
+
+1. **Coaching**
+2. **Nutrition**
+3. **Supplements for people on GLPs** (curated Supliful private-label stock)
+4. **Exercise and movement programmes** (`/plan`)
+5. **Training tips**
+6. **Medications aimed at problems that can arise while taking GLPs** (clinician-directed when services launch)
+
+See [`/offerings`](./src/pages/OfferingsPage.tsx), [`docs/SUPFUL-STOCK-LISTS.md`](./docs/SUPFUL-STOCK-LISTS.md) and [`docs/SUPFUL-CATALOG-INDEX.md`](./docs/SUPFUL-CATALOG-INDEX.md).
+
+The current consumer offer is a **$0 founding reservation** with a planned **$299/month** founding rate if services launch, the member is eligible, and they affirmatively enroll. The planned standard rate after founding enrollment is $399/month. Pricing and availability may change before activation. Optional Lean Mass Bundle interest is planned at +$59/month at launch.
 
 The reservation includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment. Stripe wallet UI is a future-activation preview; see [`docs/STRIPE-ACTIVATION.md`](./docs/STRIPE-ACTIVATION.md).
 

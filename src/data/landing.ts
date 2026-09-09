@@ -80,6 +80,10 @@ export const howSteps = [
 
 export const faqs = [
   {
+    q: 'What does Peptis offer?',
+    a: 'Peptis is organised around coaching, nutrition guidance, dietary supplements for people on GLP-1 therapies, exercise and movement programmes, training tips, and—when clinical services launch—clinician-directed medications aimed at problems that can arise while taking GLPs. See /offerings for the full scope.',
+  },
+  {
     q: 'Is this medical care or a replacement for my current therapy?',
     a: 'No. The founding reservation is a waitlist and planning experience, not medical care. Keep working with your current clinician. No clinician review, prescription, or medication is provided today.',
   },
@@ -93,7 +97,7 @@ export const faqs = [
   },
   {
     q: 'Is the Lean Mass Supplement Bundle available now?',
-    a: 'No. You can ask for updates about an optional bundle that may cost an additional $59 per month at launch. This does not place an order and nothing ships today. Supplements are not a treatment for medication side effects.',
+    a: 'No. You can ask for updates about an optional bundle that may cost an additional $59 per month at launch. This does not place an order and nothing ships today. Supplements are sourced from curated Supliful stock and are not a treatment for medication side effects.',
   },
   {
     q: 'When will clinical services be available?',
