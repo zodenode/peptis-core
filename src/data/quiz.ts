@@ -6,6 +6,8 @@ export type StepType =
   | 'social_proof'
   | 'stop_block'
   | 'summary'
+  | 'plan_build'
+  | 'trajectory'
   | 'email_gate'
   | 'checkout'
   | 'success'
@@ -34,6 +36,8 @@ export type StepId =
   | StopStepId
   | 'email_gate'
   | 'summary_mid'
+  | 'plan_build'
+  | 'trajectory'
   | 'checkout'
   | 'success'
 
@@ -444,9 +448,11 @@ export function stepMeta(id: StepId): { type: StepType; step_id: string; step_in
     explain_q7: { type: 'explainer', step_index: 15 },
     q8: { type: 'question', step_index: 16 },
     explain_q8: { type: 'explainer', step_index: 17 },
-    reassure: { type: 'social_proof', step_index: 18 },
-    checkout: { type: 'checkout', step_index: 19 },
-    success: { type: 'success', step_index: 20 },
+    plan_build: { type: 'plan_build', step_index: 18 },
+    trajectory: { type: 'trajectory', step_index: 19 },
+    reassure: { type: 'social_proof', step_index: 19 },
+    checkout: { type: 'checkout', step_index: 20 },
+    success: { type: 'success', step_index: 21 },
   }
   return { ...map[id], step_id: id }
 }
@@ -464,7 +470,12 @@ export type Answers = {
   q6?: string
   q7?: string
   q8?: string
+  care_provider?: string
+  current_medication?: string
+  training_setting?: string
 }
+
+export type PlanAnswerKey = 'care_provider' | 'current_medication' | 'training_setting'
 
 export function derivePathways(answers: Answers): string[] {
   const pathways = new Set<string>()
@@ -527,7 +538,7 @@ function nextUnansweredFrom(start: QuestionId, answers: Answers): StepId {
   for (const id of order.slice(Math.max(0, from))) {
     if (!answers[id]) return id
   }
-  return 'reassure'
+  return 'plan_build'
 }
 
 export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]): StepId {
@@ -578,7 +589,11 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
     case 'q8':
       return 'explain_q8'
     case 'explain_q8':
-      return 'reassure'
+      return 'plan_build'
+    case 'plan_build':
+      return 'trajectory'
+    case 'trajectory':
+      return 'checkout'
     case 'reassure':
       return 'checkout'
     case 'checkout':
@@ -592,7 +607,7 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
   }
 }
 
-const MAX_STEP_INDEX = 20
+const MAX_STEP_INDEX = 21
 
 export function progressPercent(id: StepId) {
   if (id === 'success') return 100

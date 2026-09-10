@@ -8,6 +8,7 @@ import {
   questions,
   stepMeta,
   type Answers,
+  type PlanAnswerKey,
   type StepId,
   type StopBlockId,
 } from '../data/quiz'
@@ -189,9 +190,16 @@ export function useQuizEngine() {
       answers,
       entryPrompt,
     })
-    // Only re-post when the step changes; answers ride along with the latest step.
+    // Re-post when the step changes, plus each refinement answered inside the plan-building step.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, hydrated, quizId])
+  }, [
+    answers.care_provider,
+    answers.current_medication,
+    answers.training_setting,
+    current,
+    hydrated,
+    quizId,
+  ])
 
   useEffect(() => {
     if (!hydrated) return
@@ -234,6 +242,12 @@ export function useQuizEngine() {
     },
     [answers.q2, current],
   )
+
+  const setPlanAnswer = useCallback((key: PlanAnswerKey, value: string) => {
+    setAnswers((currentAnswers) => ({ ...currentAnswers, [key]: value }))
+    // Health context stays out of analytics. Only the completion of a refinement is measured.
+    track('plan_refinement_answered', { question_id: key })
+  }, [])
 
   const goNext = useCallback(() => {
     const upcoming = nextAfter(current, answers, shown)
@@ -383,6 +397,7 @@ export function useQuizEngine() {
     canGoBack: history.length > 0 && current !== 'success',
     pathways: derivePathways(answers),
     selectOption,
+    setPlanAnswer,
     goNext,
     goBack,
     patchCheckout,

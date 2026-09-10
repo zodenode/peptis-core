@@ -73,7 +73,9 @@ Use it for Peptis claims, infographics, quiz copy, supplement messaging and cont
 
 ## Quiz
 
-Eight screening questions, branching educational stop-blocks and qualitative social-proof intersplices (muscle / energy / GI), a universal founding-trust page, then identity + state verification and a $0 reservation. Answers persist in `localStorage` (`peptis.continuity.quiz`) for abandonment resume.
+Eight screening questions, branching educational stop-blocks and qualitative social-proof intersplices (muscle / energy / GI), followed by an animated continuity-map build. The build pauses for current provider, prescription and realistic training-setting refinements, then reveals a non-predictive Today-to-Week-12 milestone map before identity + state verification and the $0 reservation. Answers persist in `localStorage` (`peptis.continuity.quiz`) for abandonment resume.
+
+The provider grid identifies common telehealth care settings without suggesting a partnership. Provider and medication selections are stored with the protected quiz-progress payload and are not sent as analytics properties. Prescribing and medication decisions remain with the user's licensed clinician.
 
 The legacy client-decoded restricted compound configuration remains isolated in `src/data/continuityConfig.ts`, but compound names are not shown in current patient-facing funnel copy.
 
@@ -94,7 +96,7 @@ Copy `.env.example` → `.env`. Do not commit `.env`.
 
 Landing: `landing_viewed`, `hero_cta_clicked`, `evidence_cta_clicked`, `section_viewed` `{ section }`, `trust_badge_viewed`, `faq_opened` `{ question }`, `quiz_cta_clicked` `{ location }` (hero, nav, embed, closer, pricing_strip, sticky_mobile).
 
-Quiz: `quiz_started` `{ source }`, `quiz_embed_started`, `quiz_step_viewed`, `quiz_option_selected`, `quiz_stop_block_viewed`, `quiz_stop_block_continued`, `quiz_explainer_viewed`, `quiz_social_proof_viewed`, `quiz_summary_viewed`, `quiz_back_clicked`, `quiz_reached_checkout`, `quiz_completed`, `checkout_viewed`, `stripe_activation_block_viewed`, `upsell_toggled`, `lean_mass_interest_toggled`, `checkout_submit_clicked`, `founding_reservation_submitted` `{ reservation_id }`, `reservation_submit_failed`, `reservation_cancelled`, `quiz_abandoned`.
+Quiz: `quiz_started` `{ source }`, `quiz_embed_started`, `quiz_step_viewed`, `quiz_option_selected`, `quiz_stop_block_viewed`, `quiz_stop_block_continued`, `quiz_explainer_viewed`, `quiz_social_proof_viewed`, `quiz_summary_viewed`, `plan_build_started`, `plan_build_stage_completed` `{ stage }`, `plan_refinement_answered` `{ question_id }`, `plan_build_completed`, `trajectory_viewed`, `quiz_back_clicked`, `quiz_reached_checkout`, `quiz_completed`, `checkout_viewed`, `stripe_activation_block_viewed`, `upsell_toggled`, `lean_mass_interest_toggled`, `checkout_submit_clicked`, `founding_reservation_submitted` `{ reservation_id }`, `reservation_submit_failed`, `reservation_cancelled`, `quiz_abandoned`.
 
 Blog: `blog_viewed`, `blog_article_viewed` `{ slug, category }`.
 

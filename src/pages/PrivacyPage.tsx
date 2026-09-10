@@ -17,7 +17,7 @@ export function PrivacyPage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Privacy Notice</h1>
-            <p className="notice-updated">Last updated: August 27, 2026</p>
+            <p className="notice-updated">Last updated: September 10, 2026</p>
             <p>
               Peptis is operated by Information Edge Insights LLC. This notice explains what
               information we collect on this website, how we use it, and the choices you have. The
@@ -33,11 +33,12 @@ export function PrivacyPage() {
                 future products.
               </li>
               <li>
-                <strong>Quiz responses:</strong> your answers about strength, energy, digestive
-                comfort and maintenance priorities, and the summary categories derived from them.
+                <strong>Quiz responses:</strong> your answers about your treatment timeline,
+                current care provider and prescription, strength, energy, digestive comfort,
+                routine and maintenance priorities, and the summary categories derived from them.
                 Quiz progress is stored in your browser so you can resume on the same device, and
-                each step is also saved to our servers with a random quiz identifier, together
-                with your email address if you choose to provide it during the quiz.
+                each step is also saved to our servers with a random quiz identifier, together with
+                your email address if you choose to provide it during the quiz.
               </li>
               <li>
                 <strong>Usage information:</strong> pages viewed, buttons clicked, quiz steps

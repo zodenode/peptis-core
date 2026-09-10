@@ -11,9 +11,11 @@ import { useQuizEngine } from '../../hooks/useQuizEngine'
 import { Checkout } from './Checkout'
 import { EmailGate } from './EmailGate'
 import { ExplainerPage } from './ExplainerPage'
+import { PlanBuild } from './PlanBuild'
 import { QuizQuestion } from './QuizQuestion'
 import { Success } from './Success'
 import { SummaryReveal } from './SummaryReveal'
+import { TrajectoryReveal } from './TrajectoryReveal'
 
 type Props = {
   embedded?: boolean
@@ -39,16 +41,18 @@ export function QuizFlow({ embedded = false }: Props) {
 
   return (
     <div className={`quiz-shell${embedded ? ' is-embedded' : ''}`}>
-      <div
-        className="quiz-progress"
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={percent}
-        aria-valuetext={`About ${percent} percent complete`}
-      >
-        <div className="quiz-progress-bar" style={{ width: `${percent}%` }} />
-      </div>
+      {quiz.current !== 'plan_build' ? (
+        <div
+          className="quiz-progress"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={percent}
+          aria-valuetext={`About ${percent} percent complete`}
+        >
+          <div className="quiz-progress-bar" style={{ width: `${percent}%` }} />
+        </div>
+      ) : null}
 
       <div className="quiz-stage">
         {question ? (
@@ -85,6 +89,26 @@ export function QuizFlow({ embedded = false }: Props) {
 
         {quiz.current === 'summary_mid' ? (
           <SummaryReveal
+            pathways={quiz.pathways}
+            onContinue={quiz.goNext}
+            onBack={quiz.goBack}
+            canGoBack={quiz.canGoBack}
+          />
+        ) : null}
+
+        {quiz.current === 'plan_build' ? (
+          <PlanBuild
+            answers={quiz.answers}
+            onAnswer={quiz.setPlanAnswer}
+            onContinue={quiz.goNext}
+            onBack={quiz.goBack}
+            canGoBack={quiz.canGoBack}
+          />
+        ) : null}
+
+        {quiz.current === 'trajectory' ? (
+          <TrajectoryReveal
+            answers={quiz.answers}
             pathways={quiz.pathways}
             onContinue={quiz.goNext}
             onBack={quiz.goBack}

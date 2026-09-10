@@ -17,7 +17,7 @@ export function HealthDataNoticePage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Consumer Health Data Notice</h1>
-            <p className="notice-updated">Last updated: August 27, 2026</p>
+            <p className="notice-updated">Last updated: September 10, 2026</p>
             <p>
               Some information collected on this website may be considered consumer health data
               under state laws such as the Washington My Health My Data Act. This notice explains
@@ -29,8 +29,9 @@ export function HealthDataNoticePage() {
             <h2>Consumer health data we collect</h2>
             <ul>
               <li>
-                Quiz answers about your GLP-1 treatment timeline, strength and daily function,
-                energy, digestive comfort and maintenance goals.
+                Quiz answers about your GLP-1 treatment timeline, current care provider and
+                prescription, strength and daily function, energy, digestive comfort, routine and
+                maintenance goals.
               </li>
               <li>
                 The summary categories derived from those answers, such as strength and function or
