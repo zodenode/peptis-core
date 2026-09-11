@@ -52,9 +52,9 @@ Peptis is a **GLP continuity / body recomposition** programme for adults on or a
 1. **Continuity coaching and nutrition**
 2. **Exercise programmes and training tips** (`/plan`)
 3. **One Lean Mass / GLP support supplement bundle** (curated Supliful private-label stock)
-4. **Clinician-directed adjunct medications** for problems that can arise while taking GLPs, when services launch
+4. **Planned weight-management consultations** through the contracted telehealth platform, when clinical services launch
 
-Insurance/programme descriptions may still reference coaching, nutrition, supplements, exercise, training tips and adjunct medications as capabilities; they are not six equal consumer shops. Fuller Supliful pick lists for ops live in [`docs/SUPFUL-STOCK-LISTS.md`](./docs/SUPFUL-STOCK-LISTS.md) and [`docs/SUPFUL-CATALOG-INDEX.md`](./docs/SUPFUL-CATALOG-INDEX.md). Public page: [`/offerings`](./src/pages/OfferingsPage.tsx).
+Public medication wording is limited to the current overlapping WhiteLabelMD onboarding and submitted insurance scope: planned weight-management consultations in which a licensed practitioner may consider compounded semaglutide or tirzepatide when appropriate. ED, hair-loss, skincare, hormone and other categories stay off the public offer unless their operational and insurance scope is confirmed. Fuller Supliful pick lists for ops live in [`docs/SUPFUL-STOCK-LISTS.md`](./docs/SUPFUL-STOCK-LISTS.md) and [`docs/SUPFUL-CATALOG-INDEX.md`](./docs/SUPFUL-CATALOG-INDEX.md). Public page: [`/offerings`](./src/pages/OfferingsPage.tsx).
 
 The current consumer offer is a **$0 founding reservation** with a planned **$299/month** founding rate if services launch, the member is eligible, and they affirmatively enroll. The planned standard rate after founding enrollment is $399/month. Pricing and availability may change before activation. Optional Lean Mass Bundle interest is planned at +$59/month at launch.
 
