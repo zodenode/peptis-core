@@ -333,7 +333,19 @@ export function PlanBuild({ answers, onAnswer, onContinue, onBack, canGoBack }: 
                       onClick={() => selectAnswer('care_provider', provider.id)}
                     >
                       <span className={`provider-mark is-${provider.tone}`} aria-hidden="true">
-                        {provider.mark}
+                        {provider.logoSrc ? (
+                          <img
+                            src={provider.logoSrc}
+                            className={`provider-logo is-${provider.logoFit ?? 'wordmark'}`}
+                            alt=""
+                            decoding="async"
+                            referrerPolicy="no-referrer"
+                            onError={(event) => event.currentTarget.classList.add('is-broken')}
+                          />
+                        ) : null}
+                        <span className={`provider-logo-fallback${provider.logoSrc ? '' : ' is-visible'}`}>
+                          {provider.mark}
+                        </span>
                       </span>
                       <span>{provider.label}</span>
                     </button>

@@ -2840,15 +2840,47 @@ blockquote {
 
 .provider-mark {
   display: grid;
-  width: clamp(2.5rem, 10vw, 3.25rem);
-  aspect-ratio: 1;
+  width: min(84%, 5.5rem);
+  height: clamp(2.65rem, 11vw, 3.15rem);
   place-items: center;
+  padding: 0.55rem;
   border-radius: 12px;
   background: var(--beige-warm);
   color: var(--charcoal);
   font-size: clamp(0.62rem, 2.2vw, 0.82rem);
   font-weight: 800;
   letter-spacing: -0.035em;
+}
+
+.provider-logo {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.provider-logo.is-wordmark {
+  width: 100%;
+  height: 1.85rem;
+}
+
+.provider-logo.is-icon {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 7px;
+}
+
+.provider-logo-fallback {
+  display: none;
+}
+
+.provider-logo-fallback.is-visible,
+.provider-logo.is-broken + .provider-logo-fallback {
+  display: inline;
+}
+
+.provider-logo.is-broken {
+  display: none;
 }
 
 .provider-mark.is-ro {
@@ -2871,8 +2903,8 @@ blockquote {
 }
 
 .provider-mark.is-ivim {
-  background: #182d45;
-  color: #ffffff;
+  background: #e8eef3;
+  color: #182d45;
 }
 
 .provider-mark.is-medvi {
