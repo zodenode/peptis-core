@@ -2,11 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
-import {
-  insuranceCapabilityNotes,
-  offeringAudience,
-  offeringPillars,
-} from '../data/offerings'
+import { offeringAudience, offeringPillars } from '../data/offerings'
 import { suplifulStockLists } from '../data/suplifulStock'
 import { track } from '../lib/analytics'
 
@@ -39,9 +35,9 @@ export function OfferingsPage() {
             <p className="eyebrow">Peptis offerings</p>
             <h1>Continuity care, not a catalog</h1>
             <p className="offerings-lead">
-              Peptis focuses on coaching and nutrition, training programmes, one curated Lean Mass /
-              GLP support supplement bundle, and clinician-directed adjunct medications when
-              services launch. {offeringAudience}
+              Peptis focuses on coaching and nutrition planning, training programmes, one curated
+              Lean Mass / GLP support supplement bundle, and a planned weight-management
+              consultation pathway. {offeringAudience}
             </p>
             <p className="offerings-status-note">
               The $0 founding reservation is planning access today. Live prescribing and pharmacy
@@ -62,9 +58,9 @@ export function OfferingsPage() {
                   <div className="offering-card-meta">
                     <span>{pillar.eyebrow}</span>
                     <span
-                      className={`offering-status is-${pillar.status === 'available-now' ? 'now' : 'planned'}`}
+                      className={`offering-status is-${pillar.status === 'programme-planned' ? 'planned' : 'now'}`}
                     >
-                      {pillar.status === 'available-now' ? 'Available now' : 'Programme planned'}
+                      {pillar.statusLabel}
                     </span>
                   </div>
                   <h3>{pillar.title}</h3>
@@ -139,14 +135,15 @@ export function OfferingsPage() {
           </div>
         </section>
 
-        <section className="section section-mist" id="medications" aria-labelledby="meds-heading">
+        <section className="section section-mist" id="clinical-care" aria-labelledby="clinical-care-heading">
           <div className="section-inner guide-narrow">
-            <p className="eyebrow">Medications scope</p>
-            <h2 id="meds-heading">Clinician-directed adjunct medications</h2>
+            <p className="eyebrow">Planned clinical pathway</p>
+            <h2 id="clinical-care-heading">Weight-management consultations</h2>
             <p>
-              Supliful stock covers dietary supplements only. Medications aimed at problems that can
-              arise while taking GLP-1 therapies are evaluated only by licensed clinicians after
-              services launch, state coverage and eligibility are confirmed.
+              If clinical services launch in a member’s state, licensed practitioners through the
+              contracted telehealth platform may assess eligibility for weight-management care.
+              Compounded semaglutide or tirzepatide may be considered only after clinician review
+              when appropriate. A prescription is never guaranteed.
             </p>
             <ul className="walkaway-list">
               <li>
@@ -161,27 +158,6 @@ export function OfferingsPage() {
                 </span>
               </li>
             </ul>
-          </div>
-        </section>
-
-        <section className="section" id="insurance-scope" aria-labelledby="insurance-heading">
-          <div className="section-inner guide-narrow">
-            <p className="eyebrow">Insurance application note</p>
-            <h2 id="insurance-heading">Capability coverage without a marketplace layout</h2>
-            <p>
-              For underwriting and programme description, Peptis covers the following capabilities.
-              They are delivered through the four product offers above, not as six separate shops.
-            </p>
-            <ul>
-              {insuranceCapabilityNotes.map((note) => (
-                <li key={note}>{note}</li>
-              ))}
-            </ul>
-            <p className="offerings-status-note">
-              Fuller Supliful pick lists (including secondary and optional SKUs) live in the repo
-              for ops and labeling: <code>docs/SUPFUL-STOCK-LISTS.md</code> and{' '}
-              <code>docs/SUPFUL-CATALOG-INDEX.md</code>.
-            </p>
           </div>
         </section>
       </main>

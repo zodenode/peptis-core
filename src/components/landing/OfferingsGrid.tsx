@@ -10,11 +10,11 @@ export function OfferingsGrid() {
       <div className="section-inner">
         <div className="section-head">
           <p className="eyebrow">What Peptis offers</p>
-          <h2 id="offerings-heading">Continuity coaching, training, lean-mass support and clinical adjuncts</h2>
+          <h2 id="offerings-heading">Continuity planning, training, lean-mass support and planned clinical care</h2>
           <p>
-            Built for adults on or after GLP-1 therapy: one coaching and nutrition programme, one
-            training system, one curated supplement bundle, and clinician-directed adjunct
-            medications when services launch.
+            Built for adults on or after GLP-1 therapy: planning tools for coaching and nutrition,
+            one training system, one curated supplement bundle, and a planned weight-management
+            consultation pathway when clinical services launch.
           </p>
         </div>
         <div className="offering-grid">
@@ -23,9 +23,9 @@ export function OfferingsGrid() {
               <div className="offering-card-meta">
                 <span>{pillar.eyebrow}</span>
                 <span
-                  className={`offering-status is-${pillar.status === 'available-now' ? 'now' : 'planned'}`}
+                  className={`offering-status is-${pillar.status === 'programme-planned' ? 'planned' : 'now'}`}
                 >
-                  {pillar.status === 'available-now' ? 'Available now' : 'Programme planned'}
+                  {pillar.statusLabel}
                 </span>
               </div>
               <h3>{pillar.title}</h3>

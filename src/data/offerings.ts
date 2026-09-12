@@ -1,7 +1,4 @@
-/**
- * Peptis public offering pillars — tight continuity strategy.
- * Insurance/ops still keep fuller Supliful pick lists in docs/SUPFUL-STOCK-LISTS.md.
- */
+/** Peptis public offering pillars — tight continuity strategy. */
 
 export type OfferingPillar = {
   id: string
@@ -9,7 +6,8 @@ export type OfferingPillar = {
   eyebrow: string
   summary: string
   includes: string[]
-  status: 'available-now' | 'programme-planned'
+  status: 'available-now' | 'planning-tools-available' | 'programme-planned'
+  statusLabel: string
   href: string
   cta: string
 }
@@ -26,7 +24,8 @@ export const offeringPillars: OfferingPillar[] = [
       'Low-appetite nutrition guidance',
       'Ongoing coaching workflows as state programmes launch',
     ],
-    status: 'available-now',
+    status: 'planning-tools-available',
+    statusLabel: 'Planning tools available now',
     href: '/quiz',
     cta: 'Start the continuity check',
   },
@@ -42,6 +41,7 @@ export const offeringPillars: OfferingPillar[] = [
       'Calendar and training-app exports',
     ],
     status: 'available-now',
+    statusLabel: 'Available now',
     href: '/plan',
     cta: 'Build a training plan',
   },
@@ -57,35 +57,27 @@ export const offeringPillars: OfferingPillar[] = [
       'Multivitamin, magnesium and GLP-1 Support / gut formulas',
     ],
     status: 'programme-planned',
+    statusLabel: 'Programme planned',
     href: '/offerings#lean-mass-bundle',
     cta: 'See the core bundle',
   },
   {
-    id: 'medications',
-    title: 'Clinician-directed adjunct medications',
-    eyebrow: 'When services launch',
+    id: 'clinical-care',
+    title: 'Planned weight-management consultations',
+    eyebrow: 'Planned clinical pathway',
     summary:
-      'When clinical services launch in a member’s state, licensed clinicians may evaluate medications aimed at problems that can arise while taking GLP-1 therapies, only when appropriate. Separate from supplements and not part of the $0 reservation today.',
+      'If clinical services launch in a member’s state, licensed practitioners through the contracted telehealth platform may assess eligibility for weight-management care. Compounded semaglutide or tirzepatide may be considered only after clinician review when appropriate; no prescription is guaranteed.',
     includes: [
-      'Future eligibility screening by licensed clinicians',
-      'Adjunct evaluation for GLP-related problems when indicated',
-      'Clear separation from the supplement bundle',
+      'Future eligibility screening for weight-management care',
+      'Clinician review before any medication decision',
+      'Prescribing and dispensing handled by licensed third parties',
     ],
     status: 'programme-planned',
-    href: '/offerings#medications',
-    cta: 'Read medication scope',
+    statusLabel: 'Programme planned',
+    href: '/offerings#clinical-care',
+    cta: 'Read the planned clinical scope',
   },
 ]
-
-/** Short insurance-facing capability list (not equal product pillars). */
-export const insuranceCapabilityNotes = [
-  'Coaching for adults on or after GLP-1 therapy',
-  'Nutrition guidance for low appetite and protein intake',
-  'Dietary supplements curated for GLP continuity support',
-  'Exercise and movement programmes',
-  'Training tips for strength and progression',
-  'Clinician-directed medications for problems that can arise while taking GLPs, when services launch',
-] as const
 
 export const offeringAudience =
   'Adults on or after GLP-1 weight-loss therapy who need continuity coaching, training and lean-mass support—not a general supplement marketplace.'
