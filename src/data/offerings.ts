@@ -48,18 +48,19 @@ export const offeringPillars: OfferingPillar[] = [
   {
     id: 'supplements',
     title: 'Lean Mass / GLP support supplements',
-    eyebrow: 'Curated add-on',
+    eyebrow: 'Sustained programme add-on',
     summary:
-      'One optional private-label bundle from Supliful stock: protein, creatine, hydration, foundational micronutrients and digestive-comfort support. Dietary supplements are not medicines and do not treat medication side effects.',
+      'Supplements remain a sustained part of the Peptis programme as an optional nutrition-support layer alongside coaching and training. The planned private-label bundle uses curated Supliful stock and focuses on protein, creatine, hydration, foundational micronutrients and digestive-comfort support. Supplements are not medicines and do not treat or prevent GLP-1 medication side effects.',
     includes: [
-      'Protein powder and collagen options',
-      'Creatine and electrolytes',
-      'Multivitamin, magnesium and GLP-1 Support / gut formulas',
+      'Complete-protein options to support daily protein targets',
+      'Creatine and electrolyte/hydration support',
+      'Selected micronutrient and digestive-comfort products',
+      'Collagen may be offered separately for appropriate nutrition/wellness use, but is not presented as a complete protein or as proven to prevent loose skin',
     ],
     status: 'programme-planned',
-    statusLabel: 'Programme planned',
+    statusLabel: 'Sustained add-on — release planned',
     href: '/offerings#lean-mass-bundle',
-    cta: 'See the core bundle',
+    cta: 'See the planned bundle',
   },
   {
     id: 'clinical-care',
