@@ -19,6 +19,7 @@ export default function App() {
       <Route path="/blog" element={<BlogIndexPage />} />
       <Route path="/blog/:slug" element={<BlogArticlePage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPage />} />
       <Route path="/health-data" element={<HealthDataNoticePage />} />
       <Route path="/cancel" element={<CancelPage />} />
     </Routes>
