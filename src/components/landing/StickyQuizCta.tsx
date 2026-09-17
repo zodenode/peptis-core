@@ -15,8 +15,8 @@ export function StickyQuizCta() {
   return (
     <div className={`sticky-cta${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
       <div>
-        <strong>Free continuity check</strong>
-        <span>$0 reservation, about three minutes</span>
+        <strong>Free 3-minute summary</strong>
+        <span>$0 reservation. No card needed.</span>
       </div>
       <Link
         className="btn btn-primary"
@@ -27,7 +27,7 @@ export function StickyQuizCta() {
           track('quiz_cta_clicked', { location: 'sticky_mobile' })
         }}
       >
-        Start
+        Get mine
       </Link>
     </div>
   )

@@ -58,7 +58,7 @@ export const offeringPillars: OfferingPillar[] = [
       'Collagen may be offered separately for appropriate nutrition/wellness use, but is not presented as a complete protein or as proven to prevent loose skin',
     ],
     status: 'programme-planned',
-    statusLabel: 'Sustained add-on — release planned',
+    statusLabel: 'Sustained add-on, release planned',
     href: '/offerings#lean-mass-bundle',
     cta: 'See the planned bundle',
   },
@@ -81,4 +81,4 @@ export const offeringPillars: OfferingPillar[] = [
 ]
 
 export const offeringAudience =
-  'Adults on or after GLP-1 weight-loss therapy who need continuity coaching, training and lean-mass support—not a general supplement marketplace.'
+  'Adults on or after GLP-1 weight-loss therapy who need continuity coaching, training and lean-mass support, not a general supplement marketplace.'

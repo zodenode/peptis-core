@@ -6,6 +6,7 @@ import { BodyCompositionGraphic } from '../components/landing/BodyCompositionGra
 import { ContinuityFramework } from '../components/landing/ContinuityFramework'
 import { EvidenceCards } from '../components/landing/EvidenceCards'
 import { FoundingOfferVisual } from '../components/landing/FoundingOfferVisual'
+import { LeanMassPreview } from '../components/landing/LeanMassPreview'
 import { MeasuresBeyondWeight } from '../components/landing/MeasuresBeyondWeight'
 import { OfferingsGrid } from '../components/landing/OfferingsGrid'
 import { PricingStrip } from '../components/landing/PricingStrip'
@@ -66,11 +67,10 @@ export function LandingPage() {
           <div className="hero-inner">
             <div className="hero-copy">
               <p className="eyebrow eyebrow-light">For adults on or after GLP-1 weight loss</p>
-              <h1 id="hero-heading">You can see the weight loss. Can you see what happened to your strength?</h1>
+              <h1 id="hero-heading">Get a written strength and maintenance summary in 3 minutes</h1>
               <p className="hero-lead">
-                Eight quick questions show you what deserves attention now. You walk away with a
-                written summary of your strength, protein and maintenance priorities, free, in
-                about three minutes.
+                Eight questions. You leave with a personal record of what the scale cannot show,
+                plus a $0 place on the state launch list. No payment details.
               </p>
               <div className="hero-quiz-start">
                 <p className="hero-quiz-q">Which of these sounds most like you?</p>
@@ -93,11 +93,11 @@ export function LandingPage() {
                 </div>
                 <div className="hero-actions">
                   <Link className="btn btn-primary" to="/quiz" onClick={heroCta}>
-                    Start the free check
+                    Get my free summary
                   </Link>
                 </div>
                 <p className="hero-micro">
-                  Free. About 3 minutes. No payment details.{' '}
+                  Free. About 3 minutes. No card. A reservation is a waitlist, not care today.{' '}
                   <a
                     href="#evidence"
                     onClick={() => track('evidence_cta_clicked', { location: 'hero' })}
@@ -114,6 +114,76 @@ export function LandingPage() {
             </div>
           </div>
         </section>
+
+        <LeanMassPreview />
+
+        <section className="section section-forest" id="how" ref={howRef} aria-labelledby="how-heading">
+          <div className="section-inner">
+            <div className="section-head">
+              <p className="eyebrow">How it works today</p>
+              <h2 id="how-heading">Three minutes now. A clear choice later.</h2>
+            </div>
+            <ol className="how-timeline">
+              {howSteps.map((step) => (
+                <li className="how-step" key={step.n}>
+                  <span className="how-node" aria-hidden="true">
+                    {step.n}
+                  </span>
+                  <div className="how-step-copy">
+                    <h3>{step.title}</h3>
+                    <p>{step.body}</p>
+                  </div>
+                  <img src={step.image} alt={step.alt} />
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <section className="section" id="proof" ref={proofRef} aria-labelledby="proof-heading">
+          <div className="section-inner proof-layout">
+            <figure className="proof-figure">
+              <span className="proof-sticker" aria-hidden="true">
+                Free summary
+              </span>
+              <img
+                src={images.testimonial}
+                alt="Adult reflecting against a vivid berry-red studio background"
+              />
+            </figure>
+            <div>
+              <p className="eyebrow">What you walk away with</p>
+              <h2 id="proof-heading">A written summary of the priorities the scale cannot show</h2>
+              <p>
+                After eight questions you receive a personal record of strength, protein and
+                maintenance notes, plus a $0 place on the state launch list. It is a planning
+                document, not a diagnosis or a promise of treatment results.
+              </p>
+              <ul className="walkaway-list">
+                <li>
+                  <strong>Your priorities, named</strong>
+                  <span>Strength, energy, digestive comfort and maintenance, based on your answers.</span>
+                </li>
+                <li>
+                  <strong>A $0 reservation</strong>
+                  <span>No payment details. Cancel any time from the confirmation email.</span>
+                </li>
+              </ul>
+              <Link
+                className="btn btn-primary"
+                to="/quiz"
+                onClick={() => {
+                  setQuizSource('walkaway')
+                  track('quiz_cta_clicked', { location: 'walkaway' })
+                }}
+              >
+                Get my free summary
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <PricingStrip />
 
         <BodyCompositionGraphic />
 
@@ -146,8 +216,6 @@ export function LandingPage() {
             </div>
           </div>
         </section>
-
-        <PricingStrip />
 
         <OfferingsGrid />
 
@@ -197,77 +265,11 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section className="section section-forest" id="how" ref={howRef} aria-labelledby="how-heading">
-          <div className="section-inner">
-            <div className="section-head">
-              <p className="eyebrow">How founding access works</p>
-              <h2 id="how-heading">Reserve now and decide when the facts are clear</h2>
-            </div>
-            <ol className="how-timeline">
-              {howSteps.map((step) => (
-                <li className="how-step" key={step.n}>
-                  <span className="how-node" aria-hidden="true">
-                    {step.n}
-                  </span>
-                  <div className="how-step-copy">
-                    <h3>{step.title}</h3>
-                    <p>{step.body}</p>
-                  </div>
-                  <img src={step.image} alt={step.alt} />
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
         <MeasuresBeyondWeight />
 
         <ProteinTargetGraphic />
 
         <EvidenceCards />
-
-        <section className="section" id="proof" ref={proofRef} aria-labelledby="proof-heading">
-          <div className="section-inner proof-layout">
-            <figure className="proof-figure">
-              <span className="proof-sticker" aria-hidden="true">
-                Free summary
-              </span>
-              <img
-                src={images.testimonial}
-                alt="Adult reflecting against a vivid berry-red studio background"
-              />
-            </figure>
-            <div>
-              <p className="eyebrow">What you walk away with</p>
-              <h2 id="proof-heading">A written summary of the priorities the scale cannot show</h2>
-              <p>
-                After eight questions you receive a personal record of strength, protein and
-                maintenance notes, plus a $0 place on the state launch list. It is a planning
-                document, not a diagnosis or a promise of treatment results.
-              </p>
-              <ul className="walkaway-list">
-                <li>
-                  <strong>Your priorities, named</strong>
-                  <span>Strength, energy, digestive comfort and maintenance, based on your answers.</span>
-                </li>
-                <li>
-                  <strong>A $0 reservation</strong>
-                  <span>No payment details. Cancel any time from the confirmation email.</span>
-                </li>
-              </ul>
-              <Link
-                className="btn btn-primary"
-                to="/quiz"
-                onClick={() => {
-                  setQuizSource('walkaway')
-                  track('quiz_cta_clicked', { location: 'walkaway' })
-                }}
-              >
-                Start the free check
-              </Link>
-            </div>
-          </div>
-        </section>
 
         <section className="section trust-band" ref={trustBandRef} aria-labelledby="trust-heading">
           <div className="section-inner trust-band-inner">
@@ -319,20 +321,20 @@ export function LandingPage() {
           <div className="section-inner closer-inner">
             <div className="closer-copy">
               <p className="eyebrow eyebrow-light">Peptis Core Continuity</p>
-              <h2 id="closer-heading">Start with a short continuity check</h2>
+              <h2 id="closer-heading">Get your free summary in about three minutes</h2>
               <p>
-                Answer eight straightforward questions in about three minutes. You will receive a
-                summary of your priorities and can reserve your place for $0.
+                Answer eight straightforward questions. You will receive a written record of your
+                priorities and can reserve your place for $0.
               </p>
               <Link
-                className="btn btn-ghost"
+                className="btn btn-primary"
                 to="/quiz"
                 onClick={() => {
                   setQuizSource('closer')
                   track('quiz_cta_clicked', { location: 'closer' })
                 }}
               >
-                Open the full quiz
+                Get my free summary
               </Link>
             </div>
             <QuizEmbed />

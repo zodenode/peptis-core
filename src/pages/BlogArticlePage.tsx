@@ -79,7 +79,7 @@ export function BlogArticlePage() {
                 to="/quiz"
                 onClick={() => track('quiz_cta_clicked', { location: `blog_${article.slug}` })}
               >
-                Start the free check
+                Get my free summary
               </Link>
             </div>
             <section className="blog-sources">

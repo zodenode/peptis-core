@@ -1,10 +1,10 @@
 import { images } from './images'
 
 export const trustBadges = [
-  '$0 reservation',
+  'Free written summary',
+  'About 3 minutes',
   'No payment details',
-  'State-by-state launch',
-  'Not medical care today',
+  'Cancel any time',
 ] as const
 
 export const problemItems = [
@@ -57,21 +57,21 @@ export const protocolRows = [
 export const howSteps = [
   {
     n: '01',
-    title: 'Complete the continuity quiz',
-    body: 'Tell us what has changed and what you want to protect.',
+    title: 'Today: 8 questions',
+    body: 'Tell us what has changed with strength, energy, comfort and maintenance. About three minutes.',
     image: images.how1,
     alt: 'Adult completing the continuity quiz on a laptop in a colorful studio',
   },
   {
     n: '02',
-    title: 'Reserve for $0 today',
-    body: 'Save your summary and join the state launch list. No payment details are needed.',
+    title: 'Right after: your written summary',
+    body: 'Save a personal record of your priorities and reserve a founding place for $0. No payment details.',
     image: images.how2,
     alt: 'Adult organizing continuity notes in a colorful studio',
   },
   {
     n: '03',
-    title: 'Choose at launch',
+    title: 'Later: you decide',
     body: 'If services reach your state and you are eligible, review the final terms and choose whether to enroll.',
     image: images.how3,
     alt: 'A calm sunlit path suggesting a future choice',
@@ -81,7 +81,7 @@ export const howSteps = [
 export const faqs = [
   {
     q: 'What does Peptis offer?',
-    a: 'Peptis is a continuity programme for adults on or after GLP-1 therapy: coaching and nutrition planning tools, exercise programmes with training tips, one curated Lean Mass / GLP support supplement bundle, and—when clinical services launch—a planned weight-management consultation pathway. Any medication decision follows review by a licensed clinician, and no prescription is guaranteed. See /offerings.',
+    a: 'Peptis is a continuity programme for adults on or after GLP-1 therapy: coaching and nutrition planning tools, exercise programmes with training tips, one curated Lean Mass / GLP support supplement bundle, and, when clinical services launch, a planned weight-management consultation pathway. Any medication decision follows review by a licensed clinician, and no prescription is guaranteed. See /offerings.',
   },
   {
     q: 'Is this medical care or a replacement for my current therapy?',

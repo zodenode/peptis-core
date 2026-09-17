@@ -36,17 +36,11 @@ export function Header({ variant = 'landing' }: HeaderProps) {
       {variant === 'landing' ? (
         <>
           <nav className="nav" aria-label="Primary">
-            <Link to="/quiz" onClick={() => quizClick('nav')}>
-              Continuity quiz
-            </Link>
             <Link to="/offerings">Offerings</Link>
-            <Link to="/plan">Training</Link>
             <a href="/#evidence">Evidence</a>
-            <a href="/#offer">Offer</a>
             <a href="/#faq">FAQ</a>
-            <Link to="/blog">Blog</Link>
             <Link className="nav-cta" to="/quiz" onClick={() => quizClick('nav_cta')}>
-              Reserve for $0
+              Get my free summary
             </Link>
           </nav>
           <button
@@ -61,16 +55,15 @@ export function Header({ variant = 'landing' }: HeaderProps) {
           {open ? (
             <nav id="mobile-nav" className="nav-mobile" aria-label="Mobile">
               <Link to="/quiz" onClick={() => quizClick('nav_mobile')}>
-                Continuity quiz
+                Free summary
               </Link>
               <Link to="/offerings">Offerings</Link>
               <Link to="/plan">Training</Link>
               <a href="/#evidence">Evidence</a>
-              <a href="/#offer">Offer</a>
               <a href="/#faq">FAQ</a>
               <Link to="/blog">Blog</Link>
               <Link className="nav-cta" to="/quiz" onClick={() => quizClick('nav_mobile_cta')}>
-                Reserve for $0
+                Get my free summary
               </Link>
             </nav>
           ) : null}

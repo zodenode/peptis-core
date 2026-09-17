@@ -55,7 +55,7 @@ export function FoundingOfferVisual() {
             to="/quiz"
             onClick={() => track('quiz_cta_clicked', { location: 'founding_offer' })}
           >
-            Reserve for $0
+            Get my free summary
           </Link>
           <p className="offer-caveat">
             No charge now. No payment details. Pricing is subject to final launch terms.

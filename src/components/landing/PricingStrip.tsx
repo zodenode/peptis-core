@@ -8,7 +8,7 @@ export function PricingStrip() {
         <div className="pricing-strip-items">
           <div>
             <strong>$0</strong>
-            <span>due today</span>
+            <span>today for your summary</span>
           </div>
           <div>
             <strong>$299/mo</strong>
@@ -27,7 +27,7 @@ export function PricingStrip() {
             track('quiz_cta_clicked', { location: 'pricing_strip' })
           }}
         >
-          Reserve for $0
+          Get my free summary
         </Link>
       </div>
       <p className="pricing-strip-note">
