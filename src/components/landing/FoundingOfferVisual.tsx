@@ -39,11 +39,12 @@ export function FoundingOfferVisual() {
     >
       <div className="section-inner offer-shell">
         <div className="offer-copy">
-          <p className="eyebrow eyebrow-light">Peptis Core Continuity Founding Reservation</p>
-          <h2 id="offer-heading">Reserve today. Pay only if you choose to activate later.</h2>
+          <p className="eyebrow eyebrow-light">Free check, then a $0 founding reservation</p>
+          <h2 id="offer-heading">Start with written priorities. Pay only if you later enroll.</h2>
           <p>
-            Hold your place for $0 and keep the opportunity to join at the planned founding rate
-            if services launch in your state, you are eligible and you decide to enroll.
+            The continuity check is free. Holding your place costs $0 and keeps the planned
+            founding rate if services launch in your state, you are eligible and you choose to
+            enroll.
           </p>
           <ul className="offer-benefits">
             {benefits.map((benefit) => (

@@ -66,11 +66,11 @@ export function LandingPage() {
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-inner">
             <div className="hero-copy">
-              <p className="eyebrow eyebrow-light">For adults on or after GLP-1 weight loss</p>
-              <h1 id="hero-heading">Get a written strength and maintenance summary in 3 minutes</h1>
+              <p className="eyebrow eyebrow-light">Free GLP-1 continuity check</p>
+              <h1 id="hero-heading">See what the scale missed about your strength</h1>
               <p className="hero-lead">
-                Eight questions. You leave with a personal record of what the scale cannot show,
-                plus a $0 place on the state launch list. No payment details.
+                Eight questions. You leave with written priorities on strength, protein and keeping
+                the weight off, plus a $0 place on the state launch list. About 3 minutes. No card.
               </p>
               <div className="hero-quiz-start">
                 <p className="hero-quiz-q">Which of these sounds most like you?</p>
@@ -97,19 +97,12 @@ export function LandingPage() {
                   </Link>
                 </div>
                 <p className="hero-micro">
-                  Free. About 3 minutes. No card. A reservation is a waitlist, not care today.{' '}
+                  A reservation is a waitlist, not care today.{' '}
                   <a
                     href="#preview"
                     onClick={() => track('lean_preview_link_clicked', { location: 'hero' })}
                   >
-                    Try the lean-mass preview
-                  </a>
-                  {' · '}
-                  <a
-                    href="#evidence"
-                    onClick={() => track('evidence_cta_clicked', { location: 'hero' })}
-                  >
-                    See the evidence
+                    See the lean-mass preview
                   </a>
                 </p>
               </div>
@@ -127,7 +120,7 @@ export function LandingPage() {
         <section className="section section-forest" id="how" ref={howRef} aria-labelledby="how-heading">
           <div className="section-inner">
             <div className="section-head">
-              <p className="eyebrow">How it works today</p>
+              <p className="eyebrow">How the continuity check works</p>
               <h2 id="how-heading">Three minutes now. A clear choice later.</h2>
             </div>
             <ol className="how-timeline">
@@ -144,6 +137,18 @@ export function LandingPage() {
                 </li>
               ))}
             </ol>
+            <div className="how-cta">
+              <Link
+                className="btn btn-primary"
+                to="/quiz"
+                onClick={() => {
+                  setQuizSource('how')
+                  track('quiz_cta_clicked', { location: 'how' })
+                }}
+              >
+                Get my free summary
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -160,7 +165,7 @@ export function LandingPage() {
             </figure>
             <div>
               <p className="eyebrow">What you walk away with</p>
-              <h2 id="proof-heading">A written summary of the priorities the scale cannot show</h2>
+              <h2 id="proof-heading">Named priorities the scale cannot show, plus a $0 reservation</h2>
               <p>
                 After eight questions you receive a personal record of strength, protein and
                 maintenance notes, plus a $0 place on the state launch list. It is a planning
@@ -327,11 +332,11 @@ export function LandingPage() {
           </div>
           <div className="section-inner closer-inner">
             <div className="closer-copy">
-              <p className="eyebrow eyebrow-light">Peptis Core Continuity</p>
-              <h2 id="closer-heading">Get your free summary in about three minutes</h2>
+              <p className="eyebrow eyebrow-light">Free GLP-1 continuity check</p>
+              <h2 id="closer-heading">See what the scale missed, in about 3 minutes</h2>
               <p>
-                Answer eight straightforward questions. You will receive a written record of your
-                priorities and can reserve your place for $0.
+                Answer eight questions. You will receive written priorities and can reserve your
+                place for $0. No payment details.
               </p>
               <Link
                 className="btn btn-primary"

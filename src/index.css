@@ -402,10 +402,10 @@ button {
 
 .hero h1 {
   margin: 0 0 1rem;
-  max-width: 18ch;
+  max-width: 14ch;
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(2.35rem, 5.4vw, 4rem);
+  font-size: clamp(2.5rem, 6vw, 4.4rem);
   line-height: 1.04;
   letter-spacing: -0.025em;
 }
@@ -707,6 +707,11 @@ button {
   .how-step:nth-child(even) img {
     margin-top: 1.4rem;
   }
+}
+
+.how-cta {
+  width: min(100%, 860px);
+  margin: 2rem auto 0;
 }
 
 /* Evidence composition */

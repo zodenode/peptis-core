@@ -1,8 +1,8 @@
 import { images } from './images'
 
 export const trustBadges = [
-  'Free written summary',
-  'About 3 minutes',
+  'Free 3-minute check',
+  'Written priorities',
   'No payment details',
   'Cancel any time',
 ] as const
@@ -80,8 +80,8 @@ export const howSteps = [
 
 export const faqs = [
   {
-    q: 'What does Peptis offer?',
-    a: 'Peptis is a continuity programme for adults on or after GLP-1 therapy: coaching and nutrition planning tools, exercise programmes with training tips, one curated Lean Mass / GLP support supplement bundle, and, when clinical services launch, a planned weight-management consultation pathway. Any medication decision follows review by a licensed clinician, and no prescription is guaranteed. See /offerings.',
+    q: 'What do I get from the free continuity check?',
+    a: 'A written record of your strength, protein, digestive comfort and maintenance priorities, based on eight questions, plus a $0 place on the state launch list. It is a planning document, not a diagnosis or medical care. Peptis also plans coaching, training, one Lean Mass / GLP support supplement bundle, and, when clinical services launch, a weight-management consultation pathway. No prescription is guaranteed. See /offerings.',
   },
   {
     q: 'Is this medical care or a replacement for my current therapy?',
