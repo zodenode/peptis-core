@@ -2485,6 +2485,14 @@ blockquote {
   margin-bottom: 1.1rem;
 }
 
+.email-gate-field label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--forest);
+}
+
 .email-gate-field input {
   width: 100%;
   padding: 0.85rem 1rem;

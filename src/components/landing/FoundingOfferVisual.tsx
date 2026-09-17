@@ -42,9 +42,9 @@ export function FoundingOfferVisual() {
           <p className="eyebrow eyebrow-light">Free check, then a $0 founding reservation</p>
           <h2 id="offer-heading">Start with written priorities. Pay only if you later enroll.</h2>
           <p>
-            The continuity check is free. Holding your place costs $0 and keeps the planned
-            founding rate if services launch in your state, you are eligible and you choose to
-            enroll.
+            The continuity check is free. Holding your place costs $0. The supplement bundle and
+            a paid GLP continuity subscription are not available yet. Planned founding rates apply
+            only if those services launch, you are eligible and you choose to enroll.
           </p>
           <ul className="offer-benefits">
             {benefits.map((benefit) => (

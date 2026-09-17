@@ -9,12 +9,12 @@ export function OfferingsGrid() {
     <section className="section section-mist" id="offerings" ref={ref} aria-labelledby="offerings-heading">
       <div className="section-inner">
         <div className="section-head">
-          <p className="eyebrow">What Peptis offers</p>
-          <h2 id="offerings-heading">Continuity planning, training, lean-mass support and planned clinical care</h2>
+          <p className="eyebrow">What you can do today</p>
+          <h2 id="offerings-heading">A free continuity check and a $0 place on the launch list</h2>
           <p>
-            Built for adults on or after GLP-1 therapy: planning tools for coaching and nutrition,
-            one training system, one curated supplement bundle, and a planned weight-management
-            consultation pathway when clinical services launch.
+            Coaching tools and a starter training plan are available now. The supplement bundle
+            and a paid GLP continuity subscription are not ready yet. Reserve your place and we
+            will tell you when they open in your state.
           </p>
         </div>
         <div className="offering-grid">
@@ -38,7 +38,7 @@ export function OfferingsGrid() {
         </div>
         <p className="offerings-more">
           <Link className="editorial-link" to="/offerings">
-            Full programme scope and core Supliful bundle <b>→</b>
+            Full programme scope, including what is still planned <b>→</b>
           </Link>
         </p>
       </div>

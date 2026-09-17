@@ -426,8 +426,8 @@ export function stepMeta(id: StepId): { type: StepType; step_id: string; step_in
   const map: Record<StepId, { type: StepType; step_index: number; block?: StopBlockId }> = {
     q1: { type: 'question', step_index: 0 },
     explain_q1: { type: 'explainer', step_index: 1 },
-    email_gate: { type: 'email_gate', step_index: 2 },
-    q2: { type: 'question', step_index: 3 },
+    q2: { type: 'question', step_index: 2 },
+    email_gate: { type: 'email_gate', step_index: 3 },
     explain_q2: { type: 'explainer', step_index: 4 },
     q3: { type: 'question', step_index: 5 },
     explain_q3: { type: 'explainer', step_index: 6 },
@@ -548,10 +548,10 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
     case 'q1':
       return 'explain_q1'
     case 'explain_q1':
-      return 'email_gate'
-    case 'email_gate':
       return 'q2'
     case 'q2':
+      return 'email_gate'
+    case 'email_gate':
       return nextAfterQ2(answers, shownSet)
     case 'explain_q2':
       return 'q3'

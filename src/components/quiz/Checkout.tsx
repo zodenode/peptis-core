@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from 'react'
-import { StripeActivationBlock } from '../checkout/StripeActivationBlock'
 import { checkoutCopy } from '../../data/quiz'
 import { US_STATES } from '../../data/usStates'
 import type { CheckoutForm } from '../../hooks/useQuizEngine'
@@ -26,7 +25,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
   const [attempted, setAttempted] = useState(false)
   const errors = {
     firstName: form.firstName.trim().length > 1 ? '' : 'Enter your first name.',
-    lastName: form.lastName.trim().length > 1 ? '' : 'Enter your last name.',
+    lastName: '',
     email: isValidEmail(form.email) ? '' : 'Enter a valid email address, like name@example.com.',
     phone:
       form.phone.trim().length === 0 || form.phone.trim().length >= 7
@@ -36,7 +35,6 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
   }
   const ready =
     !errors.firstName &&
-    !errors.lastName &&
     !errors.email &&
     !errors.phone &&
     !errors.state &&
@@ -75,8 +73,9 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             </div>
           </div>
           <p className="plan-savings">
-            The planned standard rate is $399 per month. Planned rates apply only if services
-            launch, you are eligible and you choose to enroll under the final terms.
+            Supplements and a paid GLP continuity subscription are not available today. The
+            planned $299 founding rate and $399 standard rate apply only if those services
+            launch, you are eligible and you choose to enroll.
           </p>
 
           <div className="plan-section">
@@ -136,18 +135,12 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             ) : null}
           </label>
           <label>
-            Last name
+            Last name (optional)
             <input
               autoComplete="family-name"
               value={form.lastName}
               onChange={(e) => onChange({ lastName: e.target.value })}
-              aria-invalid={Boolean(fieldError('lastName'))}
-              aria-describedby={fieldError('lastName') ? 'error-last-name' : undefined}
-              required
             />
-            {fieldError('lastName') ? (
-              <span className="field-error" id="error-last-name">{errors.lastName}</span>
-            ) : null}
           </label>
           <label className="span-2">
             Email
@@ -178,6 +171,20 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
               <span className="field-error" id="error-phone">{errors.phone}</span>
             ) : null}
           </label>
+          {form.phone.trim().length >= 7 ? (
+            <label className={`check-card optional-card span-2${form.smsOptIn ? ' is-selected' : ''}`}>
+              <input
+                type="checkbox"
+                checked={form.smsOptIn}
+                onChange={(e) => onChange({ smsOptIn: e.target.checked })}
+              />
+              <span className="check-mark" aria-hidden="true">✓</span>
+              <span className="check-copy">
+                <strong>Text me when my state opens</strong>
+                <span>Optional. Launch updates only. You can stop any time.</span>
+              </span>
+            </label>
+          ) : null}
           <label className="span-2">
             State of residence
             <select
@@ -239,8 +246,6 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
           </p>
         ) : null}
         </fieldset>
-
-        <StripeActivationBlock />
 
         <p className="pricing-disclaimer">
           Planned pricing and availability may change before activation. Activation begins only

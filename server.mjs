@@ -257,7 +257,7 @@ app.post('/api/reservations', async (req, res) => {
     ? body.pathways.filter((p) => typeof p === 'string').slice(0, 8)
     : []
 
-  if (firstName.length < 2 || lastName.length < 2) {
+  if (firstName.length < 2) {
     return res.status(400).json({ ok: false, error: 'invalid_name' })
   }
   if (!EMAIL_RE.test(email)) {
@@ -279,6 +279,7 @@ app.post('/api/reservations', async (req, res) => {
     lastName,
     email,
     phone,
+    smsOptIn: Boolean(body.smsOptIn),
     state,
     upsell,
     pathways,

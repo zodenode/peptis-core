@@ -3,6 +3,7 @@ export type ReservationPayload = {
   lastName: string
   email: string
   phone: string
+  smsOptIn?: boolean
   state: string
   resident: boolean
   attest: boolean

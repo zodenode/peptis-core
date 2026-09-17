@@ -81,7 +81,7 @@ export const howSteps = [
 export const faqs = [
   {
     q: 'What do I get from the free continuity check?',
-    a: 'A written record of your strength, protein, digestive comfort and maintenance priorities, based on eight questions, plus a $0 place on the state launch list. It is a planning document, not a diagnosis or medical care. Peptis also plans coaching, training, one Lean Mass / GLP support supplement bundle, and, when clinical services launch, a weight-management consultation pathway. No prescription is guaranteed. See /offerings.',
+    a: 'A written record of your strength, protein, digestive comfort and maintenance priorities, plus a $0 place on the state launch list. The training starter plan is available now. The supplement bundle and a paid GLP continuity subscription are not ready yet. This is a planning document, not a diagnosis or medical care.',
   },
   {
     q: 'Is this medical care or a replacement for my current therapy?',

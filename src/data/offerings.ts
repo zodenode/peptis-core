@@ -25,7 +25,7 @@ export const offeringPillars: OfferingPillar[] = [
       'Ongoing coaching workflows as state programmes launch',
     ],
     status: 'planning-tools-available',
-    statusLabel: 'Planning tools available now',
+    statusLabel: 'Available now: quiz and summary',
     href: '/quiz',
     cta: 'Start the continuity check',
   },

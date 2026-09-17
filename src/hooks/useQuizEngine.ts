@@ -28,6 +28,7 @@ export type CheckoutForm = {
   resident: boolean
   attest: boolean
   upsell: boolean
+  smsOptIn: boolean
 }
 
 /* Hero prompt chip → matching q2 priority option. */
@@ -68,6 +69,7 @@ const emptyCheckout: CheckoutForm = {
   resident: false,
   attest: false,
   upsell: false,
+  smsOptIn: false,
 }
 
 function loadSnapshot(): QuizSnapshot | null {
@@ -118,7 +120,7 @@ export function useQuizEngine() {
       setHistory(saved.history)
       setAnswers(saved.answers)
       setShown(saved.shown)
-      setCheckout(saved.checkout)
+      setCheckout({ ...emptyCheckout, ...saved.checkout })
       setStartedAt(saved.startedAt)
       setCompleted(saved.completed)
       setIdentifiedEmail(saved.identifiedEmail)
@@ -296,22 +298,20 @@ export function useQuizEngine() {
   )
 
   const captureEmail = useCallback(
-    (email: string, skipped: boolean) => {
-      if (skipped) {
-        track('quiz_email_skipped', { step_id: current })
-        return
-      }
+    ({ firstName, email }: { firstName: string; email: string }) => {
       const clean = email.trim()
-      if (!isValidEmail(clean)) return
-      setCheckout((c) => ({ ...c, email: clean }))
+      const name = firstName.trim()
+      if (!isValidEmail(clean) || name.length < 2) return
+      setCheckout((c) => ({ ...c, firstName: name, email: clean }))
       track('quiz_email_captured', { step_id: current })
       pixelTrack('Lead')
-      identifyPerson(clean, { quiz_source: getQuizSource() })
+      identifyPerson(clean, { first_name: name, quiz_source: getQuizSource() })
       setIdentifiedEmail(clean)
       postQuizProgress({
         quizId,
         step: current,
         email: clean,
+        firstName: name,
         pathways: derivePathways(answers),
         answers,
         entryPrompt,
@@ -336,6 +336,7 @@ export function useQuizEngine() {
       lastName: checkout.lastName,
       email: checkout.email,
       phone: checkout.phone,
+      smsOptIn: checkout.smsOptIn,
       state: checkout.state,
       resident: checkout.resident,
       attest: checkout.attest,

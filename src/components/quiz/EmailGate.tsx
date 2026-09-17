@@ -2,29 +2,36 @@ import { useState } from 'react'
 import { isValidEmail } from '../../lib/validate'
 
 type Props = {
+  initialFirstName: string
   initialEmail: string
-  onCapture: (email: string, skipped: boolean) => void
+  onCapture: (payload: { firstName: string; email: string }) => void
   onContinue: () => void
   onBack: () => void
   canGoBack: boolean
 }
 
-export function EmailGate({ initialEmail, onCapture, onContinue, onBack, canGoBack }: Props) {
+export function EmailGate({
+  initialFirstName,
+  initialEmail,
+  onCapture,
+  onContinue,
+  onBack,
+  canGoBack,
+}: Props) {
+  const [firstName, setFirstName] = useState(initialFirstName)
   const [email, setEmail] = useState(initialEmail)
   const [touched, setTouched] = useState(false)
 
-  const valid = isValidEmail(email)
-  const showError = touched && email.trim().length > 0 && !valid
+  const nameReady = firstName.trim().length > 1
+  const emailReady = isValidEmail(email)
+  const valid = nameReady && emailReady
+  const showNameError = touched && !nameReady
+  const showEmailError = touched && email.trim().length > 0 && !emailReady
 
   const submit = () => {
     setTouched(true)
     if (!valid) return
-    onCapture(email, false)
-    onContinue()
-  }
-
-  const skip = () => {
-    onCapture('', true)
+    onCapture({ firstName: firstName.trim(), email: email.trim() })
     onContinue()
   }
 
@@ -39,17 +46,32 @@ export function EmailGate({ initialEmail, onCapture, onContinue, onBack, canGoBa
         </span>
       </div>
       <div className="quiz-body email-gate-body">
-        <p className="quiz-kicker">Save your progress</p>
+        <p className="quiz-kicker">Save your continuity check</p>
         <h1>Where should we send your summary?</h1>
         <p>
-          Finish the check and we email your personalized summary of strength, protein and
-          maintenance priorities. You also get our free two day strength starter plan right away,
-          and your answers are saved if you need to step out.
+          Two questions in. Leave your name and email and we will send your written priorities,
+          plus the free two day strength starter plan. No card. This is a waitlist, not care today.
         </p>
         <div className="email-gate-field">
-          <label htmlFor="email-gate-input" className="visually-hidden">
-            Email address
-          </label>
+          <label htmlFor="email-gate-name">First name</label>
+          <input
+            id="email-gate-name"
+            type="text"
+            autoComplete="given-name"
+            placeholder="First name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            onBlur={() => setTouched(true)}
+            aria-invalid={showNameError || undefined}
+          />
+          {showNameError ? (
+            <p className="field-error" role="alert">
+              Enter your first name.
+            </p>
+          ) : null}
+        </div>
+        <div className="email-gate-field">
+          <label htmlFor="email-gate-input">Email</label>
           <input
             id="email-gate-input"
             type="email"
@@ -62,9 +84,9 @@ export function EmailGate({ initialEmail, onCapture, onContinue, onBack, canGoBa
             onKeyDown={(e) => {
               if (e.key === 'Enter') submit()
             }}
-            aria-invalid={showError || undefined}
+            aria-invalid={showEmailError || undefined}
           />
-          {showError ? (
+          {showEmailError ? (
             <p className="field-error" role="alert">
               Enter a valid email address.
             </p>
@@ -77,14 +99,11 @@ export function EmailGate({ initialEmail, onCapture, onContinue, onBack, canGoBa
             </button>
           ) : null}
           <button type="button" className="btn btn-primary" onClick={submit} disabled={!valid}>
-            Email my summary and plan
+            Email my summary
           </button>
         </div>
-        <button type="button" className="email-gate-skip" onClick={skip}>
-          Continue without email
-        </button>
         <p className="email-gate-note">
-          Education only, not medical advice. No spam and you can unsubscribe any time.
+          Education only, not medical advice. No spam. You can unsubscribe any time.
         </p>
       </div>
     </article>

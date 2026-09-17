@@ -12,11 +12,11 @@ export function PricingStrip() {
           </div>
           <div>
             <strong>$299/mo</strong>
-            <span>planned founding rate</span>
+            <span>if you later enroll</span>
           </div>
           <div>
-            <strong>$399/mo</strong>
-            <span>planned standard rate</span>
+            <strong>Not live yet</strong>
+            <span>no subscription today</span>
           </div>
         </div>
         <Link
