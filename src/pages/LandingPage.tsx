@@ -99,6 +99,13 @@ export function LandingPage() {
                 <p className="hero-micro">
                   Free. About 3 minutes. No card. A reservation is a waitlist, not care today.{' '}
                   <a
+                    href="#preview"
+                    onClick={() => track('lean_preview_link_clicked', { location: 'hero' })}
+                  >
+                    Try the lean-mass preview
+                  </a>
+                  {' · '}
+                  <a
                     href="#evidence"
                     onClick={() => track('evidence_cta_clicked', { location: 'hero' })}
                   >
