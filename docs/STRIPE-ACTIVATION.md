@@ -1,9 +1,12 @@
 # Stripe activation architecture
 
-The Peptis Core Continuity launch list is **$0 today**. It does not create a
-PaymentIntent, collect payment details, or load the Stripe SDK. Do not show
-Apple Pay, Google Pay, Link, or any other payment interface until a real charge
-or SetupIntent exists. The old `StripeActivationBlock` preview was removed.
+The Peptis Core Continuity check and starter plan are **$0 today**. The intended
+Lean Mass nutrition box at $59/month is not for sale until a real charge and
+shipment exist. Do not create a PaymentIntent, collect payment details, or load
+the Stripe SDK. Do not show Apple Pay, Google Pay, Link, or any other payment
+interface until a real charge or SetupIntent exists. The old
+`StripeActivationBlock` preview was removed. Do not A/B $49/$59/$69 on the site
+without a live payment backend.
 
 ## Future activation flow
 

@@ -70,7 +70,7 @@ export function Header({ variant = 'landing' }: HeaderProps) {
         </>
       ) : (
         <Link className="nav-text" to="/">
-          Back to founding reservations
+          Back to the continuity check
         </Link>
       )}
     </header>

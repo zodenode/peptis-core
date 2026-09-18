@@ -36,11 +36,11 @@ export function Success({ form, pathways, reservationId, onReset }: Props) {
         <span>✓</span>
       </div>
       <div className="quiz-body">
-        <p className="quiz-kicker">You are on the list</p>
-        <h1 className="quiz-title">You are on the launch list, {form.firstName || 'there'}.</h1>
+        <p className="quiz-kicker">Your summary is saved</p>
+        <h1 className="quiz-title">Your summary is saved, {form.firstName || 'there'}.</h1>
         <p>
-          We will email {form.email || 'your email'} if a Peptis programme later opens in your
-          state. This is a notification list, not a paid reservation and not medical care.
+          We will email {form.email || 'your email'} with your written priorities and the starter
+          plan. This is not a purchase and not medical care.
         </p>
         {reservationId ? (
           <p className="quiz-hint">List reference: {reservationId}</p>
@@ -65,9 +65,15 @@ export function Success({ form, pathways, reservationId, onReset }: Props) {
           </ul>
         </div>
         <p className="quiz-hint">
-          No charge was made. No coaching staff, supplement shipment, clinician review,
-          prescription or pharmacy fulfillment has started.
+          No charge was made. The Lean Mass nutrition box and any clinical programme are not for
+          sale today. No clinician review, prescription or pharmacy fulfillment has started.
         </p>
+        {form.upsell ? (
+          <p className="quiz-hint">
+            You asked to hear when the Lean Mass nutrition box can ship at the intended $59 a
+            month. Asking does not place an order.
+          </p>
+        ) : null}
         <div className="success-next">
           <h2>Start this week</h2>
           <p>

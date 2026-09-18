@@ -54,10 +54,11 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
     <div className="quiz-card checkout-card">
       <form className="quiz-body" onSubmit={handleSubmit} noValidate>
         <p className="quiz-kicker">{checkoutCopy.eyebrow}</p>
-        <h1 className="quiz-title">Join the Peptis launch list</h1>
+        <h1 className="quiz-title">Save your summary</h1>
         <p className="quiz-hint">
-          This is a notification list. There is no paid programme, coaching staff, supplement
-          shipment or GLP subscription to join today.
+          The check and starter plan are free. The first paid product we intend to sell is the
+          Lean Mass nutrition box at $59 a month. It is not for sale today because we cannot
+          charge or ship.
         </p>
 
         <fieldset className="plan-box">
@@ -68,30 +69,30 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
               <p className="plan-price">$0</p>
             </div>
             <div>
-              <p className="plan-name">Paid programme</p>
+              <p className="plan-name">Lean Mass box</p>
               <p className="plan-price">Not for sale</p>
             </div>
           </div>
           <p className="plan-savings">
-            Any future price would be shown only if a service actually launches, reaches your
-            state, you are eligible, and you choose to enroll under the then-current terms.
+            The intended box price is $59 a month. That figure appears as a live charge only
+            after we can take payment and ship, and only if you choose to buy.
           </p>
 
           <div className="plan-section">
             <h2>Included now</h2>
             <ul>
-              <li>Launch updates for the state you name</li>
               <li>Your written summary: {pathways.map((p) => pathwayLabels[p]).filter(Boolean).join(', ') || 'continuity readiness'}</li>
               <li>The training starter plan on this site</li>
-              <li>Cancel the list any time from the confirmation email</li>
+              <li>Updates if you ask about the Lean Mass nutrition box</li>
+              <li>Cancel updates any time from the confirmation email</li>
               <li>No charge and no payment details</li>
             </ul>
           </div>
           <div className="plan-section">
-            <h2>What may happen at launch</h2>
+            <h2>What may happen later</h2>
             <ul>
-              <li>Eligibility screening after services become available in your state</li>
-              <li>Opportunity to affirmatively enroll at the then-applicable founding terms</li>
+              <li>A chance to buy the Lean Mass nutrition box if we can charge and ship</li>
+              <li>Separate notice if a clinical programme later launches in your state</li>
             </ul>
           </div>
           <div className="plan-section plan-not-promised">
@@ -110,8 +111,8 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             />
             <span className="check-mark" aria-hidden="true">✓</span>
             <span className="check-copy">
-              <strong>Notify me about the Lean Mass Supplement Bundle</strong>
-              <span>Ask for updates about a possible $59 per month add on. Nothing ships today.</span>
+              <strong>Tell me when the Lean Mass nutrition box can ship</strong>
+              <span>Intended $59 a month. Asking does not place an order. Nothing ships today.</span>
             </span>
           </label>
         </fieldset>
@@ -177,8 +178,8 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
               />
               <span className="check-mark" aria-hidden="true">✓</span>
               <span className="check-copy">
-                <strong>Text me when my state opens</strong>
-                <span>Optional. Launch updates only. You can stop any time.</span>
+                <strong>Text me when the nutrition box can ship</strong>
+                <span>Optional. Product updates only. You can stop any time.</span>
               </span>
             </label>
           ) : null}
@@ -205,7 +206,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
         </div>
 
         <fieldset className="attestations" aria-describedby={attempted && (!form.resident || !form.attest) ? 'attestation-error' : undefined}>
-          <legend>Required reservation attestations</legend>
+          <legend>Required confirmations</legend>
         <label className={`check-card${form.resident ? ' is-selected' : ''}`}>
           <input
             type="checkbox"
@@ -217,7 +218,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
           <span className="check-mark" aria-hidden="true">✓</span>
           <span className="check-copy">
             <strong>State information is accurate</strong>
-            <span>I confirm I currently reside in the selected U.S. state for launch notifications and future screening.</span>
+            <span>I confirm I currently reside in the selected U.S. state for shipping and update purposes.</span>
           </span>
         </label>
         <label className={`check-card${form.attest ? ' is-selected' : ''}`}>
@@ -230,28 +231,27 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
           />
           <span className="check-mark" aria-hidden="true">✓</span>
           <span className="check-copy">
-            <strong>I am requesting a reservation, not medical care</strong>
+            <strong>I am asking for updates, not buying a product or receiving care</strong>
             <span>
-              I understand there is no clinical review, prescription, medical service, charge, or
-              guarantee of future eligibility today.
+              I understand there is no charge, shipment, clinical review, prescription, medical
+              service, or guarantee of future eligibility today.
             </span>
           </span>
         </label>
         {attempted && (!form.resident || !form.attest) ? (
           <p className="form-error" id="attestation-error" role="alert">
-            Confirm both required reservation attestations to continue.
+            Confirm both required statements to continue.
           </p>
         ) : null}
         </fieldset>
 
         <p className="pricing-disclaimer">
-          Planned pricing and availability may change before activation. Activation begins only
-          after services launch, eligibility and state availability are confirmed, and you
-          affirmatively enroll.
+          The $59 figure is the intended box price and may change before a real sale. Nothing is
+          charged until we can take payment, ship, and you choose to buy.
         </p>
         {submitState === 'error' ? (
           <p className="form-error" role="alert">
-            We could not save your reservation just now. Your answers are still here. Please check
+            We could not save your details just now. Your answers are still here. Please check
             your connection and try again.
           </p>
         ) : null}
@@ -260,7 +260,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             ← Back
           </button>
           <button type="submit" className="btn btn-solid" disabled={submitState === 'submitting'}>
-            {submitState === 'submitting' ? 'Saving your place…' : 'Join the list for $0'}
+            {submitState === 'submitting' ? 'Saving your summary…' : 'Save my summary'}
           </button>
         </div>
       </form>

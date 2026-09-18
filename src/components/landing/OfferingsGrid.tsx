@@ -10,11 +10,11 @@ export function OfferingsGrid() {
       <div className="section-inner">
         <div className="section-head">
           <p className="eyebrow">What you can do today</p>
-          <h2 id="offerings-heading">A free continuity check and a $0 place on the launch list</h2>
+          <h2 id="offerings-heading">A free continuity check, then a box you can buy later</h2>
           <p>
-            Coaching tools and a starter training plan are available now. The supplement bundle
-            and a paid GLP continuity subscription are not ready yet. Reserve your place and we
-            will tell you when they open in your state.
+            The quiz, written summary and starter training plan are available now. The Lean Mass
+            nutrition box is the first paid product we intend to sell, at $59 a month. It is not
+            for sale yet. There is no paid clinical programme to join today.
           </p>
         </div>
         <div className="offering-grid">

@@ -5,7 +5,7 @@
 
 Private-label catalog source: [supliful.com/catalog](https://supliful.com/catalog) (191 in-stock products).  
 Machine-readable copy: `src/data/suplifulStock.ts`  
-Public site shows only the **core** Lean Mass / GLP support SKUs on `/offerings#lean-mass-bundle`.
+Public site shows only the **core** Lean Mass nutrition box SKUs on `/offerings#lean-mass-bundle`. The customer name is Lean Mass nutrition box, not GLP support.
 
 **Compliance:** Dietary supplements are not medications. Do not claim they prevent, treat or reverse GLP-1 medication side effects. Medications for GLP-related problems remain clinician-directed when clinical services launch.
 

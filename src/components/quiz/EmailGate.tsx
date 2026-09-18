@@ -50,7 +50,7 @@ export function EmailGate({
         <h1>Where should we send your summary?</h1>
         <p>
           Two questions in. Leave your name and email and we will send your written priorities,
-          plus the free two day strength starter plan. No card. This is a waitlist, not care today.
+          plus the free two-day strength starter plan. No card. Education only, not care today.
         </p>
         <div className="email-gate-field">
           <label htmlFor="email-gate-name">First name</label>

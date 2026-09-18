@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { offer } from '../../data/offer'
 import { setQuizSource, track } from '../../lib/analytics'
 
 export function PricingStrip() {
@@ -8,15 +9,15 @@ export function PricingStrip() {
         <div className="pricing-strip-items">
           <div>
             <strong>$0</strong>
-            <span>today for your summary</span>
+            <span>today for summary and plan</span>
           </div>
           <div>
-            <strong>$299/mo</strong>
-            <span>if you later enroll</span>
+            <strong>{offer.leanMassBoxPriceLabel}</strong>
+            <span>intended Lean Mass box</span>
           </div>
           <div>
-            <strong>Not live yet</strong>
-            <span>no subscription today</span>
+            <strong>Not for sale</strong>
+            <span>nothing ships today</span>
           </div>
         </div>
         <Link
@@ -31,8 +32,8 @@ export function PricingStrip() {
         </Link>
       </div>
       <p className="pricing-strip-note">
-        Planned rates apply only if services launch in your state, you are eligible and you choose
-        to enroll under the final terms. Not medical care today.
+        $59 a month is the intended price for the Lean Mass nutrition box. It is not an offer until
+        we can charge and ship. There is no paid clinical programme for sale. Not medical care today.
       </p>
     </section>
   )

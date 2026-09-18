@@ -71,7 +71,7 @@ export function BlogArticlePage() {
               <h2>Organize your own priorities</h2>
               <p>
                 The free continuity check turns questions like these into a personal summary of
-                your strength, protein and maintenance priorities, and reserves $0 founding access.
+                your strength, protein and maintenance priorities, plus the starter training plan.
                 Not medical care today.
               </p>
               <Link

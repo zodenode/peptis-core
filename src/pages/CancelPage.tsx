@@ -27,8 +27,8 @@ export function CancelPage() {
       <main className="notice-page">
         <section className="section">
           <div className="notice-inner">
-            <p className="eyebrow">Founding reservation</p>
-            <h1>Cancel your reservation</h1>
+            <p className="eyebrow">Update list</p>
+            <h1>Cancel your updates</h1>
             {!token ? (
               <p>
                 This page needs the cancellation link from your confirmation email. Open that link
@@ -37,12 +37,12 @@ export function CancelPage() {
             ) : state === 'done' ? (
               <>
                 <p>
-                  Your founding reservation is cancelled. You will no longer receive launch
-                  updates, and nothing was ever charged.
+                  Your updates are cancelled. You will no longer receive product or launch
+                  emails, and nothing was ever charged.
                 </p>
                 <p>
-                  If you change your mind, you can take the quiz again at any time and reserve a
-                  new place.
+                  If you change your mind, you can take the quiz again at any time and leave a
+                  new email.
                 </p>
                 <Link className="btn btn-primary" to="/">
                   Return home
@@ -51,8 +51,8 @@ export function CancelPage() {
             ) : (
               <>
                 <p>
-                  Cancelling removes you from the state-by-state launch list. There is nothing to
-                  refund because the reservation was free.
+                  Cancelling removes you from product and launch emails. There is nothing to
+                  refund because nothing was charged.
                 </p>
                 {state === 'error' ? (
                   <p className="form-error" role="alert">
@@ -66,7 +66,7 @@ export function CancelPage() {
                   onClick={handleCancel}
                   disabled={state === 'working'}
                 >
-                  {state === 'working' ? 'Cancelling…' : 'Cancel my reservation'}
+                  {state === 'working' ? 'Cancelling…' : 'Cancel my updates'}
                 </button>
               </>
             )}

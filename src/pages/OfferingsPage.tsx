@@ -35,13 +35,14 @@ export function OfferingsPage() {
             <p className="eyebrow">Peptis offerings</p>
             <h1>Continuity care, not a catalog</h1>
             <p className="offerings-lead">
-              Peptis focuses on coaching and nutrition planning, training programmes, one curated
-              Lean Mass / GLP support supplement bundle, and a planned weight-management
-              consultation pathway. {offeringAudience}
+              Peptis focuses on a free continuity check, training programmes, one Lean Mass
+              nutrition box we intend to sell, and a planned weight-management consultation
+              pathway. {offeringAudience}
             </p>
             <p className="offerings-status-note">
-              The $0 founding reservation is planning access today. Live prescribing and pharmacy
-              fulfillment require state launch, eligibility and affirmative enrollment.
+              The check and starter plan are available today. The Lean Mass nutrition box is not
+              for sale until we can charge and ship. Live prescribing and pharmacy fulfillment
+              require a later clinical launch.
             </p>
           </div>
         </section>
@@ -82,12 +83,14 @@ export function OfferingsPage() {
         <section className="section" id="lean-mass-bundle" aria-labelledby="bundle-heading">
           <div className="section-inner">
             <div className="section-head">
-              <p className="eyebrow">Supliful private-label</p>
-              <h2 id="bundle-heading">Core Lean Mass / GLP support bundle</h2>
+              <p className="eyebrow">Intended first paid product</p>
+              <h2 id="bundle-heading">Lean Mass nutrition box</h2>
               <p>
-                Public assortment stays narrow: protein, creatine, hydration, foundational
-                micronutrients and digestive-comfort support. Appearance and metabolic add-ons stay
-                off the customer offer.
+                Intended first paid product at $59 a month, not for sale yet. Public assortment
+                stays narrow: protein, creatine, hydration, foundational micronutrients and
+                digestive-comfort support. This is a private-label test assortment, not a 20 to
+                25 g identity-tested clear whey. Appearance and metabolic add-ons stay off the
+                customer offer. Supplements do not treat medication side effects.
               </p>
             </div>
 
@@ -97,7 +100,7 @@ export function OfferingsPage() {
                   <header>
                     <h3>{list.title}</h3>
                     <p className="stock-problem">
-                      <strong>For:</strong> {list.glpProblem}
+                      <strong>For:</strong> {list.intendedUse}
                     </p>
                     <p className="stock-compliance">{list.complianceNote}</p>
                   </header>
@@ -147,11 +150,11 @@ export function OfferingsPage() {
             </p>
             <ul className="walkaway-list">
               <li>
-                <strong>Not part of the $0 reservation</strong>
+                <strong>Not part of the free check</strong>
                 <span>No clinician review, prescription or pharmacy fulfillment today.</span>
               </li>
               <li>
-                <strong>Distinct from the supplement bundle</strong>
+                <strong>Distinct from the nutrition box</strong>
                 <span>
                   Protein, digestive comfort and creatine products are dietary supplements, not
                   treatments for medication side effects.

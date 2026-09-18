@@ -146,7 +146,7 @@ export function QuizFlow({ embedded = false }: Props) {
       </div>
 
       <p className="quiz-trust">
-        $0 reservation. No payment today. State-by-state launch.
+        Free check. No payment today. The nutrition box is not for sale yet.
         {embedded ? ` ${checkoutCopy.eyebrow}.` : null}
       </p>
       <p className="visually-hidden">Step type: {meta.step_id}</p>

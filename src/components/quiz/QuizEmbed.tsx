@@ -17,9 +17,9 @@ export function QuizEmbed() {
           <p className="quiz-kicker">Continuity quiz</p>
           <h3>A short check of what matters now</h3>
           <p>
-            Answer eight straightforward questions. We email your written priorities and save a $0
-            place on the launch list. The supplement bundle and paid GLP subscription are not
-            ready yet.
+            Answer eight straightforward questions. We email your written priorities and the free
+            starter plan. The Lean Mass nutrition box is not for sale yet. There is no paid
+            clinical programme to join today.
           </p>
           <button
             type="button"

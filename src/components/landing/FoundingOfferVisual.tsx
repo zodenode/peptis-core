@@ -4,10 +4,10 @@ import { useSectionView } from '../../hooks/useSectionView'
 import { track } from '../../lib/analytics'
 
 const benefits = [
-  'Priority state access',
-  'Personalized summary',
-  'Readiness checklist',
-  'Cancel any time',
+  'Written continuity summary',
+  'Free starter training plan',
+  'Box updates if you ask',
+  'No card today',
 ] as const
 
 export function FoundingOfferVisual() {
@@ -39,12 +39,12 @@ export function FoundingOfferVisual() {
     >
       <div className="section-inner offer-shell">
         <div className="offer-copy">
-          <p className="eyebrow eyebrow-light">Free check, then a $0 launch list</p>
-          <h2 id="offer-heading">Get the summary now. There is no paid programme to join today.</h2>
+          <p className="eyebrow eyebrow-light">Free check, then a box you can buy later</p>
+          <h2 id="offer-heading">Get the summary and starter plan now. The $59 box is not for sale yet.</h2>
           <p>
-            The continuity check is free. Joining the list costs $0. Coaching staff, the
-            supplement bundle and a GLP subscription are not for sale yet. If they later launch in
-            your state, you would still have to review the terms and choose to enroll.
+            The continuity check and two-day strength plan are free. The first paid product we
+            intend to sell is the Lean Mass nutrition box at $59 a month. It is not for sale
+            today because we cannot charge or ship. There is no paid clinical programme to join.
           </p>
           <ul className="offer-benefits">
             {benefits.map((benefit) => (
@@ -59,25 +59,25 @@ export function FoundingOfferVisual() {
             Get my free summary
           </Link>
           <p className="offer-caveat">
-            No charge now. No payment details. Pricing is subject to final launch terms.
+            No charge now. No payment details. $59 is the intended box price, not a live offer.
           </p>
         </div>
 
         <figure className="offer-visual" aria-labelledby="offer-chart-title">
           <figcaption id="offer-chart-title">What is for sale today</figcaption>
           <p className="visually-hidden">
-            Joining the list costs nothing. There is no paid Peptis programme, supplement bundle
-            or GLP subscription for sale today.
+            The check and starter plan cost nothing. The Lean Mass nutrition box and any clinical
+            programme are not for sale today.
           </p>
           <div className="offer-today">
             <span>Today</span>
             <strong>$0</strong>
-            <small>to join the list</small>
+            <small>for the check and plan</small>
           </div>
           <div className="offer-bars">
             <div className="offer-bar-row founding">
               <div className="offer-bar-label">
-                <span>Paid continuity programme</span>
+                <span>Lean Mass nutrition box</span>
                 <strong>Not for sale</strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
@@ -86,7 +86,7 @@ export function FoundingOfferVisual() {
             </div>
             <div className="offer-bar-row standard">
               <div className="offer-bar-label">
-                <span>Supplement bundle</span>
+                <span>Clinical continuity programme</span>
                 <strong>Not for sale</strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
@@ -96,7 +96,7 @@ export function FoundingOfferVisual() {
           </div>
           <div className="offer-saving">
             <strong>Later</strong>
-            <span>any price would appear only if a service actually launches and you enroll</span>
+            <span>the box is intended at $59 a month only after we can charge and ship</span>
           </div>
         </figure>
       </div>

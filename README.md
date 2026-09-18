@@ -51,19 +51,19 @@ Peptis is a **GLP continuity / body recomposition** programme for adults on or a
 
 1. **Continuity coaching and nutrition**
 2. **Exercise programmes and training tips** (`/plan`)
-3. **One Lean Mass / GLP support supplement bundle** (curated Supliful private-label stock)
+3. **One Lean Mass nutrition box** (intended first paid product at $59/month; curated Supliful private-label stock used as a test assortment, not a long-term clinical SKU)
 4. **Planned weight-management consultations** through the contracted telehealth platform, when clinical services launch
 
 Public medication wording is limited to the current overlapping WhiteLabelMD onboarding and submitted insurance scope: planned weight-management consultations in which a licensed practitioner may consider compounded semaglutide or tirzepatide when appropriate. ED, hair-loss, skincare, hormone and other categories stay off the public offer unless their operational and insurance scope is confirmed. Fuller Supliful pick lists for ops live in [`docs/SUPFUL-STOCK-LISTS.md`](./docs/SUPFUL-STOCK-LISTS.md) and [`docs/SUPFUL-CATALOG-INDEX.md`](./docs/SUPFUL-CATALOG-INDEX.md). Public page: [`/offerings`](./src/pages/OfferingsPage.tsx).
 
-The current consumer offer is a **$0 founding reservation** with a planned **$299/month** founding rate if services launch, the member is eligible, and they affirmatively enroll. The planned standard rate after founding enrollment is $399/month. Pricing and availability may change before activation. Optional Lean Mass Bundle interest is planned at +$59/month at launch.
+The current consumer offer is a **free continuity check and starter training plan**. The first paid product we intend to sell is the **Lean Mass nutrition box at $59/month**. It is not for sale until charge and ship work. There is no Stripe wallet or payment preview. A $299/month clinical programme is not an offer on the site.
 
-The launch list includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment. There is no Stripe wallet or payment preview on the list form.
+The list signup includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment.
 
 ## Evidence led homepage
 
-The homepage includes data driven body composition, continuity framework, evidence and founding
-offer visuals. Public statistics come from
+The homepage includes data driven body composition, continuity framework, evidence and offer
+visuals. Public statistics come from
 [`brand-kit/Peptis_GLP1_Body_Recomposition_Evidence_Dossier_Final.docx`](./brand-kit/Peptis_GLP1_Body_Recomposition_Evidence_Dossier_Final.docx)
 and carry nearby source and interpretation notes.
 

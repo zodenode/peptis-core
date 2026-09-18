@@ -1,3 +1,5 @@
+import { offer } from './offer'
+
 /** Peptis public offering pillars — tight continuity strategy. */
 
 export type OfferingPillar = {
@@ -15,14 +17,14 @@ export type OfferingPillar = {
 export const offeringPillars: OfferingPillar[] = [
   {
     id: 'coaching',
-    title: 'Continuity coaching and nutrition',
-    eyebrow: 'Core programme',
+    title: 'Continuity check and nutrition notes',
+    eyebrow: 'Free lead magnet',
     summary:
-      'One continuity offer: coaching around strength, protein, digestive comfort and maintenance, with practical nutrition for low-appetite days. The free quiz and written summary start that record today.',
+      'The live offer today is a short quiz and a written record of strength, protein, digestive comfort and maintenance priorities. Use it to see what the scale misses. It is not coaching staff and not medical care.',
     includes: [
       'Continuity quiz with strength, protein and maintenance priorities',
-      'Low-appetite nutrition guidance',
-      'Ongoing coaching workflows as state programmes launch',
+      'Written summary you can keep',
+      'Low-appetite nutrition notes, not a prescribed diet',
     ],
     status: 'planning-tools-available',
     statusLabel: 'Available now: quiz and summary',
@@ -32,9 +34,9 @@ export const offeringPillars: OfferingPillar[] = [
   {
     id: 'training',
     title: 'Exercise programmes and training tips',
-    eyebrow: 'Movement system',
+    eyebrow: 'Free movement system',
     summary:
-      'GLP-1-aware progressive training on /plan: starter programmes, illustrated movements, weight-selection tips, low-appetite session rules and app exports.',
+      'Progressive training on /plan: starter programmes, illustrated movements, weight-selection tips, low-appetite session rules and app exports. Available now without a subscription.',
     includes: [
       'Personalised starter programmes',
       'Starting-weight and progression tips',
@@ -47,10 +49,10 @@ export const offeringPillars: OfferingPillar[] = [
   },
   {
     id: 'supplements',
-    title: 'Lean Mass / GLP support supplements',
-    eyebrow: 'Sustained programme add-on',
+    title: 'Lean Mass nutrition box',
+    eyebrow: 'First paid product, not for sale yet',
     summary:
-      'Supplements remain a sustained part of the Peptis programme as an optional nutrition-support layer alongside coaching and training. The planned private-label bundle uses curated Supliful stock and focuses on protein, creatine, hydration, foundational micronutrients and digestive-comfort support. Supplements are not medicines and do not treat or prevent GLP-1 medication side effects.',
+      `The first product we intend to sell is a $${offer.leanMassBoxIntendedMonthly} monthly nutrition box: protein, creatine, hydration and foundational micronutrients from private-label stock. It is a test assortment, not a 20 to 25 g identity-tested clear whey. It is not for sale until we can charge and ship. Supplements are not medicines and do not treat medication side effects.`,
     includes: [
       'Complete-protein options to support daily protein targets',
       'Creatine and electrolyte/hydration support',
@@ -58,9 +60,9 @@ export const offeringPillars: OfferingPillar[] = [
       'Collagen may be offered separately for appropriate nutrition/wellness use, but is not presented as a complete protein or as proven to prevent loose skin',
     ],
     status: 'programme-planned',
-    statusLabel: 'Sustained add-on, release planned',
+    statusLabel: 'Intended $59/mo, not for sale yet',
     href: '/offerings#lean-mass-bundle',
-    cta: 'See the planned bundle',
+    cta: 'See the intended box',
   },
   {
     id: 'clinical-care',
@@ -81,4 +83,4 @@ export const offeringPillars: OfferingPillar[] = [
 ]
 
 export const offeringAudience =
-  'Adults on or after GLP-1 weight-loss therapy who need continuity coaching, training and lean-mass support, not a general supplement marketplace.'
+  'Adults who want a written strength and maintenance record, a starter training plan, and later a nutrition box they can actually buy. This is not a general supplement marketplace.'

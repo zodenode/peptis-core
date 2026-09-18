@@ -55,17 +55,21 @@ async function sendConfirmationEmail(reservation) {
   const text = [
     `Hi ${firstName},`,
     '',
-    'You are on the Peptis Core Continuity launch list.',
+    'Your Peptis continuity summary is saved.',
     `Reference: ${reservation.id}`,
     '',
     'What this is:',
-    '- A $0 place on a launch-notification list. No payment details were collected.',
-    '- Not a paid programme, subscription, or medical service.',
+    '- A free written summary and the two-day strength starter plan. No payment details were collected.',
+    '- Not a purchase, subscription, or medical service.',
     '- No clinician review, prescription, medication or pharmacy fulfillment is included.',
     '',
-    'There is no live coaching, supplement, or GLP subscription to enroll in today. If a programme later launches in your state, we will send an update. You would still have to review the then-current terms and choose to enroll. Nothing is reserved at a price.',
+    reservation.upsell
+      ? 'You asked to hear when the Lean Mass nutrition box can ship. The intended price is $59 a month. Asking does not place an order. Nothing ships until we can charge and fulfill, and you choose to buy.'
+      : 'The first paid product we intend to sell is the Lean Mass nutrition box at $59 a month. It is not for sale yet. Reply if you want to hear when it can ship.',
     '',
-    `You can cancel this reservation at any time: ${cancelUrl}`,
+    'There is no paid clinical programme to join today.',
+    '',
+    `You can cancel these updates at any time: ${cancelUrl}`,
     '',
     'Peptis is operated by Information Edge Insights LLC.',
   ].join('\n')
@@ -80,7 +84,7 @@ async function sendConfirmationEmail(reservation) {
       body: JSON.stringify({
         from,
         to: [reservation.email],
-        subject: 'Your Peptis founding reservation is confirmed',
+        subject: 'Your Peptis continuity summary is saved',
         text,
       }),
     })
@@ -109,7 +113,7 @@ async function sendStarterPlanEmail(email, firstName) {
     `Two day strength starter plan: ${PUBLIC_BASE_URL}/blog/two-day-strength-plan`,
     `Continue your continuity check: ${PUBLIC_BASE_URL}/quiz`,
     '',
-    'When you finish the check you will receive your personalized summary of strength, protein and maintenance priorities, and you can reserve $0 founding access.',
+    'When you finish the check you will receive your personalized summary of strength, protein and maintenance priorities, plus the starter training plan. The Lean Mass nutrition box is not for sale yet.',
     '',
     'This content is education only and is not medical advice. Talk with your current clinician before changing exercise, diet or medication.',
     '',

@@ -51,7 +51,7 @@ export function HealthDataNoticePage() {
             <h2>Why we collect it</h2>
             <ul>
               <li>To build the educational summary you request at the end of the quiz.</li>
-              <li>To organize your founding reservation and future launch communication.</li>
+              <li>To send the summary you requested and, if you asked, nutrition-box updates.</li>
               <li>To understand, in aggregate, how the quiz is used and improve it.</li>
             </ul>
 
