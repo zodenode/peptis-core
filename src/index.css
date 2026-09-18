@@ -5363,6 +5363,8 @@ input:disabled {
 .pub-related h2,
 .pub-limits h2,
 .pub-sources h2,
+.pub-faq h2,
+.pub-cite h2,
 .pub-next h2 {
   font-family: var(--font-display);
   font-weight: 520;
@@ -5555,6 +5557,58 @@ input:disabled {
 .pub-next {
   background: #fffaf3;
   border: 1px solid rgba(30, 58, 47, 0.1);
+}
+
+.pub-faq,
+.pub-cite {
+  margin: 2rem 0;
+}
+
+.pub-faq details {
+  border-bottom: 1px solid rgba(30, 58, 47, 0.12);
+  padding: 0.85rem 0;
+}
+
+.pub-faq summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--forest);
+}
+
+.pub-faq details p {
+  margin: 0.7rem 0 0;
+  line-height: 1.65;
+}
+
+.pub-cite {
+  padding: 1.3rem 1.4rem;
+  border-radius: 1rem;
+  background: rgba(30, 58, 47, 0.05);
+}
+
+.pub-cite-queries ul {
+  margin: 0.4rem 0 1rem;
+  padding-left: 1.1rem;
+}
+
+.pub-cite-url {
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.pub-cite-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+  margin-top: 0.8rem;
+}
+
+.pub-cite-actions .pub-quiet,
+.pub-cite-actions a.pub-quiet {
+  border: 1px solid rgba(30, 58, 47, 0.18);
+  background: #fff;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
 }
 
 .pub-colophon {

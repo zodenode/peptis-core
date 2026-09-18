@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { PublicationChrome } from '../components/publication/PublicationChrome'
+import { PublicationFaq } from '../components/publication/PublicationFaq'
+import { SeoHead } from '../components/SeoHead'
 import {
   articlePath,
   categoryForArticle,
@@ -11,6 +13,8 @@ import {
   relatedArticles,
 } from '../data/publication'
 import { setQuizSource, track } from '../lib/analytics'
+import { articleFaqs, articleJsonLd, articleSeoDescription, articleSeoTitle } from '../lib/publicationDiscoverability'
+import { absoluteUrl } from '../lib/site'
 
 export function PublicationArticlePage() {
   const { category: categorySlug, slug } = useParams()
@@ -39,6 +43,16 @@ export function PublicationArticlePage() {
 
   return (
     <PublicationChrome active={expected.slug}>
+      <SeoHead
+        title={`${articleSeoTitle(article)} | ${PUBLICATION_NAME}`}
+        description={articleSeoDescription(article)}
+        path={articlePath(article)}
+        type="article"
+        image={absoluteUrl(expected.image)}
+        imageAlt={expected.imageAlt}
+        jsonLd={articleJsonLd(article)}
+        publishedTime="2026-08-21"
+      />
       <main id="main" className="pub-main">
         <article className="pub-essay" aria-labelledby="essay-heading">
           <header className="pub-essay-head">
@@ -61,7 +75,7 @@ export function PublicationArticlePage() {
 
           <aside className="pub-takeaway">
             <p className="pub-kicker">Takeaway</p>
-            <p>{article.takeaway}</p>
+            <p className="pub-answer">{article.takeaway}</p>
           </aside>
 
           <div className="pub-essay-body">
@@ -90,6 +104,8 @@ export function PublicationArticlePage() {
               ))}
             </ul>
           </aside>
+
+          <PublicationFaq items={articleFaqs(article)} />
 
           <section className="pub-sources">
             <h2>Sources</h2>

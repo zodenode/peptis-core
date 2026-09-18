@@ -441,10 +441,78 @@ app.post('/api/reservations/cancel', (req, res) => {
 })
 
 const distDir = path.join(process.cwd(), 'dist')
+const PUBLICATION_SEO_FILE = path.join(distDir, 'publication-seo.json')
+
+function loadPublicationSeo() {
+  try {
+    return JSON.parse(fs.readFileSync(PUBLICATION_SEO_FILE, 'utf8'))
+  } catch {
+    return {}
+  }
+}
+
+function escapeAttr(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+}
+
+function injectPublicationHead(html, page, pagePath) {
+  const origin = PUBLIC_BASE_URL.replace(/\/$/, '')
+  const url = `${origin}${pagePath}`
+  const title = escapeAttr(page.title)
+  const description = escapeAttr(page.description)
+  const image = escapeAttr(page.image || `${origin}/peptis-logo-green.png`)
+  let next = html
+    .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
+    .replace(/<meta\b[^>]*(?:name|property)="(?:description|og:[^"]+|twitter:[^"]+)"[^>]*>/gi, '')
+    .replace(/<link\b[^>]*rel="canonical"[^>]*>/gi, '')
+  const jsonLd = Array.isArray(page.jsonLd) ? page.jsonLd : []
+  const extra = [
+    `<link rel="canonical" href="${escapeAttr(url)}" />`,
+    `<link rel="alternate" type="text/plain" href="${origin}/llms.txt" />`,
+    `<meta name="description" content="${description}" />`,
+    `<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />`,
+    `<meta property="og:site_name" content="Peptis" />`,
+    `<meta property="og:title" content="${title}" />`,
+    `<meta property="og:description" content="${description}" />`,
+    `<meta property="og:type" content="${page.type === 'article' ? 'article' : 'website'}" />`,
+    `<meta property="og:url" content="${escapeAttr(url)}" />`,
+    `<meta property="og:image" content="${image}" />`,
+    `<meta property="og:locale" content="en_US" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${title}" />`,
+    `<meta name="twitter:description" content="${description}" />`,
+    `<meta name="twitter:image" content="${image}" />`,
+    ...jsonLd.map(
+      (block) =>
+        `<script type="application/ld+json">${JSON.stringify(block).replace(/</g, '\\u003c')}</script>`,
+    ),
+  ]
+  return next.replace('</head>', `${extra.join('\n    ')}\n  </head>`)
+}
+
+app.get(['/publication/partners', '/publication/partners/'], (_req, res) => {
+  res.redirect(301, '/publication')
+})
+app.get('/publication-partner-kit.json', (_req, res) => {
+  res.status(404).end()
+})
+
 app.use(express.static(distDir))
 app.use((req, res, next) => {
   if (req.method !== 'GET' || req.path.startsWith('/api/')) return next()
-  res.sendFile(path.join(distDir, 'index.html'))
+  const pagePath = req.path.replace(/\/$/, '') || '/'
+  if (pagePath === '/publication/partners') {
+    return res.redirect(301, '/publication')
+  }
+  const page = pagePath.startsWith('/publication') ? loadPublicationSeo()[pagePath] : null
+  if (!page) {
+    return res.sendFile(path.join(distDir, 'index.html'))
+  }
+  const html = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8')
+  res.type('html').send(injectPublicationHead(html, page, pagePath))
 })
 
 app.listen(PORT, '0.0.0.0', () => {

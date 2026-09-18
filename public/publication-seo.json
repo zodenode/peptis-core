@@ -1,0 +1,958 @@
+{
+  "/publication": {
+    "path": "/publication",
+    "title": "Peptis Publication: evidence on GLP-1 body recomposition",
+    "description": "Education from original trials on lean mass, protein, training, skin and maintenance during GLP-1 weight loss. Not medical advice.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Peptis Publication",
+        "url": "https://www.peptis.com/publication",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.peptis.com/peptis-logo-green.png"
+          }
+        },
+        "inLanguage": "en-US"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Peptis Publication essays",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "url": "https://www.peptis.com/publication/composition/does-ozempic-cause-muscle-loss",
+            "name": "Does Ozempic cause muscle loss? What the trials actually measured"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "url": "https://www.peptis.com/publication/composition/lean-mass-vs-muscle-mass",
+            "name": "Lean mass vs muscle mass: why DEXA headlines can mislead"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "url": "https://www.peptis.com/publication/protein/protein-on-glp1",
+            "name": "How much protein do you need on a GLP-1?"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "url": "https://www.peptis.com/publication/training/two-day-strength-plan",
+            "name": "A two-day strength plan for beginners during weight loss"
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "url": "https://www.peptis.com/publication/maintenance/after-stopping-semaglutide",
+            "name": "What happens after stopping semaglutide? The STEP 1 extension explained"
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "url": "https://www.peptis.com/publication/skin/collagen-loose-skin",
+            "name": "Does collagen prevent loose skin after weight loss?"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/composition": {
+    "path": "/publication/composition",
+    "title": "Composition | Peptis Publication",
+    "description": "Weight loss and fat loss are not the same. These essays explain what the trials measured, and why lean mass is not skeletal muscle.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Composition | Peptis Publication",
+        "description": "Weight loss and fat loss are not the same. These essays explain what the trials measured, and why lean mass is not skeletal muscle.",
+        "url": "https://www.peptis.com/publication/composition",
+        "hasPart": [
+          {
+            "@type": "Article",
+            "headline": "Does Ozempic cause muscle loss? What the trials actually measured",
+            "url": "https://www.peptis.com/publication/composition/does-ozempic-cause-muscle-loss"
+          },
+          {
+            "@type": "Article",
+            "headline": "Lean mass vs muscle mass: why DEXA headlines can mislead",
+            "url": "https://www.peptis.com/publication/composition/lean-mass-vs-muscle-mass"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Composition",
+            "item": "https://www.peptis.com/publication/composition"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/protein": {
+    "path": "/publication/protein",
+    "title": "Protein | Peptis Publication",
+    "description": "Lower appetite can make protein, fluids and micronutrients harder to obtain. These pieces cover ranges, denominators and food-first structure.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/problem-gi-food-motion.jpg",
+    "imageAlt": "Leafy greens, berries and milk above a bowl",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Protein | Peptis Publication",
+        "description": "Lower appetite can make protein, fluids and micronutrients harder to obtain. These pieces cover ranges, denominators and food-first structure.",
+        "url": "https://www.peptis.com/publication/protein",
+        "hasPart": [
+          {
+            "@type": "Article",
+            "headline": "How much protein do you need on a GLP-1?",
+            "url": "https://www.peptis.com/publication/protein/protein-on-glp1"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Protein",
+            "item": "https://www.peptis.com/publication/protein"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/training": {
+    "path": "/publication/training",
+    "title": "Training | Peptis Publication",
+    "description": "Resistance training has the strongest behavioral evidence for retaining lean tissue during weight loss. That evidence is mostly from general weight-loss.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/continuity-q3-everyday-strength.jpg",
+    "imageAlt": "Everyday strength work in a studio",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Training | Peptis Publication",
+        "description": "Resistance training has the strongest behavioral evidence for retaining lean tissue during weight loss. That evidence is mostly from general weight-loss research.",
+        "url": "https://www.peptis.com/publication/training",
+        "hasPart": [
+          {
+            "@type": "Article",
+            "headline": "A two-day strength plan for beginners during weight loss",
+            "url": "https://www.peptis.com/publication/training/two-day-strength-plan"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Training",
+            "item": "https://www.peptis.com/publication/training"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/skin": {
+    "path": "/publication/skin",
+    "title": "Skin | Peptis Publication",
+    "description": "Loose skin mainly reflects volume lost, pace of loss and baseline skin quality. Exercise can support contour. It cannot remove substantial excess skin.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/continuity-proof-gi.jpg",
+    "imageAlt": "Calm still life suggesting skin and tissue quality",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Skin | Peptis Publication",
+        "description": "Loose skin mainly reflects volume lost, pace of loss and baseline skin quality. Exercise can support contour. It cannot remove substantial excess skin.",
+        "url": "https://www.peptis.com/publication/skin",
+        "hasPart": [
+          {
+            "@type": "Article",
+            "headline": "Does collagen prevent loose skin after weight loss?",
+            "url": "https://www.peptis.com/publication/skin/collagen-loose-skin"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Skin",
+            "item": "https://www.peptis.com/publication/skin"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/maintenance": {
+    "path": "/publication/maintenance",
+    "title": "Maintenance | Peptis Publication",
+    "description": "Withdrawal studies show that regain is common when treatment stops. That reflects chronic biology, not personal failure.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/how-it-works-03.jpg",
+    "imageAlt": "A calm sunlit path suggesting a later choice",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Maintenance | Peptis Publication",
+        "description": "Withdrawal studies show that regain is common when treatment stops. That reflects chronic biology, not personal failure.",
+        "url": "https://www.peptis.com/publication/maintenance",
+        "hasPart": [
+          {
+            "@type": "Article",
+            "headline": "What happens after stopping semaglutide? The STEP 1 extension explained",
+            "url": "https://www.peptis.com/publication/maintenance/after-stopping-semaglutide"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Maintenance",
+            "item": "https://www.peptis.com/publication/maintenance"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/composition/does-ozempic-cause-muscle-loss": {
+    "path": "/publication/composition/does-ozempic-cause-muscle-loss",
+    "title": "Does Ozempic cause muscle loss? | Peptis Publication",
+    "description": "GLP-1 weight loss can include lean tissue. Lean mass is not muscle. SURMOUNT 1 found about 25% of lost weight was lean mass. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Does Ozempic cause muscle loss? What the trials actually measured",
+        "description": "GLP-1 weight loss can include lean tissue. Lean mass is not muscle. SURMOUNT 1 found about 25% of lost weight was lean mass. Education only.",
+        "image": [
+          "https://www.peptis.com/images/continuity/problem-muscle.jpg"
+        ],
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "author": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.peptis.com/peptis-logo-green.png"
+          }
+        },
+        "mainEntityOfPage": "https://www.peptis.com/publication/composition/does-ozempic-cause-muscle-loss",
+        "articleSection": "Composition",
+        "about": "Muscle and body composition",
+        "abstract": "GLP-1 assisted weight loss can include lean tissue, but lean mass is not the same as muscle, fat generally falls more, and function must be measured rather than inferred from a scan.",
+        "citation": [
+          "Wilding et al., STEP 1, New England Journal of Medicine, 2021, dossier [1]",
+          "King et al., STEP 1 DEXA substudy, 2021, dossier [11]",
+          "Look et al., SURMOUNT-1 DEXA substudy, Diabetes, Obesity and Metabolism, 2025, dossier [12]",
+          "Karakasis et al., network meta-analysis of 22 trials, 2025, dossier [13]",
+          "Langer et al., Cell Metabolism, 2026, dossier [16]",
+          "Bellicha et al., Obesity Reviews, 2021, dossier [21]"
+        ],
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": [
+            ".pub-answer",
+            ".pub-takeaway"
+          ]
+        },
+        "isAccessibleForFree": true,
+        "inLanguage": "en-US"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does Ozempic cause muscle loss?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "GLP-1 assisted weight loss can include lean tissue, but lean mass is not the same as muscle, fat generally falls more, and function must be measured rather than inferred from a scan."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What can this evidence not tell us?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "These substudies cannot say how much of any individual lean mass change was skeletal muscle. Study averages describe groups under trial conditions, not what one person should expect. No supplement has been shown in a large randomized trial to prevent muscle loss specifically during semaglutide or tirzepatide treatment."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this medical advice?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Peptis Publication essays are education from original trials and official labels. They are not medical advice and do not describe Peptis product results. Talk with your current clinician before changing medication, diet, supplements or exercise."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Composition",
+            "item": "https://www.peptis.com/publication/composition"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Does Ozempic cause muscle loss?",
+            "item": "https://www.peptis.com/publication/composition/does-ozempic-cause-muscle-loss"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/composition/lean-mass-vs-muscle-mass": {
+    "path": "/publication/composition/lean-mass-vs-muscle-mass",
+    "title": "What is lean mass vs muscle mass? | Peptis Publication",
+    "description": "DEXA lean mass includes water, organs, connective tissue and bone mineral, not just skeletal muscle. Track function with the scan. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Lean mass vs muscle mass: why DEXA headlines can mislead",
+        "description": "DEXA lean mass includes water, organs, connective tissue and bone mineral, not just skeletal muscle. Track function with the scan. Education only.",
+        "image": [
+          "https://www.peptis.com/images/continuity/problem-muscle.jpg"
+        ],
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "author": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.peptis.com/peptis-logo-green.png"
+          }
+        },
+        "mainEntityOfPage": "https://www.peptis.com/publication/composition/lean-mass-vs-muscle-mass",
+        "articleSection": "Composition",
+        "about": "Muscle and body composition",
+        "abstract": "A DEXA lean mass estimate includes water, organs, connective tissue and bone mineral alongside skeletal muscle. Trend consistency and functional measures tell you more than any single scan.",
+        "citation": [
+          "Tinsley and Heymsfield, Journal of the Endocrine Society, 2024, dossier [15]",
+          "Look et al., SURMOUNT-1 DEXA substudy, 2025, dossier [12]",
+          "Langer et al., Cell Metabolism, 2026, dossier [16]"
+        ],
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": [
+            ".pub-answer",
+            ".pub-takeaway"
+          ]
+        },
+        "isAccessibleForFree": true,
+        "inLanguage": "en-US"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What should a reader know about muscle and body composition?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A DEXA lean mass estimate includes water, organs, connective tissue and bone mineral alongside skeletal muscle. Trend consistency and functional measures tell you more than any single scan."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What can this evidence not tell us?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No consumer scan can validate a muscle-preservation claim with the rigor of a designed clinical study. A single reading cannot distinguish water shifts from tissue change."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this medical advice?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Peptis Publication essays are education from original trials and official labels. They are not medical advice and do not describe Peptis product results. Talk with your current clinician before changing medication, diet, supplements or exercise."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Composition",
+            "item": "https://www.peptis.com/publication/composition"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "What is lean mass vs muscle mass?",
+            "item": "https://www.peptis.com/publication/composition/lean-mass-vs-muscle-mass"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/protein/protein-on-glp1": {
+    "path": "/publication/protein/protein-on-glp1",
+    "title": "How much protein do you need on a GLP-1? | Peptis Publication",
+    "description": "Reviews support about 1.2 to 1.6 g/kg/day for many active weight-loss contexts. The weight denominator needs individual guidance. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/problem-gi-food-motion.jpg",
+    "imageAlt": "Leafy greens, berries and milk above a bowl",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How much protein do you need on a GLP-1?",
+        "description": "Reviews support about 1.2 to 1.6 g/kg/day for many active weight-loss contexts. The weight denominator needs individual guidance. Education only.",
+        "image": [
+          "https://www.peptis.com/images/continuity/problem-gi-food-motion.jpg"
+        ],
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "author": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.peptis.com/peptis-logo-green.png"
+          }
+        },
+        "mainEntityOfPage": "https://www.peptis.com/publication/protein/protein-on-glp1",
+        "articleSection": "Protein",
+        "about": "Protein and nutrition",
+        "abstract": "Reviews support roughly 1.2 to 1.6 g/kg/day and 25 to 30 g per meal for many active weight loss contexts, but the weight denominator and your medical situation require individual guidance.",
+        "citation": [
+          "Blundell et al., Diabetes, Obesity and Metabolism, 2017, dossier [19]",
+          "Friedrichsen et al., Diabetes, Obesity and Metabolism, 2021, dossier [20]",
+          "Nunes et al., Sports Medicine, 2022, dossier [24]",
+          "Leidy et al., American Journal of Clinical Nutrition, 2015, dossier [25]",
+          "Mozaffarian et al., joint nutrition advisory, American Journal of Clinical Nutrition, 2025, dossier [17]"
+        ],
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": [
+            ".pub-answer",
+            ".pub-takeaway"
+          ]
+        },
+        "isAccessibleForFree": true,
+        "inLanguage": "en-US"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How much protein do you need on a GLP-1?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Reviews support roughly 1.2 to 1.6 g/kg/day and 25 to 30 g per meal for many active weight loss contexts, but the weight denominator and your medical situation require individual guidance."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What can this evidence not tell us?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "These ranges come from general active weight loss research, not GLP-1 specific dosing trials. No review can set your personal target; medical conditions change the answer."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this medical advice?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Peptis Publication essays are education from original trials and official labels. They are not medical advice and do not describe Peptis product results. Talk with your current clinician before changing medication, diet, supplements or exercise."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Protein",
+            "item": "https://www.peptis.com/publication/protein"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "How much protein do you need on a GLP-1?",
+            "item": "https://www.peptis.com/publication/protein/protein-on-glp1"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/training/two-day-strength-plan": {
+    "path": "/publication/training/two-day-strength-plan",
+    "title": "What is a two-day strength plan during weight loss? | Peptis Publication",
+    "description": "Resistance training has the strongest evidence for retaining lean tissue in general weight loss. Two full-body sessions are a start. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/continuity-q3-everyday-strength.jpg",
+    "imageAlt": "Everyday strength work in a studio",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "A two-day strength plan for beginners during weight loss",
+        "description": "Resistance training has the strongest evidence for retaining lean tissue in general weight loss. Two full-body sessions are a start. Education only.",
+        "image": [
+          "https://www.peptis.com/images/continuity/continuity-q3-everyday-strength.jpg"
+        ],
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "author": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.peptis.com/peptis-logo-green.png"
+          }
+        },
+        "mainEntityOfPage": "https://www.peptis.com/publication/training/two-day-strength-plan",
+        "articleSection": "Training",
+        "about": "Training",
+        "abstract": "Two progressive full-body sessions each week are a credible minimum for beginners. Train the major movement patterns, leave repetitions in reserve, and progress only when technique is stable.",
+        "citation": [
+          "Bellicha et al., Obesity Reviews, 2021, dossier [21]",
+          "Villareal et al., New England Journal of Medicine, 2017, dossier [22]",
+          "Armamento-Villareal et al., JBMR, 2020, dossier [23]"
+        ],
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": [
+            ".pub-answer",
+            ".pub-takeaway"
+          ]
+        },
+        "isAccessibleForFree": true,
+        "inLanguage": "en-US"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What should a reader know about training?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Two progressive full-body sessions each week are a credible minimum for beginners. Train the major movement patterns, leave repetitions in reserve, and progress only when technique is stable."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What can this evidence not tell us?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The ideal training dose during modern incretin therapy is inferred mainly from general weight loss and sports science evidence. A written plan cannot screen your individual injury or medical situation."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this medical advice?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Peptis Publication essays are education from original trials and official labels. They are not medical advice and do not describe Peptis product results. Talk with your current clinician before changing medication, diet, supplements or exercise."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Training",
+            "item": "https://www.peptis.com/publication/training"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "What is a two-day strength plan during weight loss?",
+            "item": "https://www.peptis.com/publication/training/two-day-strength-plan"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/maintenance/after-stopping-semaglutide": {
+    "path": "/publication/maintenance/after-stopping-semaglutide",
+    "title": "What happens after stopping semaglutide? | Peptis Publication",
+    "description": "STEP 1 extension participants regained about two thirds of prior weight loss a year after stopping. That is chronic biology, not failure. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/how-it-works-03.jpg",
+    "imageAlt": "A calm sunlit path suggesting a later choice",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "What happens after stopping semaglutide? The STEP 1 extension explained",
+        "description": "STEP 1 extension participants regained about two thirds of prior weight loss a year after stopping. That is chronic biology, not failure. Education only.",
+        "image": [
+          "https://www.peptis.com/images/continuity/how-it-works-03.jpg"
+        ],
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "author": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.peptis.com/peptis-logo-green.png"
+          }
+        },
+        "mainEntityOfPage": "https://www.peptis.com/publication/maintenance/after-stopping-semaglutide",
+        "articleSection": "Maintenance",
+        "about": "Maintenance",
+        "abstract": "One year after semaglutide and lifestyle support ended, STEP 1 extension participants regained about two thirds of their prior weight loss. Maintenance habits deserve to begin before discontinuation, not after regain.",
+        "citation": [
+          "Wilding et al., STEP 1 extension, Diabetes, Obesity and Metabolism, 2022, dossier [9]",
+          "Rubino et al., STEP 4, JAMA, 2021, dossier [10]"
+        ],
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": [
+            ".pub-answer",
+            ".pub-takeaway"
+          ]
+        },
+        "isAccessibleForFree": true,
+        "inLanguage": "en-US"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What happens after stopping semaglutide?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "One year after semaglutide and lifestyle support ended, STEP 1 extension participants regained about two thirds of their prior weight loss. Maintenance habits deserve to begin before discontinuation, not after regain."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What can this evidence not tell us?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Withdrawal trials compare stopping with continuing; they do not test tapering strategies or individual plans. Group regain averages do not predict any single person’s outcome."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this medical advice?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Peptis Publication essays are education from original trials and official labels. They are not medical advice and do not describe Peptis product results. Talk with your current clinician before changing medication, diet, supplements or exercise."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Maintenance",
+            "item": "https://www.peptis.com/publication/maintenance"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "What happens after stopping semaglutide?",
+            "item": "https://www.peptis.com/publication/maintenance/after-stopping-semaglutide"
+          }
+        ]
+      }
+    ]
+  },
+  "/publication/skin/collagen-loose-skin": {
+    "path": "/publication/skin/collagen-loose-skin",
+    "title": "Does collagen prevent loose skin after weight loss? | Peptis Publication",
+    "description": "High-quality collagen trials do not show a clear skin benefit. No supplement is shown to prevent loose skin during GLP-1 weight loss. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/continuity-proof-gi.jpg",
+    "imageAlt": "Calm still life suggesting skin and tissue quality",
+    "dateModified": "2026-08-21",
+    "jsonLd": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Does collagen prevent loose skin after weight loss?",
+        "description": "High-quality collagen trials do not show a clear skin benefit. No supplement is shown to prevent loose skin during GLP-1 weight loss. Education only.",
+        "image": [
+          "https://www.peptis.com/images/continuity/continuity-proof-gi.jpg"
+        ],
+        "datePublished": "2026-08-21",
+        "dateModified": "2026-08-21",
+        "author": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Peptis",
+          "legalName": "Information Edge Insights LLC",
+          "url": "https://www.peptis.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.peptis.com/peptis-logo-green.png"
+          }
+        },
+        "mainEntityOfPage": "https://www.peptis.com/publication/skin/collagen-loose-skin",
+        "articleSection": "Skin",
+        "about": "Skin and appearance",
+        "abstract": "A 2025 analysis found no clear skin benefit from oral collagen in high-quality or non-industry-funded studies, and no supplement has been shown to prevent loose skin during GLP-1 assisted weight loss.",
+        "citation": [
+          "Myung and Park, American Journal of Medicine, 2025, dossier [32]",
+          "Rocha et al., Aesthetic Surgery Journal, 2021, dossier [33]",
+          "Sami et al., Aesthetic Plastic Surgery, 2015, dossier [34]",
+          "Ashtary-Larky et al., British Journal of Nutrition, 2020, dossier [46]"
+        ],
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": [
+            ".pub-answer",
+            ".pub-takeaway"
+          ]
+        },
+        "isAccessibleForFree": true,
+        "inLanguage": "en-US"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does collagen prevent loose skin after weight loss?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A 2025 analysis found no clear skin benefit from oral collagen in high-quality or non-industry-funded studies, and no supplement has been shown to prevent loose skin during GLP-1 assisted weight loss."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What can this evidence not tell us?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Skin aging trials do not directly study excess skin after major weight loss. No randomized trial has tested collagen for loose-skin prevention during GLP-1 treatment."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this medical advice?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Peptis Publication essays are education from original trials and official labels. They are not medical advice and do not describe Peptis product results. Talk with your current clinician before changing medication, diet, supplements or exercise."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Publication",
+            "item": "https://www.peptis.com/publication"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Skin",
+            "item": "https://www.peptis.com/publication/skin"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Does collagen prevent loose skin after weight loss?",
+            "item": "https://www.peptis.com/publication/skin/collagen-loose-skin"
+          }
+        ]
+      }
+    ]
+  }
+}
