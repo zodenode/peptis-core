@@ -5586,6 +5586,11 @@ input:disabled {
   background: rgba(30, 58, 47, 0.05);
 }
 
+.pub-cite-queries ul {
+  margin: 0.4rem 0 1rem;
+  padding-left: 1.1rem;
+}
+
 .pub-cite-url {
   font-size: 0.95rem;
   word-break: break-word;

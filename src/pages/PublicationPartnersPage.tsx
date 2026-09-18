@@ -60,6 +60,11 @@ export function PublicationPartnersPage() {
             always pointing back to {PUBLICATION_NAME}. That is how a small evidence library
             earns citations it could not earn from its own domain alone.
           </p>
+          <p>
+            Each essay lists the questions a partner can host. Write an original opening for
+            your patients, quote the takeaway, keep the limits, and link the canonical URL.
+            Do not buy expired domains, fake bylines or a private blog network.
+          </p>
         </section>
 
         <section className="pub-folio" aria-labelledby="plays-heading">
@@ -110,6 +115,9 @@ export function PublicationPartnersPage() {
                     <Link to={articlePath(article)}>{articleSeoTitle(article)}</Link>
                   </h3>
                   <p>{article.takeaway}</p>
+                  {cite.partnerQueries.length > 0 ? (
+                    <p className="pub-meta">{cite.partnerQueries.join(' · ')}</p>
+                  ) : null}
                   <p className="pub-meta">{cite.url}</p>
                 </article>
               )

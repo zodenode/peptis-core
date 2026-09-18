@@ -187,6 +187,16 @@ export function auditArticle(article: Article): QaFinding[] {
     }
   }
 
+  if ((overlay?.partnerQueries?.length ?? 0) < 2) {
+    findings.push({
+      slug: article.slug,
+      rule: 'partner-queries',
+      severity: 'warn',
+      message: 'Add at least two partner search questions so other sites can host the query and cite this essay.',
+      autoSafe: false,
+    })
+  }
+
   if (article.takeaway.length > 400) {
     findings.push({
       slug: article.slug,
@@ -271,10 +281,13 @@ export function renderOverlayFile(overlays: Record<string, ArticleSeoOverlay>): 
     .filter((article) => overlays[article.slug])
     .map((article) => {
       const overlay = overlays[article.slug]
+      const queries = overlay.partnerQueries?.length
+        ? `\n    partnerQueries: ${JSON.stringify(overlay.partnerQueries, null, 6).replace(/\n/g, '\n    ')},`
+        : ''
       return `  '${article.slug}': {
     seoTitle: ${JSON.stringify(overlay.seoTitle)},
     seoDescription:
-      ${JSON.stringify(overlay.seoDescription)},
+      ${JSON.stringify(overlay.seoDescription)},${queries}
   },`
     })
     .join('\n')
@@ -282,6 +295,7 @@ export function renderOverlayFile(overlays: Record<string, ArticleSeoOverlay>): 
 export type ArticleSeoOverlay = {
   seoTitle: string
   seoDescription: string
+  partnerQueries?: string[]
 }
 
 export const publicationSeo: Record<string, ArticleSeoOverlay> = {

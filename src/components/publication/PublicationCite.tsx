@@ -27,6 +27,16 @@ export function PublicationCite({ article }: Props) {
         Partners can quote the takeaway with attribution and a link to this URL. Keep the
         limitations. Do not present these figures as Peptis product results.
       </p>
+      {cite.partnerQueries.length > 0 ? (
+        <div className="pub-cite-queries">
+          <p className="pub-kicker">Questions a partner page can rank</p>
+          <ul>
+            {cite.partnerQueries.map((query) => (
+              <li key={query}>{query}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       <p className="pub-cite-url">
         <a href={cite.url}>{cite.url}</a>
       </p>

@@ -260,13 +260,14 @@ export function articleCite(article: Article) {
   const url = absoluteUrl(articlePath(article))
   const title = articleSeoTitle(article)
   const takeaway = article.takeaway
+  const partnerQueries = publicationSeo[article.slug]?.partnerQueries ?? []
   const attribution = `${title}. ${PUBLICATION_NAME}. Education only. ${url}`
   const embed = `<aside class="peptis-cite">
   <p><strong>${escapeHtml(title)}</strong></p>
   <p>${escapeHtml(takeaway)}</p>
   <p>Source: <a href="${url}">${PUBLICATION_NAME}</a>. Education only. Lean mass is not skeletal muscle. Individual results vary.</p>
 </aside>`
-  return { url, title, takeaway, attribution, embed }
+  return { url, title, takeaway, attribution, embed, partnerQueries }
 }
 
 function escapeHtml(value: string): string {
