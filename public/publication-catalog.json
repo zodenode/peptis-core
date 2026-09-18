@@ -1,0 +1,119 @@
+[
+  {
+    "path": "/publication",
+    "title": "Peptis Publication: evidence on GLP-1 body recomposition",
+    "description": "Education from original trials on lean mass, protein, training, skin and maintenance during GLP-1 weight loss. Not medical advice.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/partners",
+    "title": "Cite or syndicate Peptis Publication",
+    "description": "Clinics, trainers and educators can quote Peptis Publication takeaways with attribution, limitations and a link to the canonical essay. Education only.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/composition",
+    "title": "Composition | Peptis Publication",
+    "description": "Weight loss and fat loss are not the same. These essays explain what the trials measured, and why lean mass is not skeletal muscle.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/protein",
+    "title": "Protein | Peptis Publication",
+    "description": "Lower appetite can make protein, fluids and micronutrients harder to obtain. These pieces cover ranges, denominators and food-first structure.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/problem-gi-food-motion.jpg",
+    "imageAlt": "Leafy greens, berries and milk above a bowl",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/training",
+    "title": "Training | Peptis Publication",
+    "description": "Resistance training has the strongest behavioral evidence for retaining lean tissue during weight loss. That evidence is mostly from general weight-loss.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/continuity-q3-everyday-strength.jpg",
+    "imageAlt": "Everyday strength work in a studio",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/skin",
+    "title": "Skin | Peptis Publication",
+    "description": "Loose skin mainly reflects volume lost, pace of loss and baseline skin quality. Exercise can support contour. It cannot remove substantial excess skin.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/continuity-proof-gi.jpg",
+    "imageAlt": "Calm still life suggesting skin and tissue quality",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/maintenance",
+    "title": "Maintenance | Peptis Publication",
+    "description": "Withdrawal studies show that regain is common when treatment stops. That reflects chronic biology, not personal failure.",
+    "type": "website",
+    "image": "https://www.peptis.com/images/continuity/how-it-works-03.jpg",
+    "imageAlt": "A calm sunlit path suggesting a later choice",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/composition/does-ozempic-cause-muscle-loss",
+    "title": "Does Ozempic cause muscle loss? | Peptis Publication",
+    "description": "GLP-1 weight loss can include lean tissue. Lean mass is not muscle. SURMOUNT 1 found about 25% of lost weight was lean mass. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/composition/lean-mass-vs-muscle-mass",
+    "title": "What is lean mass vs muscle mass? | Peptis Publication",
+    "description": "DEXA lean mass includes water, organs, connective tissue and bone mineral, not just skeletal muscle. Track function with the scan. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
+    "imageAlt": "Adult pausing during a strength session at home",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/protein/protein-on-glp1",
+    "title": "How much protein do you need on a GLP-1? | Peptis Publication",
+    "description": "Reviews support about 1.2 to 1.6 g/kg/day for many active weight-loss contexts. The weight denominator needs individual guidance. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/problem-gi-food-motion.jpg",
+    "imageAlt": "Leafy greens, berries and milk above a bowl",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/training/two-day-strength-plan",
+    "title": "What is a two-day strength plan during weight loss? | Peptis Publication",
+    "description": "Resistance training has the strongest evidence for retaining lean tissue in general weight loss. Two full-body sessions are a start. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/continuity-q3-everyday-strength.jpg",
+    "imageAlt": "Everyday strength work in a studio",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/maintenance/after-stopping-semaglutide",
+    "title": "What happens after stopping semaglutide? | Peptis Publication",
+    "description": "STEP 1 extension participants regained about two thirds of prior weight loss a year after stopping. That is chronic biology, not failure. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/how-it-works-03.jpg",
+    "imageAlt": "A calm sunlit path suggesting a later choice",
+    "dateModified": "2026-08-21"
+  },
+  {
+    "path": "/publication/skin/collagen-loose-skin",
+    "title": "Does collagen prevent loose skin after weight loss? | Peptis Publication",
+    "description": "High-quality collagen trials do not show a clear skin benefit. No supplement is shown to prevent loose skin during GLP-1 weight loss. Education only.",
+    "type": "article",
+    "image": "https://www.peptis.com/images/continuity/continuity-proof-gi.jpg",
+    "imageAlt": "Calm still life suggesting skin and tissue quality",
+    "dateModified": "2026-08-21"
+  }
+]

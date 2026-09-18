@@ -1,0 +1,109 @@
+# Peptis Publication full index
+
+Education only. Not medical advice. Lean mass is not skeletal muscle. Individual results vary.
+Evidence reviewed through August 21, 2026.
+
+When quoting, keep the limitations and link to the canonical URL. See https://www.peptis.com/publication/partners.
+
+## Does Ozempic cause muscle loss? What the trials actually measured
+
+URL: https://www.peptis.com/publication/composition/does-ozempic-cause-muscle-loss
+Desk: Muscle and body composition
+
+GLP-1 assisted weight loss can include lean tissue, but lean mass is not the same as muscle, fat generally falls more, and function must be measured rather than inferred from a scan.
+
+### What this evidence cannot tell us
+- These substudies cannot say how much of any individual lean mass change was skeletal muscle.
+- Study averages describe groups under trial conditions, not what one person should expect.
+- No supplement has been shown in a large randomized trial to prevent muscle loss specifically during semaglutide or tirzepatide treatment.
+
+### Sources
+- Wilding et al., STEP 1, New England Journal of Medicine, 2021, dossier [1]
+- King et al., STEP 1 DEXA substudy, 2021, dossier [11]
+- Look et al., SURMOUNT-1 DEXA substudy, Diabetes, Obesity and Metabolism, 2025, dossier [12]
+- Karakasis et al., network meta-analysis of 22 trials, 2025, dossier [13]
+- Langer et al., Cell Metabolism, 2026, dossier [16]
+- Bellicha et al., Obesity Reviews, 2021, dossier [21]
+
+## Lean mass vs muscle mass: why DEXA headlines can mislead
+
+URL: https://www.peptis.com/publication/composition/lean-mass-vs-muscle-mass
+Desk: Muscle and body composition
+
+A DEXA lean mass estimate includes water, organs, connective tissue and bone mineral alongside skeletal muscle. Trend consistency and functional measures tell you more than any single scan.
+
+### What this evidence cannot tell us
+- No consumer scan can validate a muscle-preservation claim with the rigor of a designed clinical study.
+- A single reading cannot distinguish water shifts from tissue change.
+
+### Sources
+- Tinsley and Heymsfield, Journal of the Endocrine Society, 2024, dossier [15]
+- Look et al., SURMOUNT-1 DEXA substudy, 2025, dossier [12]
+- Langer et al., Cell Metabolism, 2026, dossier [16]
+
+## How much protein do you need on a GLP-1?
+
+URL: https://www.peptis.com/publication/protein/protein-on-glp1
+Desk: Protein and nutrition
+
+Reviews support roughly 1.2 to 1.6 g/kg/day and 25 to 30 g per meal for many active weight loss contexts, but the weight denominator and your medical situation require individual guidance.
+
+### What this evidence cannot tell us
+- These ranges come from general active weight loss research, not GLP-1 specific dosing trials.
+- No review can set your personal target; medical conditions change the answer.
+
+### Sources
+- Blundell et al., Diabetes, Obesity and Metabolism, 2017, dossier [19]
+- Friedrichsen et al., Diabetes, Obesity and Metabolism, 2021, dossier [20]
+- Nunes et al., Sports Medicine, 2022, dossier [24]
+- Leidy et al., American Journal of Clinical Nutrition, 2015, dossier [25]
+- Mozaffarian et al., joint nutrition advisory, American Journal of Clinical Nutrition, 2025, dossier [17]
+
+## A two-day strength plan for beginners during weight loss
+
+URL: https://www.peptis.com/publication/training/two-day-strength-plan
+Desk: Training
+
+Two progressive full-body sessions each week are a credible minimum for beginners. Train the major movement patterns, leave repetitions in reserve, and progress only when technique is stable.
+
+### What this evidence cannot tell us
+- The ideal training dose during modern incretin therapy is inferred mainly from general weight loss and sports science evidence.
+- A written plan cannot screen your individual injury or medical situation.
+
+### Sources
+- Bellicha et al., Obesity Reviews, 2021, dossier [21]
+- Villareal et al., New England Journal of Medicine, 2017, dossier [22]
+- Armamento-Villareal et al., JBMR, 2020, dossier [23]
+
+## What happens after stopping semaglutide? The STEP 1 extension explained
+
+URL: https://www.peptis.com/publication/maintenance/after-stopping-semaglutide
+Desk: Maintenance
+
+One year after semaglutide and lifestyle support ended, STEP 1 extension participants regained about two thirds of their prior weight loss. Maintenance habits deserve to begin before discontinuation, not after regain.
+
+### What this evidence cannot tell us
+- Withdrawal trials compare stopping with continuing; they do not test tapering strategies or individual plans.
+- Group regain averages do not predict any single person’s outcome.
+
+### Sources
+- Wilding et al., STEP 1 extension, Diabetes, Obesity and Metabolism, 2022, dossier [9]
+- Rubino et al., STEP 4, JAMA, 2021, dossier [10]
+
+## Does collagen prevent loose skin after weight loss?
+
+URL: https://www.peptis.com/publication/skin/collagen-loose-skin
+Desk: Skin and appearance
+
+A 2025 analysis found no clear skin benefit from oral collagen in high-quality or non-industry-funded studies, and no supplement has been shown to prevent loose skin during GLP-1 assisted weight loss.
+
+### What this evidence cannot tell us
+- Skin aging trials do not directly study excess skin after major weight loss.
+- No randomized trial has tested collagen for loose-skin prevention during GLP-1 treatment.
+
+### Sources
+- Myung and Park, American Journal of Medicine, 2025, dossier [32]
+- Rocha et al., Aesthetic Surgery Journal, 2021, dossier [33]
+- Sami et al., Aesthetic Plastic Surgery, 2015, dossier [34]
+- Ashtary-Larky et al., British Journal of Nutrition, 2020, dossier [46]
+

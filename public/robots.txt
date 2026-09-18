@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /cancel
+Disallow: /go/
+
+User-agent: GPTBot
+Allow: /publication
+
+User-agent: ChatGPT-User
+Allow: /publication
+
+User-agent: PerplexityBot
+Allow: /publication
+
+User-agent: ClaudeBot
+Allow: /publication
+
+User-agent: Google-Extended
+Allow: /publication
+
+User-agent: anthropic-ai
+Allow: /publication
+
+User-agent: Applebot-Extended
+Allow: /publication
+
+Sitemap: https://www.peptis.com/sitemap.xml

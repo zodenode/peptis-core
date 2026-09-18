@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { PublicationChrome } from '../components/publication/PublicationChrome'
+import { SeoHead } from '../components/SeoHead'
 import { articles } from '../data/blog'
 import {
   articlePath,
@@ -14,6 +15,7 @@ import {
   publicationCategories,
 } from '../data/publication'
 import { track } from '../lib/analytics'
+import { publicationHomeJsonLd, publicationCatalog } from '../lib/publicationDiscoverability'
 
 export function PublicationHomePage() {
   const cover = coverArticle()
@@ -26,8 +28,18 @@ export function PublicationHomePage() {
     track('publication_viewed', { page: '/publication' })
   }, [])
 
+  const homeSeo = publicationCatalog()[0]
+
   return (
     <PublicationChrome>
+      <SeoHead
+        title={homeSeo.title}
+        description={homeSeo.description}
+        path={homeSeo.path}
+        image={homeSeo.image}
+        imageAlt={homeSeo.imageAlt}
+        jsonLd={publicationHomeJsonLd()}
+      />
       <main id="main" className="pub-main">
         <section className="pub-cover" aria-labelledby="cover-heading">
           <Link className="pub-cover-media" to={articlePath(cover)}>

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { PublicationChrome } from '../components/publication/PublicationChrome'
+import { SeoHead } from '../components/SeoHead'
 import {
   articlePath,
   articlesInCategory,
@@ -9,6 +10,7 @@ import {
   PUBLICATION_REVIEW_DATE,
 } from '../data/publication'
 import { track } from '../lib/analytics'
+import { categoryJsonLd, publicationCatalog } from '../lib/publicationDiscoverability'
 
 export function PublicationCategoryPage() {
   const { category: slug } = useParams()
@@ -28,8 +30,20 @@ export function PublicationCategoryPage() {
 
   const [lead, ...rest] = entries
 
+  const seo = publicationCatalog().find((page) => page.path === `/publication/${category.slug}`)
+
   return (
     <PublicationChrome active={category.slug}>
+      {seo ? (
+        <SeoHead
+          title={seo.title}
+          description={seo.description}
+          path={seo.path}
+          image={seo.image}
+          imageAlt={seo.imageAlt}
+          jsonLd={categoryJsonLd(category, entries)}
+        />
+      ) : null}
       <main id="main" className="pub-main">
         <section className="pub-desk-hero" aria-labelledby="desk-heading">
           <div className="pub-desk-hero-copy">

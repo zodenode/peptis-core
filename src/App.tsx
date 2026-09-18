@@ -9,6 +9,7 @@ import { PrivacyPage } from './pages/PrivacyPage'
 import { PublicationArticlePage } from './pages/PublicationArticlePage'
 import { PublicationCategoryPage } from './pages/PublicationCategoryPage'
 import { PublicationHomePage } from './pages/PublicationHomePage'
+import { PublicationPartnersPage } from './pages/PublicationPartnersPage'
 import { QuizPage } from './pages/QuizPage'
 import { TrainingPlanPage } from './pages/TrainingPlanPage'
 
@@ -21,6 +22,7 @@ export default function App() {
       <Route path="/plan" element={<TrainingPlanPage />} />
       <Route path="/offerings" element={<OfferingsPage />} />
       <Route path="/publication" element={<PublicationHomePage />} />
+      <Route path="/publication/partners" element={<PublicationPartnersPage />} />
       <Route path="/publication/:category/:slug" element={<PublicationArticlePage />} />
       <Route path="/publication/:category" element={<PublicationCategoryPage />} />
       <Route path="/blog" element={<BlogIndexRedirect />} />
