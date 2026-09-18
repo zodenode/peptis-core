@@ -186,22 +186,12 @@ export function useQuizEngine() {
     postQuizProgress({
       quizId,
       step: current,
-      email: isValidEmail(checkout.email) ? checkout.email.trim() : undefined,
-      firstName: checkout.firstName || undefined,
       pathways: derivePathways(answers),
-      answers,
       entryPrompt,
     })
-    // Re-post when the step changes, plus each refinement answered inside the plan-building step.
+    // Step-only funnel analytics. Identity and prescription answers stay off this write.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    answers.care_provider,
-    answers.current_medication,
-    answers.training_setting,
-    current,
-    hydrated,
-    quizId,
-  ])
+  }, [current, hydrated, quizId])
 
   useEffect(() => {
     if (!hydrated) return
@@ -312,13 +302,11 @@ export function useQuizEngine() {
         step: current,
         email: clean,
         firstName: name,
-        pathways: derivePathways(answers),
-        answers,
-        entryPrompt,
+        pathways: [],
         sendGuide: true,
       })
     },
-    [answers, current, entryPrompt, quizId],
+    [current, quizId],
   )
 
   const submitCheckout = useCallback(async () => {
@@ -341,7 +329,6 @@ export function useQuizEngine() {
       resident: checkout.resident,
       attest: checkout.attest,
       upsell: checkout.upsell,
-      pathways: derivePathways(answers),
     })
 
     if (!result.ok) {

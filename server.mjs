@@ -44,13 +44,6 @@ function readEvents() {
     .filter(Boolean)
 }
 
-const PATHWAY_LABELS = {
-  muscle_protection: 'Strength and function',
-  cellular_energy: 'Energy and recovery',
-  gi_repair: 'Digestive comfort',
-  rebound_protection: 'Maintenance planning',
-}
-
 async function sendConfirmationEmail(reservation) {
   const key = process.env.RESEND_API_KEY
   if (!key) return { sent: false, reason: 'no_api_key' }
@@ -58,29 +51,19 @@ async function sendConfirmationEmail(reservation) {
   const from = process.env.RESERVATION_EMAIL_FROM || 'Peptis <reservations@peptis.com>'
   const cancelUrl = `${PUBLIC_BASE_URL}/cancel?token=${reservation.cancelToken}`
   const firstName = reservation.firstName || 'there'
-  const priorities = (reservation.pathways ?? [])
-    .map((p) => PATHWAY_LABELS[p])
-    .filter(Boolean)
 
   const text = [
     `Hi ${firstName},`,
     '',
-    'Your Peptis Core Continuity founding reservation is confirmed.',
-    `Reservation reference: ${reservation.id}`,
+    'You are on the Peptis Core Continuity launch list.',
+    `Reference: ${reservation.id}`,
     '',
-    ...(priorities.length
-      ? [
-          'Your summary: the priorities you named in the continuity check.',
-          ...priorities.map((p) => `- ${p}`),
-          '',
-        ]
-      : []),
-    'What this reservation is:',
-    '- A $0 place on the state-by-state launch list. No payment details were collected.',
-    '- A saved summary of your strength, protein and maintenance priorities.',
-    '- Not medical care. No clinician review, prescription, medication or pharmacy fulfillment is included today.',
+    'What this is:',
+    '- A $0 place on a launch-notification list. No payment details were collected.',
+    '- Not a paid programme, subscription, or medical service.',
+    '- No clinician review, prescription, medication or pharmacy fulfillment is included.',
     '',
-    'If services launch in your state and you are eligible, you will be able to review the final terms and decide whether to enroll. The planned founding rate is $299 per month and the planned standard rate is $399 per month. Planned pricing may change before activation.',
+    'There is no live coaching, supplement, or GLP subscription to enroll in today. If a programme later launches in your state, we will send an update. You would still have to review the then-current terms and choose to enroll. Nothing is reserved at a price.',
     '',
     `You can cancel this reservation at any time: ${cancelUrl}`,
     '',
@@ -192,33 +175,37 @@ app.post('/api/quiz-progress', async (req, res) => {
   const pathways = Array.isArray(body.pathways)
     ? body.pathways.filter((p) => typeof p === 'string').slice(0, 8)
     : []
-  const answers = body.answers && typeof body.answers === 'object' ? body.answers : {}
-
   if (!UUID_RE.test(quizId) || !step) {
     return res.status(400).json({ ok: false, error: 'invalid_payload' })
   }
   if (email && !EMAIL_RE.test(email)) {
     return res.status(400).json({ ok: false, error: 'invalid_email' })
   }
-  if (JSON.stringify(answers).length > 4000) {
-    return res.status(400).json({ ok: false, error: 'payload_too_large' })
-  }
 
   try {
-    appendEvent(
-      {
-        type: 'progress',
-        quizId,
-        step,
-        email: email || undefined,
-        firstName: firstName || undefined,
-        entryPrompt: entryPrompt || undefined,
-        pathways,
-        answers,
-        at: new Date().toISOString(),
-      },
-      PROGRESS_FILE,
-    )
+    if (email) {
+      appendEvent(
+        {
+          type: 'lead',
+          email,
+          firstName: firstName || undefined,
+          at: new Date().toISOString(),
+        },
+        PROGRESS_FILE,
+      )
+    } else {
+      appendEvent(
+        {
+          type: 'progress',
+          quizId,
+          step,
+          entryPrompt: entryPrompt || undefined,
+          pathways,
+          at: new Date().toISOString(),
+        },
+        PROGRESS_FILE,
+      )
+    }
   } catch (error) {
     console.error('progress write failed', error)
     return res.status(500).json({ ok: false, error: 'write_failed' })
@@ -253,9 +240,6 @@ app.post('/api/reservations', async (req, res) => {
   const phone = String(body.phone ?? '').trim()
   const state = String(body.state ?? '').trim().toUpperCase()
   const upsell = Boolean(body.upsell)
-  const pathways = Array.isArray(body.pathways)
-    ? body.pathways.filter((p) => typeof p === 'string').slice(0, 8)
-    : []
 
   if (firstName.length < 2) {
     return res.status(400).json({ ok: false, error: 'invalid_name' })
@@ -282,7 +266,6 @@ app.post('/api/reservations', async (req, res) => {
     smsOptIn: Boolean(body.smsOptIn),
     state,
     upsell,
-    pathways,
   }
 
   try {

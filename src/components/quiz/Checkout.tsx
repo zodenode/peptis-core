@@ -54,40 +54,37 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
     <div className="quiz-card checkout-card">
       <form className="quiz-body" onSubmit={handleSubmit} noValidate>
         <p className="quiz-kicker">{checkoutCopy.eyebrow}</p>
-        <h1 className="quiz-title">Peptis Core Continuity Founding Reservation</h1>
+        <h1 className="quiz-title">Join the Peptis launch list</h1>
         <p className="quiz-hint">
-          Reserve priority access for a future state-by-state launch. You are joining a waitlist,
-          not requesting medical care or a prescription.
+          This is a notification list. There is no paid programme, coaching staff, supplement
+          shipment or GLP subscription to join today.
         </p>
 
         <fieldset className="plan-box">
-          <legend>Your founding reservation</legend>
+          <legend>What you are joining</legend>
           <div className="plan-price-row">
             <div>
               <p className="plan-name">Due today</p>
               <p className="plan-price">$0</p>
             </div>
             <div>
-              <p className="plan-name">Planned founding rate</p>
-              <p className="plan-price">$299/month</p>
+              <p className="plan-name">Paid programme</p>
+              <p className="plan-price">Not for sale</p>
             </div>
           </div>
           <p className="plan-savings">
-            Supplements and a paid GLP continuity subscription are not available today. The
-            planned $299 founding rate and $399 standard rate apply only if those services
-            launch, you are eligible and you choose to enroll.
+            Any future price would be shown only if a service actually launches, reaches your
+            state, you are eligible, and you choose to enroll under the then-current terms.
           </p>
 
           <div className="plan-section">
-            <h2>Included with your reservation now</h2>
+            <h2>Included now</h2>
             <ul>
-              <li>Priority launch updates for your state</li>
-              <li>The opportunity to enroll at the planned $299 per month founding rate</li>
-              <li>Your personalized summary: {pathways.map((p) => pathwayLabels[p]).filter(Boolean).join(', ') || 'continuity readiness'}</li>
-              <li>A current therapy and readiness checklist</li>
-              <li>Early education and portal access when available</li>
-              <li>Cancel your reservation at any time</li>
-              <li>No charge today and no payment details required</li>
+              <li>Launch updates for the state you name</li>
+              <li>Your written summary: {pathways.map((p) => pathwayLabels[p]).filter(Boolean).join(', ') || 'continuity readiness'}</li>
+              <li>The training starter plan on this site</li>
+              <li>Cancel the list any time from the confirmation email</li>
+              <li>No charge and no payment details</li>
             </ul>
           </div>
           <div className="plan-section">
@@ -263,7 +260,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             ← Back
           </button>
           <button type="submit" className="btn btn-solid" disabled={submitState === 'submitting'}>
-            {submitState === 'submitting' ? 'Saving your reservation…' : 'Reserve for $0 today'}
+            {submitState === 'submitting' ? 'Saving your place…' : 'Join the list for $0'}
           </button>
         </div>
       </form>

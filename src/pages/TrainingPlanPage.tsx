@@ -94,7 +94,6 @@ export function TrainingPlanPage() {
             quizId: snapshot.quizId,
             step: 'plan_generated',
             pathways: [],
-            answers: { plan_archetype: built.archetype },
           })
         }
       }

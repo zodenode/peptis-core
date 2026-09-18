@@ -8,7 +8,6 @@ export type ReservationPayload = {
   resident: boolean
   attest: boolean
   upsell: boolean
-  pathways: string[]
 }
 
 export type ReservationResult =
@@ -39,7 +38,6 @@ export type ProgressPayload = {
   email?: string
   firstName?: string
   pathways: string[]
-  answers: Record<string, unknown>
   entryPrompt?: string
   sendGuide?: boolean
 }

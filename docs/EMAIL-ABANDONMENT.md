@@ -2,7 +2,7 @@
 
 Do not wire a live ESP in this repo. Use these flows in Klaviyo, Customer.io, or similar. First name comes from checkout identify traits; if missing, drop the greeting token.
 
-Recommended capture: the quiz asks for an email at step 3 (email gate) in exchange for the personalized summary and the two day strength starter plan. When entered, `posthog.identify` fires immediately and `quiz_email_captured` is tracked, so most drop-offs after step 3 are addressable. Every step is also saved server-side to `DATA_DIR/quiz-progress.jsonl` (quizId, step, answers, pathways, email once known) for retargeting exports. Quiz state additionally persists in `localStorage` (`peptis.continuity.quiz`) for same-device resume.
+Recommended capture: the quiz asks for an email at step 3 (email gate) in exchange for the personalized summary and the two day strength starter plan. When entered, `posthog.identify` fires immediately and `quiz_email_captured` is tracked, so most drop-offs after step 3 are addressable. Anonymous step names may be saved server-side. Email is written on a separate lead line without quiz answers. Provider and prescription answers stay in `localStorage` (`peptis.continuity.quiz`) for same-device resume.
 
 All copy below must follow `.cursor/skills/peptis-evidence-copy/SKILL.md`. Never imply live medical care, prescriptions, medication side-effect treatment, guaranteed muscle preservation, or a "40% muscle" figure.
 

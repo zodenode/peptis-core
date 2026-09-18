@@ -392,7 +392,7 @@ export const stopBlocks: Record<StopBlockId, StopBlockStep> = {
 }
 
 export const checkoutCopy = {
-  eyebrow: 'Founding reservations are open',
+  eyebrow: 'Launch list, not a paid programme',
   title: 'Your continuity summary is ready.',
   steps: [
     {

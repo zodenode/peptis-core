@@ -1,6 +1,6 @@
 # Peptis Core Continuity — Founding Reservation
 
-Premium medical-wellness storefront for **Peptis Continuation & Optimization** (operated by Information Edge Insights LLC). Landing page, interactive qualification quiz, evidence blog and a small reservation API. Vite + React + TypeScript + Express.
+Public site for **Peptis Core Continuity**, operated by Information Edge Insights LLC. Landing page, continuity quiz, evidence blog and a launch-list API. Vite + React + TypeScript + Express.
 
 ## Run locally
 
@@ -27,7 +27,7 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 
 - `POST /api/reservations` validates and appends to `DATA_DIR/reservations.jsonl` with fsync, then sends a confirmation email with a cancellation link. The quiz shows success only after this write is confirmed.
 - `POST /api/reservations/cancel` appends a cancellation event (idempotent).
-- `POST /api/quiz-progress` appends a per-step snapshot to `DATA_DIR/quiz-progress.jsonl` (quizId, step, answers, pathways, email once captured). This is the drop-off retargeting source. When called with `sendGuide: true` at the email gate, it sends the two day strength starter plan email once per address.
+- `POST /api/quiz-progress` appends either an anonymous step record (quizId, step, pathways) or a separate lead record (email, first name). Provider and prescription answers are not written to disk. When called with `sendGuide: true`, it sends the two day strength starter plan email once per address.
 - `GET /api/health` for monitoring.
 
 | Server variable | Required | Purpose |
@@ -58,7 +58,7 @@ Public medication wording is limited to the current overlapping WhiteLabelMD onb
 
 The current consumer offer is a **$0 founding reservation** with a planned **$299/month** founding rate if services launch, the member is eligible, and they affirmatively enroll. The planned standard rate after founding enrollment is $399/month. Pricing and availability may change before activation. Optional Lean Mass Bundle interest is planned at +$59/month at launch.
 
-The reservation includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment. Stripe wallet UI is a future-activation preview; see [`docs/STRIPE-ACTIVATION.md`](./docs/STRIPE-ACTIVATION.md).
+The launch list includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment. There is no Stripe wallet or payment preview on the list form.
 
 ## Evidence led homepage
 
@@ -75,7 +75,7 @@ Use it for Peptis claims, infographics, quiz copy, supplement messaging and cont
 
 Eight screening questions, branching educational stop-blocks and qualitative social-proof intersplices (muscle / energy / GI), followed by an animated continuity-map build. The build pauses for current provider, prescription and realistic training-setting refinements, then reveals a non-predictive Today-to-Week-12 milestone map before identity + state verification and the $0 reservation. Answers persist in `localStorage` (`peptis.continuity.quiz`) for abandonment resume.
 
-The provider grid identifies common telehealth care settings without suggesting a partnership. Provider and medication selections are stored with the protected quiz-progress payload and are not sent as analytics properties. Prescribing and medication decisions remain with the user's licensed clinician.
+The provider grid identifies common telehealth care settings without suggesting a partnership. Provider and medication selections stay in the browser for the on-screen summary. They are not written to `quiz-progress.jsonl` or `reservations.jsonl`. Prescribing and medication decisions remain with the user's licensed clinician.
 
 The legacy client-decoded restricted compound configuration remains isolated in `src/data/continuityConfig.ts`, but compound names are not shown in current patient-facing funnel copy.
 
@@ -102,7 +102,7 @@ Blog: `blog_viewed`, `blog_article_viewed` `{ slug, category }`.
 
 Email gate (step 3 of the quiz): `quiz_email_captured` or `quiz_email_skipped`. A valid email triggers `posthog.identify(email, { quiz_source })` and a Meta Pixel `Lead`; reservation submit fires `CompleteRegistration`.
 
-Identify: at the quiz email gate when an email is entered, otherwise at reservation submit via `posthog.identify(email, { first_name, state, plan })`. Raw quiz answers are not sent to analytics; only derived pathways are. Full answers are stored server-side in `quiz-progress.jsonl`, covered by the Privacy and Consumer Health Data notices.
+Identify: at the quiz email gate when an email is entered, otherwise at reservation submit via `posthog.identify(email, { first_name, state, plan })`. Raw quiz answers are not sent to analytics. Provider and prescription answers are not written to server files.
 
 Email abandonment copy and event → flow mapping: [`docs/EMAIL-ABANDONMENT.md`](./docs/EMAIL-ABANDONMENT.md).
 

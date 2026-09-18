@@ -39,12 +39,12 @@ export function FoundingOfferVisual() {
     >
       <div className="section-inner offer-shell">
         <div className="offer-copy">
-          <p className="eyebrow eyebrow-light">Free check, then a $0 founding reservation</p>
-          <h2 id="offer-heading">Start with written priorities. Pay only if you later enroll.</h2>
+          <p className="eyebrow eyebrow-light">Free check, then a $0 launch list</p>
+          <h2 id="offer-heading">Get the summary now. There is no paid programme to join today.</h2>
           <p>
-            The continuity check is free. Holding your place costs $0. The supplement bundle and
-            a paid GLP continuity subscription are not available yet. Planned founding rates apply
-            only if those services launch, you are eligible and you choose to enroll.
+            The continuity check is free. Joining the list costs $0. Coaching staff, the
+            supplement bundle and a GLP subscription are not for sale yet. If they later launch in
+            your state, you would still have to review the terms and choose to enroll.
           </p>
           <ul className="offer-benefits">
             {benefits.map((benefit) => (
@@ -64,40 +64,39 @@ export function FoundingOfferVisual() {
         </div>
 
         <figure className="offer-visual" aria-labelledby="offer-chart-title">
-          <figcaption id="offer-chart-title">Planned monthly pricing</figcaption>
+          <figcaption id="offer-chart-title">What is for sale today</figcaption>
           <p className="visually-hidden">
-            Reserving today costs nothing. The planned founding rate is $299 per month and the
-            planned standard rate is $399 per month. Both apply only if services launch, you are
-            eligible and you choose to enroll under the final terms.
+            Joining the list costs nothing. There is no paid Peptis programme, supplement bundle
+            or GLP subscription for sale today.
           </p>
           <div className="offer-today">
             <span>Today</span>
             <strong>$0</strong>
-            <small>to reserve</small>
+            <small>to join the list</small>
           </div>
           <div className="offer-bars">
             <div className="offer-bar-row founding">
               <div className="offer-bar-label">
-                <span>Planned founding rate</span>
-                <strong>$299 <small>per month</small></strong>
+                <span>Paid continuity programme</span>
+                <strong>Not for sale</strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
-                <span style={{ '--bar-size': '75%' } as CSSProperties} />
+                <span style={{ '--bar-size': '0%' } as CSSProperties} />
               </div>
             </div>
             <div className="offer-bar-row standard">
               <div className="offer-bar-label">
-                <span>Planned standard rate</span>
-                <strong>$399 <small>per month</small></strong>
+                <span>Supplement bundle</span>
+                <strong>Not for sale</strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
-                <span style={{ '--bar-size': '100%' } as CSSProperties} />
+                <span style={{ '--bar-size': '0%' } as CSSProperties} />
               </div>
             </div>
           </div>
           <div className="offer-saving">
-            <strong>Planned</strong>
-            <span>rates apply only if services launch, you are eligible and you enroll</span>
+            <strong>Later</strong>
+            <span>any price would appear only if a service actually launches and you enroll</span>
           </div>
         </figure>
       </div>
