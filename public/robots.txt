@@ -3,6 +3,7 @@ Allow: /
 Disallow: /api/
 Disallow: /cancel
 Disallow: /go/
+Disallow: /publication/partners
 
 User-agent: GPTBot
 Allow: /publication

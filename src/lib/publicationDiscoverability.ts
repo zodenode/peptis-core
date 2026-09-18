@@ -32,8 +32,6 @@ export type DiscoverabilityPage = {
 
 const REVIEW_ISO = '2026-08-21'
 
-export const PARTNERS_PATH = '/publication/partners'
-
 export function articleFaqs(article: Article): FaqItem[] {
   const question = article.title.includes('?')
     ? `${article.title.split('?')[0]}?`
@@ -112,7 +110,6 @@ export function articleJsonLd(article: Article) {
       about: article.category,
       abstract: article.takeaway,
       citation: article.sources,
-      usageInfo: absoluteUrl(PARTNERS_PATH),
       speakable: {
         '@type': 'SpeakableSpecification',
         cssSelector: ['.pub-answer', '.pub-takeaway'],
@@ -204,7 +201,6 @@ export function publicationHomeJsonLd() {
 export function jsonLdForPath(pagePath: string): unknown[] {
   const normalized = pagePath.replace(/\/$/, '') || '/'
   if (normalized === '/publication') return publicationHomeJsonLd()
-  if (normalized === PARTNERS_PATH) return partnersJsonLd()
   const parts = normalized.split('/').filter(Boolean)
   if (parts[0] !== 'publication') return []
   if (parts.length === 2) {
@@ -218,42 +214,6 @@ export function jsonLdForPath(pagePath: string): unknown[] {
     return articleJsonLd(article)
   }
   return []
-}
-
-export function partnersPageSeo(): DiscoverabilityPage {
-  return {
-    path: PARTNERS_PATH,
-    title: `Cite or syndicate ${PUBLICATION_NAME}`,
-    description:
-      'Clinics, trainers and educators can quote Peptis Publication takeaways with attribution, limitations and a link to the canonical essay. Education only.',
-    type: 'website',
-    image: absoluteUrl(publicationCategories[0].image),
-    imageAlt: publicationCategories[0].imageAlt,
-    dateModified: REVIEW_ISO,
-  }
-}
-
-export function partnersJsonLd() {
-  const page = partnersPageSeo()
-  return [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebPage',
-      name: page.title,
-      description: page.description,
-      url: absoluteUrl(PARTNERS_PATH),
-      isPartOf: { '@type': 'WebSite', name: PUBLICATION_NAME, url: absoluteUrl('/publication') },
-      about: 'Citation and syndication of evidence essays',
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Publication', item: absoluteUrl('/publication') },
-        { '@type': 'ListItem', position: 2, name: 'Partners', item: absoluteUrl(PARTNERS_PATH) },
-      ],
-    },
-  ]
 }
 
 export function articleCite(article: Article) {
@@ -310,7 +270,7 @@ export function publicationCatalog(): DiscoverabilityPage[] {
       dateModified: REVIEW_ISO,
     }
   })
-  return [home, partnersPageSeo(), ...desks, ...essays]
+  return [home, ...desks, ...essays]
 }
 
 export function coreSitePages(): DiscoverabilityPage[] {
@@ -418,6 +378,7 @@ Allow: /
 Disallow: /api/
 Disallow: /cancel
 Disallow: /go/
+Disallow: /publication/partners
 
 User-agent: GPTBot
 Allow: /publication
@@ -457,8 +418,6 @@ export function llmsTxt(): string {
 
 Evidence reviewed through ${PUBLICATION_REVIEW_DATE}. Individual results vary. Lean mass is not skeletal muscle. About 25% of lost weight was lean mass in the SURMOUNT 1 DXA substudy.
 
-Cite or syndicate with attribution: ${absoluteUrl(PARTNERS_PATH)}
-
 ## Desks
 
 ${desks}
@@ -472,7 +431,6 @@ ${essays}
 - [Home](${SITE_ORIGIN}/)
 - [Free continuity check](${SITE_ORIGIN}/quiz)
 - [Publication](${absoluteUrl('/publication')})
-- [Cite or syndicate](${absoluteUrl(PARTNERS_PATH)})
 - [Full text index](${SITE_ORIGIN}/llms-full.txt)
 `
 }
@@ -503,7 +461,7 @@ ${sources}
 Education only. Not medical advice. Lean mass is not skeletal muscle. Individual results vary.
 Evidence reviewed through ${PUBLICATION_REVIEW_DATE}.
 
-When quoting, keep the limitations and link to the canonical URL. See ${absoluteUrl(PARTNERS_PATH)}.
+When quoting, keep the limitations and link to the canonical URL.
 
 ${essays}
 `

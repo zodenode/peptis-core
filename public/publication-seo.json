@@ -70,48 +70,6 @@
       }
     ]
   },
-  "/publication/partners": {
-    "path": "/publication/partners",
-    "title": "Cite or syndicate Peptis Publication",
-    "description": "Clinics, trainers and educators can quote Peptis Publication takeaways with attribution, limitations and a link to the canonical essay. Education only.",
-    "type": "website",
-    "image": "https://www.peptis.com/images/continuity/problem-muscle.jpg",
-    "imageAlt": "Adult pausing during a strength session at home",
-    "dateModified": "2026-08-21",
-    "jsonLd": [
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Cite or syndicate Peptis Publication",
-        "description": "Clinics, trainers and educators can quote Peptis Publication takeaways with attribution, limitations and a link to the canonical essay. Education only.",
-        "url": "https://www.peptis.com/publication/partners",
-        "isPartOf": {
-          "@type": "WebSite",
-          "name": "Peptis Publication",
-          "url": "https://www.peptis.com/publication"
-        },
-        "about": "Citation and syndication of evidence essays"
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Publication",
-            "item": "https://www.peptis.com/publication"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Partners",
-            "item": "https://www.peptis.com/publication/partners"
-          }
-        ]
-      }
-    ]
-  },
   "/publication/composition": {
     "path": "/publication/composition",
     "title": "Composition | Peptis Publication",
@@ -379,7 +337,6 @@
           "Langer et al., Cell Metabolism, 2026, dossier [16]",
           "Bellicha et al., Obesity Reviews, 2021, dossier [21]"
         ],
-        "usageInfo": "https://www.peptis.com/publication/partners",
         "speakable": {
           "@type": "SpeakableSpecification",
           "cssSelector": [
@@ -490,7 +447,6 @@
           "Look et al., SURMOUNT-1 DEXA substudy, 2025, dossier [12]",
           "Langer et al., Cell Metabolism, 2026, dossier [16]"
         ],
-        "usageInfo": "https://www.peptis.com/publication/partners",
         "speakable": {
           "@type": "SpeakableSpecification",
           "cssSelector": [
@@ -603,7 +559,6 @@
           "Leidy et al., American Journal of Clinical Nutrition, 2015, dossier [25]",
           "Mozaffarian et al., joint nutrition advisory, American Journal of Clinical Nutrition, 2025, dossier [17]"
         ],
-        "usageInfo": "https://www.peptis.com/publication/partners",
         "speakable": {
           "@type": "SpeakableSpecification",
           "cssSelector": [
@@ -714,7 +669,6 @@
           "Villareal et al., New England Journal of Medicine, 2017, dossier [22]",
           "Armamento-Villareal et al., JBMR, 2020, dossier [23]"
         ],
-        "usageInfo": "https://www.peptis.com/publication/partners",
         "speakable": {
           "@type": "SpeakableSpecification",
           "cssSelector": [
@@ -824,7 +778,6 @@
           "Wilding et al., STEP 1 extension, Diabetes, Obesity and Metabolism, 2022, dossier [9]",
           "Rubino et al., STEP 4, JAMA, 2021, dossier [10]"
         ],
-        "usageInfo": "https://www.peptis.com/publication/partners",
         "speakable": {
           "@type": "SpeakableSpecification",
           "cssSelector": [
@@ -936,7 +889,6 @@
           "Sami et al., Aesthetic Plastic Surgery, 2015, dossier [34]",
           "Ashtary-Larky et al., British Journal of Nutrition, 2020, dossier [46]"
         ],
-        "usageInfo": "https://www.peptis.com/publication/partners",
         "speakable": {
           "@type": "SpeakableSpecification",
           "cssSelector": [

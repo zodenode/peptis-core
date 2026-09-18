@@ -493,10 +493,20 @@ function injectPublicationHead(html, page, pagePath) {
   return next.replace('</head>', `${extra.join('\n    ')}\n  </head>`)
 }
 
+app.get(['/publication/partners', '/publication/partners/'], (_req, res) => {
+  res.redirect(301, '/publication')
+})
+app.get('/publication-partner-kit.json', (_req, res) => {
+  res.status(404).end()
+})
+
 app.use(express.static(distDir))
 app.use((req, res, next) => {
   if (req.method !== 'GET' || req.path.startsWith('/api/')) return next()
   const pagePath = req.path.replace(/\/$/, '') || '/'
+  if (pagePath === '/publication/partners') {
+    return res.redirect(301, '/publication')
+  }
   const page = pagePath.startsWith('/publication') ? loadPublicationSeo()[pagePath] : null
   if (!page) {
     return res.sendFile(path.join(distDir, 'index.html'))

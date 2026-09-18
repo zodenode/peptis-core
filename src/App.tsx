@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { BlogArticleRedirect, BlogIndexRedirect } from './pages/BlogRedirects'
 import { CancelPage } from './pages/CancelPage'
 import { HealthDataNoticePage } from './pages/HealthDataNoticePage'
@@ -9,7 +9,6 @@ import { PrivacyPage } from './pages/PrivacyPage'
 import { PublicationArticlePage } from './pages/PublicationArticlePage'
 import { PublicationCategoryPage } from './pages/PublicationCategoryPage'
 import { PublicationHomePage } from './pages/PublicationHomePage'
-import { PublicationPartnersPage } from './pages/PublicationPartnersPage'
 import { QuizPage } from './pages/QuizPage'
 import { TrainingPlanPage } from './pages/TrainingPlanPage'
 
@@ -22,7 +21,7 @@ export default function App() {
       <Route path="/plan" element={<TrainingPlanPage />} />
       <Route path="/offerings" element={<OfferingsPage />} />
       <Route path="/publication" element={<PublicationHomePage />} />
-      <Route path="/publication/partners" element={<PublicationPartnersPage />} />
+      <Route path="/publication/partners" element={<Navigate to="/publication" replace />} />
       <Route path="/publication/:category/:slug" element={<PublicationArticlePage />} />
       <Route path="/publication/:category" element={<PublicationCategoryPage />} />
       <Route path="/blog" element={<BlogIndexRedirect />} />

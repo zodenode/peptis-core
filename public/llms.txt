@@ -4,8 +4,6 @@
 
 Evidence reviewed through August 21, 2026. Individual results vary. Lean mass is not skeletal muscle. About 25% of lost weight was lean mass in the SURMOUNT 1 DXA substudy.
 
-Cite or syndicate with attribution: https://www.peptis.com/publication/partners
-
 ## Desks
 
 - [Composition](https://www.peptis.com/publication/composition): Weight loss and fat loss are not the same. These essays explain what the trials measured, and why lean mass is not skeletal muscle.
@@ -28,5 +26,4 @@ Cite or syndicate with attribution: https://www.peptis.com/publication/partners
 - [Home](https://www.peptis.com/)
 - [Free continuity check](https://www.peptis.com/quiz)
 - [Publication](https://www.peptis.com/publication)
-- [Cite or syndicate](https://www.peptis.com/publication/partners)
 - [Full text index](https://www.peptis.com/llms-full.txt)

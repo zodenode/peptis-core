@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { PublicationChrome } from '../components/publication/PublicationChrome'
-import { PublicationCite } from '../components/publication/PublicationCite'
 import { PublicationFaq } from '../components/publication/PublicationFaq'
 import { SeoHead } from '../components/SeoHead'
 import {
@@ -107,7 +106,6 @@ export function PublicationArticlePage() {
           </aside>
 
           <PublicationFaq items={articleFaqs(article)} />
-          <PublicationCite article={article} />
 
           <section className="pub-sources">
             <h2>Sources</h2>
