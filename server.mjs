@@ -464,17 +464,15 @@ function injectPublicationHead(html, page, pagePath) {
   const title = escapeAttr(page.title)
   const description = escapeAttr(page.description)
   const image = escapeAttr(page.image || `${origin}/peptis-logo-green.png`)
-  let next = html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
-  if (/<meta\s+name="description"/i.test(next)) {
-    next = next.replace(
-      /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,
-      `<meta name="description" content="${description}" />`,
-    )
-  }
+  let next = html
+    .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
+    .replace(/<meta\b[^>]*(?:name|property)="(?:description|og:[^"]+|twitter:[^"]+)"[^>]*>/gi, '')
+    .replace(/<link\b[^>]*rel="canonical"[^>]*>/gi, '')
   const jsonLd = Array.isArray(page.jsonLd) ? page.jsonLd : []
   const extra = [
     `<link rel="canonical" href="${escapeAttr(url)}" />`,
     `<link rel="alternate" type="text/plain" href="${origin}/llms.txt" />`,
+    `<meta name="description" content="${description}" />`,
     `<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />`,
     `<meta property="og:site_name" content="Peptis" />`,
     `<meta property="og:title" content="${title}" />`,
