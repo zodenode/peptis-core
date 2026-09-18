@@ -8,6 +8,7 @@ export type ReservationPayload = {
   resident: boolean
   attest: boolean
   upsell: boolean
+  source?: string
 }
 
 export type ReservationResult =
@@ -40,6 +41,7 @@ export type ProgressPayload = {
   pathways: string[]
   entryPrompt?: string
   sendGuide?: boolean
+  source?: string
 }
 
 /* Fire-and-forget: progress capture must never block or break the quiz. */

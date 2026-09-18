@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { setQuizSource, track } from '../../lib/analytics'
+import { getLandingVariant } from '../../data/landingVariants'
+import { getQuizSource, setQuizSource, track } from '../../lib/analytics'
 
 type HeaderProps = {
   variant?: 'landing' | 'quiz'
@@ -25,6 +26,13 @@ export function Header({ variant = 'landing' }: HeaderProps) {
   const quizClick = (place: string) => {
     setQuizSource(place)
     track('quiz_cta_clicked', { location: place })
+  }
+
+  const quizBackPath = () => {
+    const source = getQuizSource()
+    const match = source.match(/^go_([a-z]+)/)
+    const variant = match ? getLandingVariant(match[1]) : null
+    return variant?.path ?? '/'
   }
 
   return (
@@ -69,7 +77,7 @@ export function Header({ variant = 'landing' }: HeaderProps) {
           ) : null}
         </>
       ) : (
-        <Link className="nav-text" to="/">
+        <Link className="nav-text" to={quizBackPath()}>
           Back to the continuity check
         </Link>
       )}

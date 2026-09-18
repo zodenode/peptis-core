@@ -304,6 +304,7 @@ export function useQuizEngine() {
         firstName: name,
         pathways: [],
         sendGuide: true,
+        source: getQuizSource(),
       })
     },
     [current, quizId],
@@ -329,6 +330,7 @@ export function useQuizEngine() {
       resident: checkout.resident,
       attest: checkout.attest,
       upsell: checkout.upsell,
+      source: getQuizSource(),
     })
 
     if (!result.ok) {

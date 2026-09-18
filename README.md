@@ -14,6 +14,7 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 ```
 
 - Landing: `/`
+- Hidden ad landings (not in the navbar): `/go/strength`, `/go/box`, `/go/care`, `/go/plan`
 - Quiz: `/quiz`
 - Offerings + Supliful stock lists: `/offerings`
 - Training plan: `/plan`
@@ -27,14 +28,16 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 
 - `POST /api/reservations` validates and appends to `DATA_DIR/reservations.jsonl` with fsync, then sends a confirmation email with a cancellation link. The quiz shows success only after this write is confirmed.
 - `POST /api/reservations/cancel` appends a cancellation event (idempotent).
-- `POST /api/quiz-progress` appends either an anonymous step record (quizId, step, pathways) or a separate lead record (email, first name). Provider and prescription answers are not written to disk. When called with `sendGuide: true`, it sends the two day strength starter plan email once per address.
+- `POST /api/quiz-progress` appends either an anonymous step record (quizId, step, pathways) or a separate lead record (email, first name, source). Provider and prescription answers are not written to disk. When called with `sendGuide: true`, it sends the two day strength starter plan email once per address. A new lead also emails the operators.
+- `POST /api/leads` is the short landing-page email capture. Same lead write, starter-plan email and operator notice. No quiz answers.
 - `GET /api/health` for monitoring.
 
 | Server variable | Required | Purpose |
 |---|---|---|
 | `DATA_DIR` | Yes in production | Point at a mounted Railway volume so reservations survive deploys |
-| `RESEND_API_KEY` | For email | Resend API key for confirmation emails |
+| `RESEND_API_KEY` | For email | Resend API key for confirmation, starter-plan and operator notices |
 | `RESERVATION_EMAIL_FROM` | No | Defaults to `Peptis <reservations@peptis.com>` |
+| `OPS_NOTIFY_EMAILS` | No | Defaults to Joseph and Edozie. Comma-separated operator inboxes for form completions |
 | `PUBLIC_BASE_URL` | No | Cancellation link base, defaults to `https://www.peptis.com` |
 
 ## Production
@@ -59,6 +62,17 @@ Public medication wording is limited to the current overlapping WhiteLabelMD onb
 The current consumer offer is a **free continuity check and starter training plan**. The first paid product we intend to sell is the **Lean Mass nutrition box at $59/month**. It is not for sale until charge and ship work. There is no Stripe wallet or payment preview. A $299/month clinical programme is not an offer on the site.
 
 The list signup includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment.
+
+Supliful and Rocktomic are both unused until their onboarding is actually sent. They are not substitutes. Supliful can later ship a nutrition box without a clinician. Rocktomic is the clinical onboarding path and needs licensure work before it can sell care. Hidden ad URLs, not linked in the navbar:
+
+| Path | Test | Use this traffic |
+|---|---|---|
+| `/go/strength` | Scale-gap quiz | GLP-1 continuity ads |
+| `/go/box` | $59 nutrition box interest | Wellness / Meta-safe ads |
+| `/go/care` | Clinical continuity list | People who want a programme, not a box |
+| `/go/plan` | Training-first | Lowest-claim, evidence-led ads |
+
+Form completions email the operators named in `OPS_NOTIFY_EMAILS`. The notice includes name, email, state, source and box interest. It does not include quiz answers.
 
 ## Evidence led homepage
 

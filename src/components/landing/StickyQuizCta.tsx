@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import type { LandingVariant } from '../../data/landingVariants'
 import { setQuizSource, track } from '../../lib/analytics'
 
-export function StickyQuizCta() {
+type Props = {
+  variant?: LandingVariant
+}
+
+export function StickyQuizCta({ variant }: Props) {
   const [visible, setVisible] = useState(false)
+  const source = variant ? `${variant.source}_sticky` : 'sticky_mobile'
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 560)
@@ -15,19 +21,19 @@ export function StickyQuizCta() {
   return (
     <div className={`sticky-cta${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
       <div>
-        <strong>Free GLP-1 continuity check</strong>
-        <span>3 minutes. $0. No card.</span>
+        <strong>{variant?.stickyTitle ?? 'Free GLP-1 continuity check'}</strong>
+        <span>{variant?.stickyNote ?? '3 minutes. $0. No card.'}</span>
       </div>
       <Link
         className="btn btn-primary"
-        to="/quiz"
+        to={variant?.ctaTo ?? '/quiz'}
         tabIndex={visible ? 0 : -1}
         onClick={() => {
-          setQuizSource('sticky_mobile')
-          track('quiz_cta_clicked', { location: 'sticky_mobile' })
+          setQuizSource(source)
+          track('quiz_cta_clicked', { location: source })
         }}
       >
-        Get mine
+        {variant ? variant.ctaLabel : 'Get mine'}
       </Link>
     </div>
   )

@@ -1,7 +1,8 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
+import type { LandingVariant } from '../../data/landingVariants'
 import { useSectionView } from '../../hooks/useSectionView'
-import { track } from '../../lib/analytics'
+import { setQuizSource, track } from '../../lib/analytics'
 
 const benefits = [
   'Written continuity summary',
@@ -10,7 +11,11 @@ const benefits = [
   'No card today',
 ] as const
 
-export function FoundingOfferVisual() {
+type Props = {
+  variant?: LandingVariant
+}
+
+export function FoundingOfferVisual({ variant }: Props) {
   const sectionRef = useSectionView<HTMLElement>('founding_offer')
   const sent = useRef(false)
 
@@ -39,12 +44,16 @@ export function FoundingOfferVisual() {
     >
       <div className="section-inner offer-shell">
         <div className="offer-copy">
-          <p className="eyebrow eyebrow-light">Free check, then a box you can buy later</p>
-          <h2 id="offer-heading">Get the summary and starter plan now. The $59 box is not for sale yet.</h2>
+          <p className="eyebrow eyebrow-light">
+            {variant?.offerEyebrow ?? 'Free check, then a box you can buy later'}
+          </p>
+          <h2 id="offer-heading">
+            {variant?.offerHeadline ??
+              'Get the summary and starter plan now. The $59 box is not for sale yet.'}
+          </h2>
           <p>
-            The continuity check and two-day strength plan are free. The first paid product we
-            intend to sell is the Lean Mass nutrition box at $59 a month. It is not for sale
-            today because we cannot charge or ship. There is no paid clinical programme to join.
+            {variant?.offerBody ??
+              'The continuity check and two-day strength plan are free. The first paid product we intend to sell is the Lean Mass nutrition box at $59 a month. It is not for sale today because we cannot charge or ship. There is no paid clinical programme to join.'}
           </p>
           <ul className="offer-benefits">
             {benefits.map((benefit) => (
@@ -53,10 +62,13 @@ export function FoundingOfferVisual() {
           </ul>
           <Link
             className="btn btn-primary"
-            to="/quiz"
-            onClick={() => track('quiz_cta_clicked', { location: 'founding_offer' })}
+            to={variant?.ctaTo ?? '/quiz'}
+            onClick={() => {
+              setQuizSource(variant ? `${variant.source}_offer` : 'founding_offer')
+              track('quiz_cta_clicked', { location: variant ? `${variant.source}_offer` : 'founding_offer' })
+            }}
           >
-            Get my free summary
+            {variant?.ctaLabel ?? 'Get my free summary'}
           </Link>
           <p className="offer-caveat">
             No charge now. No payment details. $59 is the intended box price, not a live offer.

@@ -3,6 +3,7 @@ import { BlogArticlePage } from './pages/BlogArticlePage'
 import { BlogIndexPage } from './pages/BlogIndexPage'
 import { CancelPage } from './pages/CancelPage'
 import { HealthDataNoticePage } from './pages/HealthDataNoticePage'
+import { GoLandingPage } from './pages/GoLandingPage'
 import { LandingPage } from './pages/LandingPage'
 import { OfferingsPage } from './pages/OfferingsPage'
 import { PrivacyPage } from './pages/PrivacyPage'
@@ -13,6 +14,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/go/:slug" element={<GoLandingPage />} />
       <Route path="/quiz" element={<QuizPage />} />
       <Route path="/plan" element={<TrainingPlanPage />} />
       <Route path="/offerings" element={<OfferingsPage />} />

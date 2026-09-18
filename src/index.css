@@ -423,6 +423,37 @@ button {
   gap: 0.8rem;
 }
 
+.hero-lead-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  width: 100%;
+  max-width: 34rem;
+}
+
+.hero-lead-form input {
+  width: 100%;
+  min-width: 11rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(250, 250, 249, 0.35);
+  border-radius: 0.7rem;
+  background: rgba(20, 32, 24, 0.4);
+  color: var(--beige);
+}
+
+.hero-lead-form label {
+  flex: 1 1 10rem;
+}
+
+.hero-lead-form button {
+  flex: 0 0 auto;
+}
+
+.hero .btn-ghost {
+  color: var(--beige);
+  border-color: rgba(250, 250, 249, 0.35);
+}
+
 /* Hero quiz starter: the hero acts as question zero for ad traffic. */
 .hero-quiz-start {
   display: grid;

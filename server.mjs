@@ -16,6 +16,73 @@ app.use(express.json({ limit: '64kb' }))
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const STATE_RE = /^[A-Z]{2}$/
+const SOURCE_RE = /^[a-z0-9_-]{1,40}$/i
+const DEFAULT_OPS_EMAILS = ['Josephedwardbrady@gmail.com', 'edozieizegbu@gmail.com']
+
+function opsRecipients() {
+  const raw = process.env.OPS_NOTIFY_EMAILS
+  const list = raw
+    ? raw.split(',').map((item) => item.trim()).filter((item) => EMAIL_RE.test(item))
+    : DEFAULT_OPS_EMAILS
+  return list
+}
+
+function cleanSource(value) {
+  const source = String(value ?? '').trim()
+  return SOURCE_RE.test(source) ? source : 'direct'
+}
+
+async function sendResend({ to, subject, text }) {
+  const key = process.env.RESEND_API_KEY
+  if (!key) return { sent: false, reason: 'no_api_key' }
+  const from = process.env.RESERVATION_EMAIL_FROM || 'Peptis <reservations@peptis.com>'
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ from, to, subject, text }),
+    })
+    if (!res.ok) {
+      const detail = await res.text().catch(() => '')
+      console.error('resend failed', subject, res.status, detail.slice(0, 300))
+      return { sent: false, reason: `status_${res.status}` }
+    }
+    return { sent: true }
+  } catch (error) {
+    console.error('resend failed', subject, error)
+    return { sent: false, reason: 'network' }
+  }
+}
+
+async function sendOpsNotification({ event, firstName, email, state, phone, upsell, source, reference }) {
+  const to = opsRecipients()
+  if (!to.length) return { sent: false, reason: 'no_recipients' }
+  const text = [
+    `Peptis form ${event}`,
+    '',
+    `Event: ${event}`,
+    `Name: ${firstName || 'unknown'}`,
+    `Email: ${email}`,
+    state ? `State: ${state}` : null,
+    phone ? `Phone: ${phone}` : null,
+    `Path / source: ${source || 'direct'}`,
+    upsell === undefined ? null : `Lean Mass box interest: ${upsell ? 'yes' : 'no'}`,
+    reference ? `Reference: ${reference}` : null,
+    `Time: ${new Date().toISOString()}`,
+    '',
+    'Quiz answers, provider and medication were not included.',
+  ]
+    .filter(Boolean)
+    .join('\n')
+  return sendResend({
+    to,
+    subject: `Peptis ${event}: ${firstName || email}`,
+    text,
+  })
+}
 
 function appendEvent(event, file = EVENTS_FILE) {
   const line = JSON.stringify(event) + '\n'
@@ -45,10 +112,6 @@ function readEvents() {
 }
 
 async function sendConfirmationEmail(reservation) {
-  const key = process.env.RESEND_API_KEY
-  if (!key) return { sent: false, reason: 'no_api_key' }
-
-  const from = process.env.RESERVATION_EMAIL_FROM || 'Peptis <reservations@peptis.com>'
   const cancelUrl = `${PUBLIC_BASE_URL}/cancel?token=${reservation.cancelToken}`
   const firstName = reservation.firstName || 'there'
 
@@ -74,37 +137,14 @@ async function sendConfirmationEmail(reservation) {
     'Peptis is operated by Information Edge Insights LLC.',
   ].join('\n')
 
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${key}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from,
-        to: [reservation.email],
-        subject: 'Your Peptis continuity summary is saved',
-        text,
-      }),
-    })
-    if (!res.ok) {
-      const detail = await res.text().catch(() => '')
-      console.error('confirmation email failed', res.status, detail.slice(0, 300))
-      return { sent: false, reason: `status_${res.status}` }
-    }
-    return { sent: true }
-  } catch (error) {
-    console.error('confirmation email failed', error)
-    return { sent: false, reason: 'network' }
-  }
+  return sendResend({
+    to: [reservation.email],
+    subject: 'Your Peptis continuity summary is saved',
+    text,
+  })
 }
 
 async function sendStarterPlanEmail(email, firstName) {
-  const key = process.env.RESEND_API_KEY
-  if (!key) return { sent: false, reason: 'no_api_key' }
-
-  const from = process.env.RESERVATION_EMAIL_FROM || 'Peptis <reservations@peptis.com>'
   const text = [
     `Hi ${firstName || 'there'},`,
     '',
@@ -120,30 +160,11 @@ async function sendStarterPlanEmail(email, firstName) {
     'Peptis is operated by Information Edge Insights LLC. Reply to this email to unsubscribe.',
   ].join('\n')
 
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${key}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from,
-        to: [email],
-        subject: 'Your two day strength starter plan',
-        text,
-      }),
-    })
-    if (!res.ok) {
-      const detail = await res.text().catch(() => '')
-      console.error('starter plan email failed', res.status, detail.slice(0, 300))
-      return { sent: false, reason: `status_${res.status}` }
-    }
-    return { sent: true }
-  } catch (error) {
-    console.error('starter plan email failed', error)
-    return { sent: false, reason: 'network' }
-  }
+  return sendResend({
+    to: [email],
+    subject: 'Your two day strength starter plan',
+    text,
+  })
 }
 
 function readProgressEvents() {
@@ -176,6 +197,7 @@ app.post('/api/quiz-progress', async (req, res) => {
   const firstName = String(body.firstName ?? '').trim().slice(0, 80)
   const entryPrompt = String(body.entryPrompt ?? '').slice(0, 30)
   const sendGuide = body.sendGuide === true
+  const source = cleanSource(body.source)
   const pathways = Array.isArray(body.pathways)
     ? body.pathways.filter((p) => typeof p === 'string').slice(0, 8)
     : []
@@ -193,6 +215,7 @@ app.post('/api/quiz-progress', async (req, res) => {
           type: 'lead',
           email,
           firstName: firstName || undefined,
+          source,
           at: new Date().toISOString(),
         },
         PROGRESS_FILE,
@@ -216,6 +239,31 @@ app.post('/api/quiz-progress', async (req, res) => {
   }
 
   let guideSent = false
+  let opsNotified = false
+  if (email) {
+    const alreadyNotified = readProgressEvents().some(
+      (e) => e.type === 'ops_notify' && e.event === 'lead' && e.email === email,
+    )
+    if (!alreadyNotified) {
+      const notify = await sendOpsNotification({
+        event: 'lead',
+        firstName,
+        email,
+        source,
+      })
+      opsNotified = notify.sent
+      if (notify.sent) {
+        try {
+          appendEvent(
+            { type: 'ops_notify', event: 'lead', email, source, at: new Date().toISOString() },
+            PROGRESS_FILE,
+          )
+        } catch (error) {
+          console.error('ops notify log failed', error)
+        }
+      }
+    }
+  }
   if (sendGuide && email) {
     const alreadySent = readProgressEvents().some(
       (e) => e.type === 'guide_email' && e.email === email,
@@ -233,7 +281,71 @@ app.post('/api/quiz-progress', async (req, res) => {
     }
   }
 
-  res.json({ ok: true, guideSent })
+  res.json({ ok: true, guideSent, opsNotified })
+})
+
+app.post('/api/leads', async (req, res) => {
+  const body = req.body ?? {}
+  const firstName = String(body.firstName ?? '').trim().slice(0, 80)
+  const email = String(body.email ?? '').trim().toLowerCase()
+  const source = cleanSource(body.source)
+  if (firstName.length < 2) {
+    return res.status(400).json({ ok: false, error: 'invalid_name' })
+  }
+  if (!EMAIL_RE.test(email)) {
+    return res.status(400).json({ ok: false, error: 'invalid_email' })
+  }
+
+  try {
+    appendEvent(
+      {
+        type: 'lead',
+        email,
+        firstName,
+        source,
+        at: new Date().toISOString(),
+      },
+      PROGRESS_FILE,
+    )
+  } catch (error) {
+    console.error('lead write failed', error)
+    return res.status(500).json({ ok: false, error: 'write_failed' })
+  }
+
+  const alreadyNotified = readProgressEvents().some(
+    (e) => e.type === 'ops_notify' && e.event === 'lead' && e.email === email,
+  )
+  let opsNotified = false
+  if (!alreadyNotified) {
+    const notify = await sendOpsNotification({ event: 'lead', firstName, email, source })
+    opsNotified = notify.sent
+    if (notify.sent) {
+      try {
+        appendEvent(
+          { type: 'ops_notify', event: 'lead', email, source, at: new Date().toISOString() },
+          PROGRESS_FILE,
+        )
+      } catch (error) {
+        console.error('ops notify log failed', error)
+      }
+    }
+  }
+
+  let guideSent = false
+  const alreadySent = readProgressEvents().some((e) => e.type === 'guide_email' && e.email === email)
+  if (!alreadySent) {
+    const result = await sendStarterPlanEmail(email, firstName)
+    guideSent = result.sent
+    if (result.sent) {
+      try {
+        appendEvent({ type: 'guide_email', email, at: new Date().toISOString() }, PROGRESS_FILE)
+      } catch (error) {
+        console.error('guide email log failed', error)
+      }
+    }
+  }
+
+  res.json({ ok: true, guideSent, opsNotified })
 })
 
 app.post('/api/reservations', async (req, res) => {
@@ -244,6 +356,7 @@ app.post('/api/reservations', async (req, res) => {
   const phone = String(body.phone ?? '').trim()
   const state = String(body.state ?? '').trim().toUpperCase()
   const upsell = Boolean(body.upsell)
+  const source = cleanSource(body.source)
 
   if (firstName.length < 2) {
     return res.status(400).json({ ok: false, error: 'invalid_name' })
@@ -270,6 +383,7 @@ app.post('/api/reservations', async (req, res) => {
     smsOptIn: Boolean(body.smsOptIn),
     state,
     upsell,
+    source,
   }
 
   try {
@@ -280,8 +394,18 @@ app.post('/api/reservations', async (req, res) => {
   }
 
   const emailResult = await sendConfirmationEmail(reservation)
+  const opsResult = await sendOpsNotification({
+    event: 'reservation',
+    firstName,
+    email,
+    state,
+    phone,
+    upsell,
+    source,
+    reference: reservation.id,
+  })
 
-  res.json({ ok: true, id: reservation.id, emailSent: emailResult.sent })
+  res.json({ ok: true, id: reservation.id, emailSent: emailResult.sent, opsNotified: opsResult.sent })
 })
 
 app.post('/api/reservations/cancel', (req, res) => {

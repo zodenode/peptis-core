@@ -13,8 +13,10 @@ import { PricingStrip } from '../components/landing/PricingStrip'
 import { ProteinTargetGraphic } from '../components/landing/ProteinTargetGraphic'
 import { StickyQuizCta } from '../components/landing/StickyQuizCta'
 import { QuizEmbed } from '../components/quiz/QuizEmbed'
+import { LeadCapture } from '../components/landing/LeadCapture'
 import { faqs, howSteps, problemItems, protocolRows, trustBadges } from '../data/landing'
 import { images } from '../data/images'
+import type { LandingVariant } from '../data/landingVariants'
 import { useSectionView } from '../hooks/useSectionView'
 import { setQuizPrompt, setQuizSource, track } from '../lib/analytics'
 
@@ -25,7 +27,11 @@ const heroPrompts = [
   { id: 'maintenance', label: 'I want to keep the weight off' },
 ] as const
 
-export function LandingPage() {
+type Props = {
+  variant?: LandingVariant
+}
+
+export function LandingPage({ variant }: Props) {
   const heroRef = useSectionView<HTMLElement>('hero')
   const problemRef = useSectionView<HTMLElement>('problem')
   const protocolRef = useSectionView<HTMLElement>('protocol')
@@ -38,15 +44,28 @@ export function LandingPage() {
   const viewed = useRef(false)
 
   useEffect(() => {
+    if (variant) {
+      document.title = variant.documentTitle
+      setQuizSource(variant.source)
+    }
+  }, [variant])
+
+  useEffect(() => {
     if (viewed.current) return
     viewed.current = true
-    track('landing_viewed', { page: '/', brand: 'continuity_care' })
-  }, [])
+    track('landing_viewed', {
+      page: variant?.path ?? '/',
+      brand: variant?.id ?? 'continuity_care',
+      source: variant?.source ?? 'home',
+    })
+  }, [variant])
+
+  const sourceFor = (place: string) => (variant ? `${variant.source}_${place}` : place)
 
   const heroCta = () => {
-    setQuizSource('hero')
-    track('hero_cta_clicked')
-    track('quiz_cta_clicked', { location: 'hero' })
+    setQuizSource(sourceFor('hero'))
+    track('hero_cta_clicked', { source: sourceFor('hero') })
+    track('quiz_cta_clicked', { location: sourceFor('hero') })
   }
 
   return (
@@ -66,42 +85,66 @@ export function LandingPage() {
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-inner">
             <div className="hero-copy">
-              <p className="eyebrow eyebrow-light">Free GLP-1 continuity check</p>
-              <h1 id="hero-heading">See what the scale missed about your strength</h1>
+              <p className="eyebrow eyebrow-light">{variant?.eyebrow ?? 'Free GLP-1 continuity check'}</p>
+              <h1 id="hero-heading">
+                {variant?.headline ?? 'See what the scale missed about your strength'}
+              </h1>
               <p className="hero-lead">
-                Eight questions. You leave with written priorities on strength, protein and keeping
-                the weight off, plus the free two-day strength starter plan. About 3 minutes. No
-                card.
+                {variant?.lead ??
+                  'Eight questions. You leave with written priorities on strength, protein and keeping the weight off, plus the free two-day strength starter plan. About 3 minutes. No card.'}
               </p>
               <div className="hero-quiz-start">
-                <p className="hero-quiz-q">Which of these sounds most like you?</p>
-                <div className="hero-quiz-options">
-                  {heroPrompts.map((prompt) => (
+                {variant?.showHeroPrompts !== false ? (
+                  <>
+                    <p className="hero-quiz-q">Which of these sounds most like you?</p>
+                    <div className="hero-quiz-options">
+                      {heroPrompts.map((prompt) => (
+                        <Link
+                          key={prompt.id}
+                          className="hero-quiz-chip"
+                          to="/quiz"
+                          onClick={() => {
+                            setQuizSource(sourceFor('hero_prompt'))
+                            setQuizPrompt(prompt.id)
+                            track('hero_prompt_clicked', { prompt: prompt.id, source: sourceFor('hero_prompt') })
+                            track('quiz_cta_clicked', { location: sourceFor('hero_prompt') })
+                          }}
+                        >
+                          {prompt.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+                {variant?.showLeadCapture ? (
+                  <LeadCapture
+                    source={variant.source}
+                    buttonLabel={variant.leadButtonLabel ?? variant.ctaLabel}
+                  />
+                ) : null}
+                {variant?.evidenceLine ? <p className="hero-micro">{variant.evidenceLine}</p> : null}
+                <div className="hero-actions">
+                  <Link className="btn btn-primary" to={variant?.ctaTo ?? '/quiz'} onClick={heroCta}>
+                    {variant?.ctaLabel ?? 'Get my free summary'}
+                  </Link>
+                  {variant?.secondaryCtaLabel && variant.secondaryCtaTo ? (
                     <Link
-                      key={prompt.id}
-                      className="hero-quiz-chip"
-                      to="/quiz"
+                      className="btn btn-ghost"
+                      to={variant.secondaryCtaTo}
                       onClick={() => {
-                        setQuizSource('hero_prompt')
-                        setQuizPrompt(prompt.id)
-                        track('hero_prompt_clicked', { prompt: prompt.id })
-                        track('quiz_cta_clicked', { location: 'hero_prompt' })
+                        setQuizSource(sourceFor('hero_secondary'))
+                        track('quiz_cta_clicked', { location: sourceFor('hero_secondary') })
                       }}
                     >
-                      {prompt.label}
+                      {variant.secondaryCtaLabel}
                     </Link>
-                  ))}
-                </div>
-                <div className="hero-actions">
-                  <Link className="btn btn-primary" to="/quiz" onClick={heroCta}>
-                    Get my free summary
-                  </Link>
+                  ) : null}
                 </div>
                 <p className="hero-micro">
-                  Education only, not care today.{' '}
+                  {variant?.micro ?? 'Education only, not care today.'}{' '}
                   <a
                     href="#preview"
-                    onClick={() => track('lean_preview_link_clicked', { location: 'hero' })}
+                    onClick={() => track('lean_preview_link_clicked', { location: sourceFor('hero') })}
                   >
                     See the lean-mass preview
                   </a>
@@ -143,8 +186,8 @@ export function LandingPage() {
                 className="btn btn-primary"
                 to="/quiz"
                 onClick={() => {
-                  setQuizSource('how')
-                  track('quiz_cta_clicked', { location: 'how' })
+                  setQuizSource(sourceFor('how'))
+                  track('quiz_cta_clicked', { location: sourceFor('how') })
                 }}
               >
                 Get my free summary
@@ -186,8 +229,8 @@ export function LandingPage() {
                 className="btn btn-primary"
                 to="/quiz"
                 onClick={() => {
-                  setQuizSource('walkaway')
-                  track('quiz_cta_clicked', { location: 'walkaway' })
+                  setQuizSource(sourceFor('walkaway'))
+                  track('quiz_cta_clicked', { location: sourceFor('walkaway') })
                 }}
               >
                 Get my free summary
@@ -196,7 +239,7 @@ export function LandingPage() {
           </div>
         </section>
 
-        <PricingStrip />
+        <PricingStrip variant={variant} />
 
         <BodyCompositionGraphic />
 
@@ -326,7 +369,7 @@ export function LandingPage() {
           </div>
         </section>
 
-        <FoundingOfferVisual />
+        <FoundingOfferVisual variant={variant} />
 
         <section className="closer" id="assessment" ref={closerRef} aria-labelledby="closer-heading">
           <div className="closer-media" aria-hidden="true">
@@ -334,28 +377,32 @@ export function LandingPage() {
           </div>
           <div className="section-inner closer-inner">
             <div className="closer-copy">
-              <p className="eyebrow eyebrow-light">Free GLP-1 continuity check</p>
-              <h2 id="closer-heading">See what the scale missed, in about 3 minutes</h2>
+              <p className="eyebrow eyebrow-light">
+                {variant?.closerEyebrow ?? 'Free GLP-1 continuity check'}
+              </p>
+              <h2 id="closer-heading">
+                {variant?.closerHeadline ?? 'See what the scale missed, in about 3 minutes'}
+              </h2>
               <p>
-                Answer eight questions. You will receive written priorities and the free starter
-                plan. No payment details.
+                {variant?.closerBody ??
+                  'Answer eight questions. You will receive written priorities and the free starter plan. No payment details.'}
               </p>
               <Link
                 className="btn btn-primary"
-                to="/quiz"
+                to={variant?.ctaTo ?? '/quiz'}
                 onClick={() => {
-                  setQuizSource('closer')
-                  track('quiz_cta_clicked', { location: 'closer' })
+                  setQuizSource(sourceFor('closer'))
+                  track('quiz_cta_clicked', { location: sourceFor('closer') })
                 }}
               >
-                Get my free summary
+                {variant?.ctaLabel ?? 'Get my free summary'}
               </Link>
             </div>
             <QuizEmbed />
           </div>
         </section>
       </main>
-      <StickyQuizCta />
+      <StickyQuizCta variant={variant} />
       <Footer />
     </div>
   )

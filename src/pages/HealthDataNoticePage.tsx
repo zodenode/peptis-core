@@ -52,6 +52,7 @@ export function HealthDataNoticePage() {
             <ul>
               <li>To build the educational summary you request at the end of the quiz.</li>
               <li>To send the summary you requested and, if you asked, nutrition-box updates.</li>
+              <li>To notify the Peptis team that a form was completed, using contact details only, not quiz answers.</li>
               <li>To understand, in aggregate, how the quiz is used and improve it.</li>
             </ul>
 
