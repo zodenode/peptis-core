@@ -12,6 +12,15 @@ import {
   publicationCategories,
   type PublicationCategory,
 } from '../data/publication'
+import {
+  PARTNER_ARCHETYPES,
+  PARTNER_MEASURES,
+  PARTNER_PLAYS,
+  PARTNER_REFUSALS,
+  PARTNER_REUSE_RULES,
+  PARTNER_SEQUENCE,
+  PARTNER_UTM,
+} from '../data/publicationPartners'
 import { publicationSeo } from '../data/publicationSeo'
 import { absoluteUrl, SITE_LEGAL_NAME, SITE_LOGO, SITE_NAME, SITE_ORIGIN } from './site'
 
@@ -216,8 +225,13 @@ export function jsonLdForPath(pagePath: string): unknown[] {
   return []
 }
 
+export function trackedEssayUrl(article: Article): string {
+  return `${absoluteUrl(articlePath(article))}?${PARTNER_UTM}`
+}
+
 export function articleCite(article: Article) {
   const url = absoluteUrl(articlePath(article))
+  const trackedUrl = trackedEssayUrl(article)
   const title = articleSeoTitle(article)
   const takeaway = article.takeaway
   const partnerQueries = publicationSeo[article.slug]?.partnerQueries ?? []
@@ -225,9 +239,92 @@ export function articleCite(article: Article) {
   const embed = `<aside class="peptis-cite">
   <p><strong>${escapeHtml(title)}</strong></p>
   <p>${escapeHtml(takeaway)}</p>
-  <p>Source: <a href="${url}">${PUBLICATION_NAME}</a>. Education only. Lean mass is not skeletal muscle. Individual results vary.</p>
+  <p>Source: <a href="${trackedUrl}">${PUBLICATION_NAME}</a>. Education only. Lean mass is not skeletal muscle. Individual results vary.</p>
 </aside>`
-  return { url, title, takeaway, attribution, embed, partnerQueries }
+  return { url, trackedUrl, title, takeaway, attribution, embed, partnerQueries }
+}
+
+export function partnerOutreachEmail(article: Article): string {
+  const cite = articleCite(article)
+  const query = cite.partnerQueries[0] ?? cite.title
+  return [
+    `Subject: A sourced page for patients asking "${query}"`,
+    '',
+    'You can host that question on your site. We already wrote the sourced answer.',
+    '',
+    cite.takeaway,
+    '',
+    `Full essay: ${cite.trackedUrl}`,
+    '',
+    'Please keep the cannot-tell-us limits next to any statistic, and do not present trial figures as your results or as Peptis product results.',
+    'Education only. Lean mass is not skeletal muscle. About 25% of lost weight was lean mass in the SURMOUNT 1 DXA substudy. Individual results vary.',
+    '',
+    'Keep the cannot-tell-us limits next to any statistic.',
+  ].join('\n')
+}
+
+export function partnerPageHtml(article: Article): string {
+  const cite = articleCite(article)
+  const query = cite.partnerQueries[0] ?? cite.title
+  const limits = article.cannotTellUs.map((item) => `  <li>${escapeHtml(item)}</li>`).join('\n')
+  const sources = article.sources.map((item) => `  <li>${escapeHtml(item)}</li>`).join('\n')
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>${escapeHtml(query)}</title>
+  <meta name="description" content="${escapeHtml(clipSeoDescription(`${cite.takeaway} Education only.`))}" />
+  <link rel="canonical" href="${cite.url}" />
+</head>
+<body>
+  <h1>${escapeHtml(query)}</h1>
+  <p><!-- Write two or three sentences for your patients. Then leave the quote below unchanged. --></p>
+  <blockquote>
+    <p>${escapeHtml(cite.takeaway)}</p>
+    <p>Source: <a href="${cite.trackedUrl}">${escapeHtml(cite.title)}, ${PUBLICATION_NAME}</a></p>
+  </blockquote>
+  <h2>What this evidence cannot tell us</h2>
+  <ul>
+${limits}
+  </ul>
+  <h2>Sources</h2>
+  <ul>
+${sources}
+  </ul>
+  <p>Education only. Not medical advice. Lean mass is not skeletal muscle. Individual results vary. Talk with a current clinician before changing medication, diet, supplements or exercise.</p>
+</body>
+</html>
+`
+}
+
+export function publicationPartnerKit() {
+  return {
+    name: `${PUBLICATION_NAME} partner kit`,
+    internal: true,
+    utm: PARTNER_UTM,
+    plays: PARTNER_PLAYS,
+    archetypes: PARTNER_ARCHETYPES,
+    sequence: PARTNER_SEQUENCE,
+    reuseRules: PARTNER_REUSE_RULES,
+    refusals: PARTNER_REFUSALS,
+    measures: PARTNER_MEASURES,
+    essays: articles.map((article) => {
+      const cite = articleCite(article)
+      return {
+        slug: article.slug,
+        title: cite.title,
+        url: cite.url,
+        trackedUrl: cite.trackedUrl,
+        takeaway: cite.takeaway,
+        partnerQueries: cite.partnerQueries,
+        limits: article.cannotTellUs,
+        sources: article.sources,
+        embed: cite.embed,
+        outreachEmail: partnerOutreachEmail(article),
+        pageHtml: partnerPageHtml(article),
+      }
+    }),
+  }
 }
 
 function escapeHtml(value: string): string {
