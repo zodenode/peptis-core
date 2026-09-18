@@ -150,7 +150,7 @@ async function sendStarterPlanEmail(email, firstName) {
     '',
     'Here is the two day strength starter plan we promised, plus where to pick your continuity check back up.',
     '',
-    `Two day strength starter plan: ${PUBLIC_BASE_URL}/blog/two-day-strength-plan`,
+    `Two day strength starter plan: ${PUBLIC_BASE_URL}/publication/training/two-day-strength-plan`,
     `Continue your continuity check: ${PUBLIC_BASE_URL}/quiz`,
     '',
     'When you finish the check you will receive your personalized summary of strength, protein and maintenance priorities, plus the starter training plan. The Lean Mass nutrition box is not for sale yet.',

@@ -18,7 +18,8 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 - Quiz: `/quiz`
 - Offerings + Supliful stock lists: `/offerings`
 - Training plan: `/plan`
-- Blog: `/blog`
+- Publication: `/publication`, `/publication/{category}`, `/publication/{category}/{slug}`
+- Legacy blog URLs redirect to the publication
 - Privacy: `/privacy`, health data notice: `/health-data`, cancellation: `/cancel?token=…`
 - Brand kit (static): `/brand-kit/`
 
@@ -73,6 +74,14 @@ Supliful and Rocktomic are both unused until their onboarding is actually sent. 
 | `/go/plan` | Training-first | Lowest-claim, evidence-led ads |
 
 Form completions email the operators named in `OPS_NOTIFY_EMAILS`. The notice includes name, email, state, source and box interest. It does not include quiz answers.
+
+## Publication
+
+`/publication` is a standalone evidence magazine. Articles stay in GitHub
+(`src/data/blog.ts` plus category chrome in `src/data/publication.ts`). Do not
+move the desk to WordPress. A later draft dashboard can collect notes, but live
+essays still ship through pull request so claim review stays in the repo. See
+[`content/publication/README.md`](./content/publication/README.md).
 
 ## Evidence led homepage
 

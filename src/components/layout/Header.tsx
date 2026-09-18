@@ -44,8 +44,8 @@ export function Header({ variant = 'landing' }: HeaderProps) {
       {variant === 'landing' ? (
         <>
           <nav className="nav" aria-label="Primary">
+            <Link to="/publication">Publication</Link>
             <Link to="/offerings">Offerings</Link>
-            <a href="/#evidence">Evidence</a>
             <a href="/#faq">FAQ</a>
             <Link className="nav-cta" to="/quiz" onClick={() => quizClick('nav_cta')}>
               Get my free summary
@@ -65,11 +65,10 @@ export function Header({ variant = 'landing' }: HeaderProps) {
               <Link to="/quiz" onClick={() => quizClick('nav_mobile')}>
                 Free summary
               </Link>
+              <Link to="/publication">Publication</Link>
               <Link to="/offerings">Offerings</Link>
               <Link to="/plan">Training</Link>
-              <a href="/#evidence">Evidence</a>
               <a href="/#faq">FAQ</a>
-              <Link to="/blog">Blog</Link>
               <Link className="nav-cta" to="/quiz" onClick={() => quizClick('nav_mobile_cta')}>
                 Get my free summary
               </Link>
