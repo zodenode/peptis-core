@@ -1,6 +1,6 @@
 # Peptis Core Continuity — Founding Reservation
 
-Premium medical-wellness storefront for **Peptis Continuation & Optimization** (operated by Information Edge Insights LLC). Landing page, interactive qualification quiz, evidence blog and a small reservation API. Vite + React + TypeScript + Express.
+Public site for **Peptis Core Continuity**, operated by Information Edge Insights LLC. Landing page, continuity quiz, evidence blog and a launch-list API. Vite + React + TypeScript + Express.
 
 ## Run locally
 
@@ -14,10 +14,12 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 ```
 
 - Landing: `/`
+- Hidden ad landings (not in the navbar): `/go/strength`, `/go/box`, `/go/care`, `/go/plan`
 - Quiz: `/quiz`
 - Offerings + Supliful stock lists: `/offerings`
 - Training plan: `/plan`
-- Blog: `/blog`
+- Publication: `/publication`, `/publication/{category}`, `/publication/{category}/{slug}`
+- Legacy blog URLs redirect to the publication
 - Privacy: `/privacy`, health data notice: `/health-data`, cancellation: `/cancel?token=…`
 - Brand kit (static): `/brand-kit/`
 
@@ -27,14 +29,16 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 
 - `POST /api/reservations` validates and appends to `DATA_DIR/reservations.jsonl` with fsync, then sends a confirmation email with a cancellation link. The quiz shows success only after this write is confirmed.
 - `POST /api/reservations/cancel` appends a cancellation event (idempotent).
-- `POST /api/quiz-progress` appends a per-step snapshot to `DATA_DIR/quiz-progress.jsonl` (quizId, step, answers, pathways, email once captured). This is the drop-off retargeting source. When called with `sendGuide: true` at the email gate, it sends the two day strength starter plan email once per address.
+- `POST /api/quiz-progress` appends either an anonymous step record (quizId, step, pathways) or a separate lead record (email, first name, source). Provider and prescription answers are not written to disk. When called with `sendGuide: true`, it sends the two day strength starter plan email once per address. A new lead also emails the operators.
+- `POST /api/leads` is the short landing-page email capture. Same lead write, starter-plan email and operator notice. No quiz answers.
 - `GET /api/health` for monitoring.
 
 | Server variable | Required | Purpose |
 |---|---|---|
 | `DATA_DIR` | Yes in production | Point at a mounted Railway volume so reservations survive deploys |
-| `RESEND_API_KEY` | For email | Resend API key for confirmation emails |
+| `RESEND_API_KEY` | For email | Resend API key for confirmation, starter-plan and operator notices |
 | `RESERVATION_EMAIL_FROM` | No | Defaults to `Peptis <reservations@peptis.com>` |
+| `OPS_NOTIFY_EMAILS` | No | Defaults to Joseph and Edozie. Comma-separated operator inboxes for form completions |
 | `PUBLIC_BASE_URL` | No | Cancellation link base, defaults to `https://www.peptis.com` |
 
 ## Production
@@ -51,19 +55,38 @@ Peptis is a **GLP continuity / body recomposition** programme for adults on or a
 
 1. **Continuity coaching and nutrition**
 2. **Exercise programmes and training tips** (`/plan`)
-3. **One Lean Mass / GLP support supplement bundle** (curated Supliful private-label stock)
+3. **One Lean Mass nutrition box** (intended first paid product at $59/month; curated Supliful private-label stock used as a test assortment, not a long-term clinical SKU)
 4. **Planned weight-management consultations** through the contracted telehealth platform, when clinical services launch
 
 Public medication wording is limited to the current overlapping WhiteLabelMD onboarding and submitted insurance scope: planned weight-management consultations in which a licensed practitioner may consider compounded semaglutide or tirzepatide when appropriate. ED, hair-loss, skincare, hormone and other categories stay off the public offer unless their operational and insurance scope is confirmed. Fuller Supliful pick lists for ops live in [`docs/SUPFUL-STOCK-LISTS.md`](./docs/SUPFUL-STOCK-LISTS.md) and [`docs/SUPFUL-CATALOG-INDEX.md`](./docs/SUPFUL-CATALOG-INDEX.md). Public page: [`/offerings`](./src/pages/OfferingsPage.tsx).
 
-The current consumer offer is a **$0 founding reservation** with a planned **$299/month** founding rate if services launch, the member is eligible, and they affirmatively enroll. The planned standard rate after founding enrollment is $399/month. Pricing and availability may change before activation. Optional Lean Mass Bundle interest is planned at +$59/month at launch.
+The current consumer offer is a **free continuity check and starter training plan**. The first paid product we intend to sell is the **Lean Mass nutrition box at $59/month**. It is not for sale until charge and ship work. There is no Stripe wallet or payment preview. A $299/month clinical programme is not an offer on the site.
 
-The reservation includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment. Stripe wallet UI is a future-activation preview; see [`docs/STRIPE-ACTIVATION.md`](./docs/STRIPE-ACTIVATION.md).
+The list signup includes no medical care, clinician review, prescription, pharmacy fulfillment, or payment.
+
+Supliful and Rocktomic are both unused until their onboarding is actually sent. They are not substitutes. Supliful can later ship a nutrition box without a clinician. Rocktomic is the clinical onboarding path and needs licensure work before it can sell care. Hidden ad URLs, not linked in the navbar:
+
+| Path | Test | Use this traffic |
+|---|---|---|
+| `/go/strength` | Scale-gap quiz | GLP-1 continuity ads |
+| `/go/box` | $59 nutrition box interest | Wellness / Meta-safe ads |
+| `/go/care` | Clinical continuity list | People who want a programme, not a box |
+| `/go/plan` | Training-first | Lowest-claim, evidence-led ads |
+
+Form completions email the operators named in `OPS_NOTIFY_EMAILS`. The notice includes name, email, state, source and box interest. It does not include quiz answers.
+
+## Publication
+
+`/publication` is a standalone evidence magazine. Articles stay in GitHub
+(`src/data/blog.ts` plus category chrome in `src/data/publication.ts`). Do not
+move the desk to WordPress. A later draft dashboard can collect notes, but live
+essays still ship through pull request so claim review stays in the repo. See
+[`content/publication/README.md`](./content/publication/README.md).
 
 ## Evidence led homepage
 
-The homepage includes data driven body composition, continuity framework, evidence and founding
-offer visuals. Public statistics come from
+The homepage includes data driven body composition, continuity framework, evidence and offer
+visuals. Public statistics come from
 [`brand-kit/Peptis_GLP1_Body_Recomposition_Evidence_Dossier_Final.docx`](./brand-kit/Peptis_GLP1_Body_Recomposition_Evidence_Dossier_Final.docx)
 and carry nearby source and interpretation notes.
 
@@ -75,7 +98,7 @@ Use it for Peptis claims, infographics, quiz copy, supplement messaging and cont
 
 Eight screening questions, branching educational stop-blocks and qualitative social-proof intersplices (muscle / energy / GI), followed by an animated continuity-map build. The build pauses for current provider, prescription and realistic training-setting refinements, then reveals a non-predictive Today-to-Week-12 milestone map before identity + state verification and the $0 reservation. Answers persist in `localStorage` (`peptis.continuity.quiz`) for abandonment resume.
 
-The provider grid identifies common telehealth care settings without suggesting a partnership. Provider and medication selections are stored with the protected quiz-progress payload and are not sent as analytics properties. Prescribing and medication decisions remain with the user's licensed clinician.
+The provider grid identifies common telehealth care settings without suggesting a partnership. Provider and medication selections stay in the browser for the on-screen summary. They are not written to `quiz-progress.jsonl` or `reservations.jsonl`. Prescribing and medication decisions remain with the user's licensed clinician.
 
 The legacy client-decoded restricted compound configuration remains isolated in `src/data/continuityConfig.ts`, but compound names are not shown in current patient-facing funnel copy.
 
@@ -102,7 +125,7 @@ Blog: `blog_viewed`, `blog_article_viewed` `{ slug, category }`.
 
 Email gate (step 3 of the quiz): `quiz_email_captured` or `quiz_email_skipped`. A valid email triggers `posthog.identify(email, { quiz_source })` and a Meta Pixel `Lead`; reservation submit fires `CompleteRegistration`.
 
-Identify: at the quiz email gate when an email is entered, otherwise at reservation submit via `posthog.identify(email, { first_name, state, plan })`. Raw quiz answers are not sent to analytics; only derived pathways are. Full answers are stored server-side in `quiz-progress.jsonl`, covered by the Privacy and Consumer Health Data notices.
+Identify: at the quiz email gate when an email is entered, otherwise at reservation submit via `posthog.identify(email, { first_name, state, plan })`. Raw quiz answers are not sent to analytics. Provider and prescription answers are not written to server files.
 
 Email abandonment copy and event → flow mapping: [`docs/EMAIL-ABANDONMENT.md`](./docs/EMAIL-ABANDONMENT.md).
 

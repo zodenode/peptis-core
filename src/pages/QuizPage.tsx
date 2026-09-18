@@ -9,10 +9,10 @@ export function QuizPage() {
       <main>
         <QuizFlow />
         <p className="quiz-page-note">
-          The founding reservation is a waitlist, not medical care. It does not include clinician
-          review, prescribing, medication or pharmacy fulfillment. Quiz answers are used to build
-          your summary and improve this experience. Peptis is operated by Information Edge
-          Insights LLC. See our <Link to="/privacy">Privacy Notice</Link> and{' '}
+          The check and starter plan are educational tools, not medical care. They do not include
+          clinician review, prescribing, medication or pharmacy fulfillment. Quiz answers are used
+          to build your summary and improve this experience. Peptis is operated by Information
+          Edge Insights LLC. See our <Link to="/privacy">Privacy Notice</Link> and{' '}
           <Link to="/health-data">Consumer Health Data Notice</Link>.
         </p>
       </main>

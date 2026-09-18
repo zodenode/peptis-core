@@ -3,11 +3,12 @@ export type ReservationPayload = {
   lastName: string
   email: string
   phone: string
+  smsOptIn?: boolean
   state: string
   resident: boolean
   attest: boolean
   upsell: boolean
-  pathways: string[]
+  source?: string
 }
 
 export type ReservationResult =
@@ -38,9 +39,9 @@ export type ProgressPayload = {
   email?: string
   firstName?: string
   pathways: string[]
-  answers: Record<string, unknown>
   entryPrompt?: string
   sendGuide?: boolean
+  source?: string
 }
 
 /* Fire-and-forget: progress capture must never block or break the quiz. */

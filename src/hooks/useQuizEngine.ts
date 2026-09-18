@@ -28,6 +28,7 @@ export type CheckoutForm = {
   resident: boolean
   attest: boolean
   upsell: boolean
+  smsOptIn: boolean
 }
 
 /* Hero prompt chip → matching q2 priority option. */
@@ -68,6 +69,7 @@ const emptyCheckout: CheckoutForm = {
   resident: false,
   attest: false,
   upsell: false,
+  smsOptIn: false,
 }
 
 function loadSnapshot(): QuizSnapshot | null {
@@ -118,7 +120,7 @@ export function useQuizEngine() {
       setHistory(saved.history)
       setAnswers(saved.answers)
       setShown(saved.shown)
-      setCheckout(saved.checkout)
+      setCheckout({ ...emptyCheckout, ...saved.checkout })
       setStartedAt(saved.startedAt)
       setCompleted(saved.completed)
       setIdentifiedEmail(saved.identifiedEmail)
@@ -184,22 +186,12 @@ export function useQuizEngine() {
     postQuizProgress({
       quizId,
       step: current,
-      email: isValidEmail(checkout.email) ? checkout.email.trim() : undefined,
-      firstName: checkout.firstName || undefined,
       pathways: derivePathways(answers),
-      answers,
       entryPrompt,
     })
-    // Re-post when the step changes, plus each refinement answered inside the plan-building step.
+    // Step-only funnel analytics. Identity and prescription answers stay off this write.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    answers.care_provider,
-    answers.current_medication,
-    answers.training_setting,
-    current,
-    hydrated,
-    quizId,
-  ])
+  }, [current, hydrated, quizId])
 
   useEffect(() => {
     if (!hydrated) return
@@ -296,29 +288,26 @@ export function useQuizEngine() {
   )
 
   const captureEmail = useCallback(
-    (email: string, skipped: boolean) => {
-      if (skipped) {
-        track('quiz_email_skipped', { step_id: current })
-        return
-      }
+    ({ firstName, email }: { firstName: string; email: string }) => {
       const clean = email.trim()
-      if (!isValidEmail(clean)) return
-      setCheckout((c) => ({ ...c, email: clean }))
+      const name = firstName.trim()
+      if (!isValidEmail(clean) || name.length < 2) return
+      setCheckout((c) => ({ ...c, firstName: name, email: clean }))
       track('quiz_email_captured', { step_id: current })
       pixelTrack('Lead')
-      identifyPerson(clean, { quiz_source: getQuizSource() })
+      identifyPerson(clean, { first_name: name, quiz_source: getQuizSource() })
       setIdentifiedEmail(clean)
       postQuizProgress({
         quizId,
         step: current,
         email: clean,
-        pathways: derivePathways(answers),
-        answers,
-        entryPrompt,
+        firstName: name,
+        pathways: [],
         sendGuide: true,
+        source: getQuizSource(),
       })
     },
-    [answers, current, entryPrompt, quizId],
+    [current, quizId],
   )
 
   const submitCheckout = useCallback(async () => {
@@ -336,11 +325,12 @@ export function useQuizEngine() {
       lastName: checkout.lastName,
       email: checkout.email,
       phone: checkout.phone,
+      smsOptIn: checkout.smsOptIn,
       state: checkout.state,
       resident: checkout.resident,
       attest: checkout.attest,
       upsell: checkout.upsell,
-      pathways: derivePathways(answers),
+      source: getQuizSource(),
     })
 
     if (!result.ok) {

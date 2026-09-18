@@ -183,7 +183,7 @@ export function TrajectoryReveal({ answers, pathways, onContinue, onBack, canGoB
             ← Back
           </button>
           <button type="button" className="btn btn-solid" onClick={onContinue}>
-            Continue to my reservation
+            Save my summary
           </button>
         </div>
       </div>

@@ -17,9 +17,9 @@ export function QuizEmbed() {
           <p className="quiz-kicker">Continuity quiz</p>
           <h3>A short check of what matters now</h3>
           <p>
-            Answer eight straightforward questions in about three minutes. Finish and we email
-            your personal summary plus a free two day strength starter plan. Your progress saves
-            automatically if you step away.
+            Answer eight straightforward questions. We email your written priorities and the free
+            starter plan. The Lean Mass nutrition box is not for sale yet. There is no paid
+            clinical programme to join today.
           </p>
           <button
             type="button"

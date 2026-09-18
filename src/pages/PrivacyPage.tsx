@@ -41,6 +41,7 @@ export function PrivacyPage() {
               <li>Process reservations, purchases, supplement orders and fulfilment and provide customer support.</li>
               <li>Generate programme summaries and track progress where you choose to provide relevant information.</li>
               <li>Send service messages, requested resources, confirmations and, where permitted, marketing communications.</li>
+              <li>Notify the Peptis operators when you complete a form, using your name, email, state and the page you came from. Quiz answers are not included in that notice.</li>
               <li>Operate, secure, troubleshoot, analyse and improve our website, programmes and products.</li>
               <li>Comply with applicable law, enforce our terms and protect users, Peptis and others.</li>
             </ul>

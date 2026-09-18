@@ -2,7 +2,7 @@
 
 Do not wire a live ESP in this repo. Use these flows in Klaviyo, Customer.io, or similar. First name comes from checkout identify traits; if missing, drop the greeting token.
 
-Recommended capture: the quiz asks for an email at step 3 (email gate) in exchange for the personalized summary and the two day strength starter plan. When entered, `posthog.identify` fires immediately and `quiz_email_captured` is tracked, so most drop-offs after step 3 are addressable. Every step is also saved server-side to `DATA_DIR/quiz-progress.jsonl` (quizId, step, answers, pathways, email once known) for retargeting exports. Quiz state additionally persists in `localStorage` (`peptis.continuity.quiz`) for same-device resume.
+Recommended capture: the quiz asks for an email at step 3 (email gate) in exchange for the personalized summary and the two day strength starter plan. When entered, `posthog.identify` fires immediately and `quiz_email_captured` is tracked, so most drop-offs after step 3 are addressable. Anonymous step names may be saved server-side. Email is written on a separate lead line without quiz answers. Provider and prescription answers stay in `localStorage` (`peptis.continuity.quiz`) for same-device resume.
 
 All copy below must follow `.cursor/skills/peptis-evidence-copy/SKILL.md`. Never imply live medical care, prescriptions, medication side-effect treatment, guaranteed muscle preservation, or a "40% muscle" figure.
 
@@ -14,7 +14,7 @@ All copy below must follow `.cursor/skills/peptis-evidence-copy/SKILL.md`. Never
 | `quiz_stop_block_viewed` | `block: 'B'` | Start **Flow B** wait 15 minutes |
 | `quiz_stop_block_viewed` | `block: 'C'` | Start **Flow C** wait 15 minutes |
 | `quiz_stop_block_continued` | `block` | Cancel the matching flow if they continue |
-| `checkout_viewed` | `plan: 'core_founding_reservation'` | Cancel A/B/C wait timers (they reached the reservation step) |
+| `checkout_viewed` | `plan: 'core_founding_reservation'` | Cancel A/B/C wait timers (they reached the summary-save step) |
 | `checkout_submit_clicked` | `plan`, `upsell`, `state` | Exit all abandonment; start onboarding |
 | `quiz_abandoned` | `last_step`, `minutes_on_quiz` | If `last_step` is `stop_a` / `stop_b` / `stop_c`, fire the matching flow immediately if the 15-minute wait is still pending |
 | `quiz_reached_checkout` | `pathways` | Enrich profile; do not send drop-off mail |
@@ -38,7 +38,7 @@ You paused your continuity check right at the strength section, so here is the s
 
 Significant weight loss can include lean tissue as well as fat. In randomized GLP-1 body composition research, roughly a quarter of the weight lost was lean mass, and lean mass is not the same as skeletal muscle. Resistance training and workable protein habits are the best supported behavioral priorities during weight loss.
 
-Your answers are saved on this device. Finish the last questions to save your summary and reserve founding access for $0. No payment details, and no medical care is provided today.
+Your answers are saved on this device. Finish the last questions to save your summary and open the free starter plan. No payment details, and no medical care is provided today.
 
 [Finish my continuity check](https://www.peptis.com/quiz)
 
@@ -56,7 +56,7 @@ Hi [First Name],
 
 Persistent tiredness during weight loss can have many causes, including lower food intake, fluids, sleep and current therapy. A clear record of when it happens and what helps makes any future clinical conversation more useful. Peptis does not diagnose or treat fatigue.
 
-Your quiz progress is saved. Finish the remaining questions to keep energy and recovery in your summary and reserve founding access for $0.
+Your quiz progress is saved. Finish the remaining questions to keep energy and recovery in your summary. The starter plan stays free.
 
 [Finish my continuity check](https://www.peptis.com/quiz)
 
@@ -74,7 +74,7 @@ Hi [First Name],
 
 Digestive comfort can change during GLP-1 treatment, and a simple record of meals, timing and symptoms is the most practical first step. Ongoing or severe symptoms deserve attention from your current clinician. Peptis does not treat digestive symptoms.
 
-Your quiz progress is saved. Finish the remaining questions to keep digestive comfort in your summary and reserve founding access for $0. Nothing ships and nothing is charged.
+Your quiz progress is saved. Finish the remaining questions to keep digestive comfort in your summary. Nothing ships and nothing is charged.
 
 [Finish my continuity check](https://www.peptis.com/quiz)
 

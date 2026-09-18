@@ -1,38 +1,47 @@
 import { Link } from 'react-router-dom'
+import type { LandingVariant } from '../../data/landingVariants'
+import { offer } from '../../data/offer'
 import { setQuizSource, track } from '../../lib/analytics'
 
-export function PricingStrip() {
+type Props = {
+  variant?: LandingVariant
+}
+
+export function PricingStrip({ variant }: Props) {
+  const source = variant ? `${variant.source}_pricing` : 'pricing_strip'
+  const midLabel = variant?.id === 'care' ? 'Not for sale' : offer.leanMassBoxPriceLabel
+
   return (
     <section className="pricing-strip" aria-label="Planned pricing at a glance">
       <div className="pricing-strip-inner">
         <div className="pricing-strip-items">
           <div>
             <strong>$0</strong>
-            <span>due today</span>
+            <span>{variant?.pricingLeft ?? 'today for summary and plan'}</span>
           </div>
           <div>
-            <strong>$299/mo</strong>
-            <span>planned founding rate</span>
+            <strong>{midLabel}</strong>
+            <span>{variant?.pricingMid ?? 'intended Lean Mass box'}</span>
           </div>
           <div>
-            <strong>$399/mo</strong>
-            <span>planned standard rate</span>
+            <strong>Not for sale</strong>
+            <span>{variant?.pricingRight ?? 'nothing ships today'}</span>
           </div>
         </div>
         <Link
           className="btn btn-primary"
-          to="/quiz"
+          to={variant?.ctaTo ?? '/quiz'}
           onClick={() => {
-            setQuizSource('pricing_strip')
-            track('quiz_cta_clicked', { location: 'pricing_strip' })
+            setQuizSource(source)
+            track('quiz_cta_clicked', { location: source })
           }}
         >
-          Reserve for $0
+          {variant?.ctaLabel ?? 'Get my free summary'}
         </Link>
       </div>
       <p className="pricing-strip-note">
-        Planned rates apply only if services launch in your state, you are eligible and you choose
-        to enroll under the final terms. Not medical care today.
+        {variant?.pricingNote ??
+          '$59 a month is the intended price for the Lean Mass nutrition box. It is not an offer until we can charge and ship. There is no paid clinical programme for sale. Not medical care today.'}
       </p>
     </section>
   )

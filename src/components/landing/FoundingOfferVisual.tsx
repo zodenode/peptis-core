@@ -1,16 +1,21 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
+import type { LandingVariant } from '../../data/landingVariants'
 import { useSectionView } from '../../hooks/useSectionView'
-import { track } from '../../lib/analytics'
+import { setQuizSource, track } from '../../lib/analytics'
 
 const benefits = [
-  'Priority state access',
-  'Personalized summary',
-  'Readiness checklist',
-  'Cancel any time',
+  'Written continuity summary',
+  'Free starter training plan',
+  'Box updates if you ask',
+  'No card today',
 ] as const
 
-export function FoundingOfferVisual() {
+type Props = {
+  variant?: LandingVariant
+}
+
+export function FoundingOfferVisual({ variant }: Props) {
   const sectionRef = useSectionView<HTMLElement>('founding_offer')
   const sent = useRef(false)
 
@@ -39,11 +44,16 @@ export function FoundingOfferVisual() {
     >
       <div className="section-inner offer-shell">
         <div className="offer-copy">
-          <p className="eyebrow eyebrow-light">Peptis Core Continuity Founding Reservation</p>
-          <h2 id="offer-heading">Reserve today. Pay only if you choose to activate later.</h2>
+          <p className="eyebrow eyebrow-light">
+            {variant?.offerEyebrow ?? 'Free check, then a box you can buy later'}
+          </p>
+          <h2 id="offer-heading">
+            {variant?.offerHeadline ??
+              'Get the summary and starter plan now. The $59 box is not for sale yet.'}
+          </h2>
           <p>
-            Hold your place for $0 and keep the opportunity to join at the planned founding rate
-            if services launch in your state, you are eligible and you decide to enroll.
+            {variant?.offerBody ??
+              'The continuity check and two-day strength plan are free. The first paid product we intend to sell is the Lean Mass nutrition box at $59 a month. It is not for sale today because we cannot charge or ship. There is no paid clinical programme to join.'}
           </p>
           <ul className="offer-benefits">
             {benefits.map((benefit) => (
@@ -52,51 +62,53 @@ export function FoundingOfferVisual() {
           </ul>
           <Link
             className="btn btn-primary"
-            to="/quiz"
-            onClick={() => track('quiz_cta_clicked', { location: 'founding_offer' })}
+            to={variant?.ctaTo ?? '/quiz'}
+            onClick={() => {
+              setQuizSource(variant ? `${variant.source}_offer` : 'founding_offer')
+              track('quiz_cta_clicked', { location: variant ? `${variant.source}_offer` : 'founding_offer' })
+            }}
           >
-            Reserve for $0
+            {variant?.ctaLabel ?? 'Get my free summary'}
           </Link>
           <p className="offer-caveat">
-            No charge now. No payment details. Pricing is subject to final launch terms.
+            No charge now. No payment details. $59 is the intended box price, not a live offer.
           </p>
         </div>
 
         <figure className="offer-visual" aria-labelledby="offer-chart-title">
-          <figcaption id="offer-chart-title">Planned monthly pricing</figcaption>
+          <figcaption id="offer-chart-title">What is for sale today</figcaption>
           <p className="visually-hidden">
-            Reserving today costs nothing. The planned founding rate is $299 per month and the
-            planned standard rate is $399 per month. Both apply only if services launch, you are
-            eligible and you choose to enroll under the final terms.
+            The check and starter plan cost nothing. The Lean Mass nutrition box and any clinical
+            programme are not for sale today.
           </p>
           <div className="offer-today">
             <span>Today</span>
             <strong>$0</strong>
-            <small>to reserve</small>
+            <small>for the check and plan</small>
           </div>
           <div className="offer-bars">
             <div className="offer-bar-row founding">
               <div className="offer-bar-label">
-                <span>Planned founding rate</span>
-                <strong>$299 <small>per month</small></strong>
+                <span>Lean Mass nutrition box</span>
+                <strong>Not for sale</strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
-                <span style={{ '--bar-size': '75%' } as CSSProperties} />
+                <span style={{ '--bar-size': '0%' } as CSSProperties} />
               </div>
             </div>
             <div className="offer-bar-row standard">
               <div className="offer-bar-label">
-                <span>Planned standard rate</span>
-                <strong>$399 <small>per month</small></strong>
+                <span>Clinical continuity programme</span>
+                <strong>Not for sale</strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
-                <span style={{ '--bar-size': '100%' } as CSSProperties} />
+                <span style={{ '--bar-size': '0%' } as CSSProperties} />
               </div>
             </div>
           </div>
           <div className="offer-saving">
-            <strong>Planned</strong>
-            <span>rates apply only if services launch, you are eligible and you enroll</span>
+            <strong>Later</strong>
+            <span>the box is intended at $59 a month only after we can charge and ship</span>
           </div>
         </figure>
       </div>

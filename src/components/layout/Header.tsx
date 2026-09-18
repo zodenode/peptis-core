@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { setQuizSource, track } from '../../lib/analytics'
+import { getLandingVariant } from '../../data/landingVariants'
+import { getQuizSource, setQuizSource, track } from '../../lib/analytics'
 
 type HeaderProps = {
   variant?: 'landing' | 'quiz'
@@ -27,6 +28,13 @@ export function Header({ variant = 'landing' }: HeaderProps) {
     track('quiz_cta_clicked', { location: place })
   }
 
+  const quizBackPath = () => {
+    const source = getQuizSource()
+    const match = source.match(/^go_([a-z]+)/)
+    const variant = match ? getLandingVariant(match[1]) : null
+    return variant?.path ?? '/'
+  }
+
   return (
     <header className={`topbar${scrolled ? ' is-scrolled' : ''}${variant === 'quiz' ? ' topbar-quiz' : ''}`}>
       <Link className="brand" to="/" aria-label="Peptis home">
@@ -36,17 +44,11 @@ export function Header({ variant = 'landing' }: HeaderProps) {
       {variant === 'landing' ? (
         <>
           <nav className="nav" aria-label="Primary">
-            <Link to="/quiz" onClick={() => quizClick('nav')}>
-              Continuity quiz
-            </Link>
+            <Link to="/publication">Publication</Link>
             <Link to="/offerings">Offerings</Link>
-            <Link to="/plan">Training</Link>
-            <a href="/#evidence">Evidence</a>
-            <a href="/#offer">Offer</a>
             <a href="/#faq">FAQ</a>
-            <Link to="/blog">Blog</Link>
             <Link className="nav-cta" to="/quiz" onClick={() => quizClick('nav_cta')}>
-              Reserve for $0
+              Get my free summary
             </Link>
           </nav>
           <button
@@ -61,23 +63,21 @@ export function Header({ variant = 'landing' }: HeaderProps) {
           {open ? (
             <nav id="mobile-nav" className="nav-mobile" aria-label="Mobile">
               <Link to="/quiz" onClick={() => quizClick('nav_mobile')}>
-                Continuity quiz
+                Free summary
               </Link>
+              <Link to="/publication">Publication</Link>
               <Link to="/offerings">Offerings</Link>
               <Link to="/plan">Training</Link>
-              <a href="/#evidence">Evidence</a>
-              <a href="/#offer">Offer</a>
               <a href="/#faq">FAQ</a>
-              <Link to="/blog">Blog</Link>
               <Link className="nav-cta" to="/quiz" onClick={() => quizClick('nav_mobile_cta')}>
-                Reserve for $0
+                Get my free summary
               </Link>
             </nav>
           ) : null}
         </>
       ) : (
-        <Link className="nav-text" to="/">
-          Back to founding reservations
+        <Link className="nav-text" to={quizBackPath()}>
+          Back to the continuity check
         </Link>
       )}
     </header>

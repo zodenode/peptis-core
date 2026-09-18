@@ -114,9 +114,9 @@ const configurations: Record<string, InfographicConfig> = {
   },
   reassure: {
     title: 'You remain in control',
-    caption: 'A reservation saves your place. Enrollment remains your choice.',
+    caption: 'The check and plan are free. You decide later whether to buy the box.',
     center: '$0 today',
-    items: ['Reserve', 'Updates', 'Decide'],
+    items: ['Summary', 'Plan', 'Decide'],
     tone: 'sage',
   },
 }

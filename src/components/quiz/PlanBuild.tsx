@@ -338,8 +338,10 @@ export function PlanBuild({ answers, onAnswer, onContinue, onBack, canGoBack }: 
                             src={provider.logoSrc}
                             className={`provider-logo is-${provider.logoFit ?? 'wordmark'}`}
                             alt=""
+                            width={72}
+                            height={28}
                             decoding="async"
-                            referrerPolicy="no-referrer"
+                            fetchPriority="high"
                             onError={(event) => event.currentTarget.classList.add('is-broken')}
                           />
                         ) : null}

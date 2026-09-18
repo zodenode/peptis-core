@@ -1,9 +1,12 @@
 # Stripe activation architecture
 
-The Peptis Core Continuity founding reservation is **$0 today**. It does not
-create a PaymentIntent, collect payment details, or load the Stripe SDK. Payment
-wallets cannot process a $0 PaymentIntent, so Apple Pay, Google Pay, and Link are
-shown only as previews of future activation options.
+The Peptis Core Continuity check and starter plan are **$0 today**. The intended
+Lean Mass nutrition box at $59/month is not for sale until a real charge and
+shipment exist. Do not create a PaymentIntent, collect payment details, or load
+the Stripe SDK. Do not show Apple Pay, Google Pay, Link, or any other payment
+interface until a real charge or SetupIntent exists. The old
+`StripeActivationBlock` preview was removed. Do not A/B $49/$59/$69 on the site
+without a live payment backend.
 
 ## Future activation flow
 
@@ -16,8 +19,7 @@ shown only as previews of future activation options.
      creation; or
    - a subscription and its payment flow when an immediate charge is due.
 4. The client receives only a short-lived client secret and mounts Stripe's
-   Payment Element or Express Checkout Element inside
-   `StripeActivationBlock`.
+   Payment Element or Express Checkout Element on a real activation page.
 5. The server treats verified webhooks—not a client redirect—as the source of
    truth for activation and billing state.
 

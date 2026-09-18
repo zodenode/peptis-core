@@ -42,7 +42,7 @@ export const suplifulStockLists: SuplifulStockList[] = [
         url: u('glp-1-support-capsules'),
         form: 'Capsules',
         why: 'Magnesium, probiotics, digestive enzymes, ginger and peppermint blend positioned for dietary routine support during appetite change.',
-        pickPriority: 'core',
+        pickPriority: 'secondary',
       },
       {
         sku: 'JTP4GUTH',

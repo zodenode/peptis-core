@@ -6,14 +6,17 @@ import { BodyCompositionGraphic } from '../components/landing/BodyCompositionGra
 import { ContinuityFramework } from '../components/landing/ContinuityFramework'
 import { EvidenceCards } from '../components/landing/EvidenceCards'
 import { FoundingOfferVisual } from '../components/landing/FoundingOfferVisual'
+import { LeanMassPreview } from '../components/landing/LeanMassPreview'
 import { MeasuresBeyondWeight } from '../components/landing/MeasuresBeyondWeight'
 import { OfferingsGrid } from '../components/landing/OfferingsGrid'
 import { PricingStrip } from '../components/landing/PricingStrip'
 import { ProteinTargetGraphic } from '../components/landing/ProteinTargetGraphic'
 import { StickyQuizCta } from '../components/landing/StickyQuizCta'
 import { QuizEmbed } from '../components/quiz/QuizEmbed'
+import { LeadCapture } from '../components/landing/LeadCapture'
 import { faqs, howSteps, problemItems, protocolRows, trustBadges } from '../data/landing'
 import { images } from '../data/images'
+import type { LandingVariant } from '../data/landingVariants'
 import { useSectionView } from '../hooks/useSectionView'
 import { setQuizPrompt, setQuizSource, track } from '../lib/analytics'
 
@@ -24,7 +27,11 @@ const heroPrompts = [
   { id: 'maintenance', label: 'I want to keep the weight off' },
 ] as const
 
-export function LandingPage() {
+type Props = {
+  variant?: LandingVariant
+}
+
+export function LandingPage({ variant }: Props) {
   const heroRef = useSectionView<HTMLElement>('hero')
   const problemRef = useSectionView<HTMLElement>('problem')
   const protocolRef = useSectionView<HTMLElement>('protocol')
@@ -37,15 +44,28 @@ export function LandingPage() {
   const viewed = useRef(false)
 
   useEffect(() => {
+    if (variant) {
+      document.title = variant.documentTitle
+      setQuizSource(variant.source)
+    }
+  }, [variant])
+
+  useEffect(() => {
     if (viewed.current) return
     viewed.current = true
-    track('landing_viewed', { page: '/', brand: 'continuity_care' })
-  }, [])
+    track('landing_viewed', {
+      page: variant?.path ?? '/',
+      brand: variant?.id ?? 'continuity_care',
+      source: variant?.source ?? 'home',
+    })
+  }, [variant])
+
+  const sourceFor = (place: string) => (variant ? `${variant.source}_${place}` : place)
 
   const heroCta = () => {
-    setQuizSource('hero')
-    track('hero_cta_clicked')
-    track('quiz_cta_clicked', { location: 'hero' })
+    setQuizSource(sourceFor('hero'))
+    track('hero_cta_clicked', { source: sourceFor('hero') })
+    track('quiz_cta_clicked', { location: sourceFor('hero') })
   }
 
   return (
@@ -65,44 +85,68 @@ export function LandingPage() {
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-inner">
             <div className="hero-copy">
-              <p className="eyebrow eyebrow-light">For adults on or after GLP-1 weight loss</p>
-              <h1 id="hero-heading">You can see the weight loss. Can you see what happened to your strength?</h1>
+              <p className="eyebrow eyebrow-light">{variant?.eyebrow ?? 'Free GLP-1 continuity check'}</p>
+              <h1 id="hero-heading">
+                {variant?.headline ?? 'See what the scale missed about your strength'}
+              </h1>
               <p className="hero-lead">
-                Eight quick questions show you what deserves attention now. You walk away with a
-                written summary of your strength, protein and maintenance priorities, free, in
-                about three minutes.
+                {variant?.lead ??
+                  'Eight questions. You leave with written priorities on strength, protein and keeping the weight off, plus the free two-day strength starter plan. About 3 minutes. No card.'}
               </p>
               <div className="hero-quiz-start">
-                <p className="hero-quiz-q">Which of these sounds most like you?</p>
-                <div className="hero-quiz-options">
-                  {heroPrompts.map((prompt) => (
+                {variant?.showHeroPrompts !== false ? (
+                  <>
+                    <p className="hero-quiz-q">Which of these sounds most like you?</p>
+                    <div className="hero-quiz-options">
+                      {heroPrompts.map((prompt) => (
+                        <Link
+                          key={prompt.id}
+                          className="hero-quiz-chip"
+                          to="/quiz"
+                          onClick={() => {
+                            setQuizSource(sourceFor('hero_prompt'))
+                            setQuizPrompt(prompt.id)
+                            track('hero_prompt_clicked', { prompt: prompt.id, source: sourceFor('hero_prompt') })
+                            track('quiz_cta_clicked', { location: sourceFor('hero_prompt') })
+                          }}
+                        >
+                          {prompt.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+                {variant?.showLeadCapture ? (
+                  <LeadCapture
+                    source={variant.source}
+                    buttonLabel={variant.leadButtonLabel ?? variant.ctaLabel}
+                  />
+                ) : null}
+                {variant?.evidenceLine ? <p className="hero-micro">{variant.evidenceLine}</p> : null}
+                <div className="hero-actions">
+                  <Link className="btn btn-primary" to={variant?.ctaTo ?? '/quiz'} onClick={heroCta}>
+                    {variant?.ctaLabel ?? 'Get my free summary'}
+                  </Link>
+                  {variant?.secondaryCtaLabel && variant.secondaryCtaTo ? (
                     <Link
-                      key={prompt.id}
-                      className="hero-quiz-chip"
-                      to="/quiz"
+                      className="btn btn-ghost"
+                      to={variant.secondaryCtaTo}
                       onClick={() => {
-                        setQuizSource('hero_prompt')
-                        setQuizPrompt(prompt.id)
-                        track('hero_prompt_clicked', { prompt: prompt.id })
-                        track('quiz_cta_clicked', { location: 'hero_prompt' })
+                        setQuizSource(sourceFor('hero_secondary'))
+                        track('quiz_cta_clicked', { location: sourceFor('hero_secondary') })
                       }}
                     >
-                      {prompt.label}
+                      {variant.secondaryCtaLabel}
                     </Link>
-                  ))}
-                </div>
-                <div className="hero-actions">
-                  <Link className="btn btn-primary" to="/quiz" onClick={heroCta}>
-                    Start the free check
-                  </Link>
+                  ) : null}
                 </div>
                 <p className="hero-micro">
-                  Free. About 3 minutes. No payment details.{' '}
+                  {variant?.micro ?? 'Education only, not care today.'}{' '}
                   <a
-                    href="#evidence"
-                    onClick={() => track('evidence_cta_clicked', { location: 'hero' })}
+                    href="#preview"
+                    onClick={() => track('lean_preview_link_clicked', { location: sourceFor('hero') })}
                   >
-                    See the evidence
+                    See the lean-mass preview
                   </a>
                 </p>
               </div>
@@ -114,6 +158,88 @@ export function LandingPage() {
             </div>
           </div>
         </section>
+
+        <LeanMassPreview />
+
+        <section className="section section-forest" id="how" ref={howRef} aria-labelledby="how-heading">
+          <div className="section-inner">
+            <div className="section-head">
+              <p className="eyebrow">How the continuity check works</p>
+              <h2 id="how-heading">Three minutes now. A clear choice later.</h2>
+            </div>
+            <ol className="how-timeline">
+              {howSteps.map((step) => (
+                <li className="how-step" key={step.n}>
+                  <span className="how-node" aria-hidden="true">
+                    {step.n}
+                  </span>
+                  <div className="how-step-copy">
+                    <h3>{step.title}</h3>
+                    <p>{step.body}</p>
+                  </div>
+                  <img src={step.image} alt={step.alt} />
+                </li>
+              ))}
+            </ol>
+            <div className="how-cta">
+              <Link
+                className="btn btn-primary"
+                to="/quiz"
+                onClick={() => {
+                  setQuizSource(sourceFor('how'))
+                  track('quiz_cta_clicked', { location: sourceFor('how') })
+                }}
+              >
+                Get my free summary
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="section" id="proof" ref={proofRef} aria-labelledby="proof-heading">
+          <div className="section-inner proof-layout">
+            <figure className="proof-figure">
+              <span className="proof-sticker" aria-hidden="true">
+                Free summary
+              </span>
+              <img
+                src={images.testimonial}
+                alt="Adult reflecting against a vivid berry-red studio background"
+              />
+            </figure>
+            <div>
+              <p className="eyebrow">What you walk away with</p>
+              <h2 id="proof-heading">Named priorities the scale cannot show, plus a starter plan</h2>
+              <p>
+                After eight questions you receive a personal record of strength, protein and
+                maintenance notes, plus the free two-day strength starter plan. It is a planning
+                document, not a diagnosis or a promise of treatment results.
+              </p>
+              <ul className="walkaway-list">
+                <li>
+                  <strong>Your priorities, named</strong>
+                  <span>Strength, energy, digestive comfort and maintenance, based on your answers.</span>
+                </li>
+                <li>
+                  <strong>A free starter plan</strong>
+                  <span>Two training days on this site. No payment details. No subscription.</span>
+                </li>
+              </ul>
+              <Link
+                className="btn btn-primary"
+                to="/quiz"
+                onClick={() => {
+                  setQuizSource(sourceFor('walkaway'))
+                  track('quiz_cta_clicked', { location: sourceFor('walkaway') })
+                }}
+              >
+                Get my free summary
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <PricingStrip variant={variant} />
 
         <BodyCompositionGraphic />
 
@@ -147,8 +273,6 @@ export function LandingPage() {
           </div>
         </section>
 
-        <PricingStrip />
-
         <OfferingsGrid />
 
         <ContinuityFramework />
@@ -163,16 +287,17 @@ export function LandingPage() {
             <div className="protocol-layout">
               <div>
                 <div className="section-head">
-                  <p className="eyebrow">The founding reservation</p>
+                  <p className="eyebrow">What you get now</p>
                   <h2 id="protocol-heading">A useful start now, with a clear choice later</h2>
                   <p>
-                    Your $0 reservation includes planning tools and priority updates. Medical care,
-                    prescribing and pharmacy fulfillment are not available today.
+                    The check and starter plan are free. The Lean Mass nutrition box is the first
+                    paid product we intend to sell. Medical care, prescribing and pharmacy
+                    fulfillment are not available today.
                   </p>
                 </div>
                 <div className="matrix" role="table" aria-label="Continuity system features">
                   <div className="matrix-row matrix-head" role="row">
-                    <span role="columnheader">Reservation benefit</span>
+                    <span role="columnheader">What is included</span>
                     <span role="columnheader">Purpose</span>
                     <span role="columnheader">Your benefit</span>
                   </div>
@@ -197,77 +322,11 @@ export function LandingPage() {
           </div>
         </section>
 
-        <section className="section section-forest" id="how" ref={howRef} aria-labelledby="how-heading">
-          <div className="section-inner">
-            <div className="section-head">
-              <p className="eyebrow">How founding access works</p>
-              <h2 id="how-heading">Reserve now and decide when the facts are clear</h2>
-            </div>
-            <ol className="how-timeline">
-              {howSteps.map((step) => (
-                <li className="how-step" key={step.n}>
-                  <span className="how-node" aria-hidden="true">
-                    {step.n}
-                  </span>
-                  <div className="how-step-copy">
-                    <h3>{step.title}</h3>
-                    <p>{step.body}</p>
-                  </div>
-                  <img src={step.image} alt={step.alt} />
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
         <MeasuresBeyondWeight />
 
         <ProteinTargetGraphic />
 
         <EvidenceCards />
-
-        <section className="section" id="proof" ref={proofRef} aria-labelledby="proof-heading">
-          <div className="section-inner proof-layout">
-            <figure className="proof-figure">
-              <span className="proof-sticker" aria-hidden="true">
-                Free summary
-              </span>
-              <img
-                src={images.testimonial}
-                alt="Adult reflecting against a vivid berry-red studio background"
-              />
-            </figure>
-            <div>
-              <p className="eyebrow">What you walk away with</p>
-              <h2 id="proof-heading">A written summary of the priorities the scale cannot show</h2>
-              <p>
-                After eight questions you receive a personal record of strength, protein and
-                maintenance notes, plus a $0 place on the state launch list. It is a planning
-                document, not a diagnosis or a promise of treatment results.
-              </p>
-              <ul className="walkaway-list">
-                <li>
-                  <strong>Your priorities, named</strong>
-                  <span>Strength, energy, digestive comfort and maintenance, based on your answers.</span>
-                </li>
-                <li>
-                  <strong>A $0 reservation</strong>
-                  <span>No payment details. Cancel any time from the confirmation email.</span>
-                </li>
-              </ul>
-              <Link
-                className="btn btn-primary"
-                to="/quiz"
-                onClick={() => {
-                  setQuizSource('walkaway')
-                  track('quiz_cta_clicked', { location: 'walkaway' })
-                }}
-              >
-                Start the free check
-              </Link>
-            </div>
-          </div>
-        </section>
 
         <section className="section trust-band" ref={trustBandRef} aria-labelledby="trust-heading">
           <div className="section-inner trust-band-inner">
@@ -278,9 +337,9 @@ export function LandingPage() {
               <p className="eyebrow">Built for an honest launch</p>
               <h2 id="trust-heading">We will not claim care is ready before it is</h2>
               <p>
-                Launch depends on state, provider, pharmacy, and operational readiness. Reservation
-                holders will be notified when eligibility screening becomes available. A
-                prescription is never guaranteed.
+                The nutrition box ships only after we can charge and fulfill. Clinical services
+                depend on state, provider, pharmacy and operational readiness. People who ask for
+                updates will hear first. A prescription is never guaranteed.
               </p>
             </div>
           </div>
@@ -310,7 +369,7 @@ export function LandingPage() {
           </div>
         </section>
 
-        <FoundingOfferVisual />
+        <FoundingOfferVisual variant={variant} />
 
         <section className="closer" id="assessment" ref={closerRef} aria-labelledby="closer-heading">
           <div className="closer-media" aria-hidden="true">
@@ -318,28 +377,32 @@ export function LandingPage() {
           </div>
           <div className="section-inner closer-inner">
             <div className="closer-copy">
-              <p className="eyebrow eyebrow-light">Peptis Core Continuity</p>
-              <h2 id="closer-heading">Start with a short continuity check</h2>
+              <p className="eyebrow eyebrow-light">
+                {variant?.closerEyebrow ?? 'Free GLP-1 continuity check'}
+              </p>
+              <h2 id="closer-heading">
+                {variant?.closerHeadline ?? 'See what the scale missed, in about 3 minutes'}
+              </h2>
               <p>
-                Answer eight straightforward questions in about three minutes. You will receive a
-                summary of your priorities and can reserve your place for $0.
+                {variant?.closerBody ??
+                  'Answer eight questions. You will receive written priorities and the free starter plan. No payment details.'}
               </p>
               <Link
-                className="btn btn-ghost"
-                to="/quiz"
+                className="btn btn-primary"
+                to={variant?.ctaTo ?? '/quiz'}
                 onClick={() => {
-                  setQuizSource('closer')
-                  track('quiz_cta_clicked', { location: 'closer' })
+                  setQuizSource(sourceFor('closer'))
+                  track('quiz_cta_clicked', { location: sourceFor('closer') })
                 }}
               >
-                Open the full quiz
+                {variant?.ctaLabel ?? 'Get my free summary'}
               </Link>
             </div>
             <QuizEmbed />
           </div>
         </section>
       </main>
-      <StickyQuizCta />
+      <StickyQuizCta variant={variant} />
       <Footer />
     </div>
   )

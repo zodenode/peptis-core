@@ -12,6 +12,7 @@ import { Checkout } from './Checkout'
 import { EmailGate } from './EmailGate'
 import { ExplainerPage } from './ExplainerPage'
 import { PlanBuild } from './PlanBuild'
+import { providerLogoSrcs } from '../../data/planBuild'
 import { QuizQuestion } from './QuizQuestion'
 import { Success } from './Success'
 import { SummaryReveal } from './SummaryReveal'
@@ -41,6 +42,11 @@ export function QuizFlow({ embedded = false }: Props) {
 
   return (
     <div className={`quiz-shell${embedded ? ' is-embedded' : ''}`}>
+      <div className="visually-hidden" aria-hidden="true">
+        {providerLogoSrcs.map((src) => (
+          <img key={src} src={src} alt="" width="72" height="28" decoding="async" />
+        ))}
+      </div>
       {quiz.current !== 'plan_build' ? (
         <div
           className="quiz-progress"
@@ -79,6 +85,7 @@ export function QuizFlow({ embedded = false }: Props) {
 
         {quiz.current === 'email_gate' ? (
           <EmailGate
+            initialFirstName={quiz.checkout.firstName}
             initialEmail={quiz.checkout.email}
             onCapture={quiz.captureEmail}
             onContinue={quiz.goNext}
@@ -139,7 +146,7 @@ export function QuizFlow({ embedded = false }: Props) {
       </div>
 
       <p className="quiz-trust">
-        $0 reservation. No payment today. State-by-state launch.
+        Free check. No payment today. The nutrition box is not for sale yet.
         {embedded ? ` ${checkoutCopy.eyebrow}.` : null}
       </p>
       <p className="visually-hidden">Step type: {meta.step_id}</p>

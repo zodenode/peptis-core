@@ -40,16 +40,19 @@ export function HealthDataNoticePage() {
               <li>Your interest in optional future wellness products.</li>
             </ul>
             <p>
-              We collect this data directly from you when you choose to answer the quiz, and we
-              save your answers to our servers at each step so your summary can be completed if
-              you step away. We do not collect health data from third parties, and we do not use
+              We collect this data directly from you when you choose to answer the quiz. Provider
+              and prescription answers stay in your browser so the on-screen summary can be built.
+              They are not written to the same server file as your name, email or state. Funnel
+              progress on the server is stored as a step name and, separately, a launch-list
+              contact record. We do not collect health data from third parties, and we do not use
               geofencing.
             </p>
 
             <h2>Why we collect it</h2>
             <ul>
               <li>To build the educational summary you request at the end of the quiz.</li>
-              <li>To organize your founding reservation and future launch communication.</li>
+              <li>To send the summary you requested and, if you asked, nutrition-box updates.</li>
+              <li>To notify the Peptis team that a form was completed, using contact details only, not quiz answers.</li>
               <li>To understand, in aggregate, how the quiz is used and improve it.</li>
             </ul>
 

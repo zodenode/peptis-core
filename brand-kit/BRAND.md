@@ -59,7 +59,7 @@ CSS variables: [`tokens.css`](./tokens.css)
 - Evidence first: strength, protein, function and maintenance
 - Natural sentences. No decorative em dashes. No slogan fragments.
 - Do not claim care, prescribing or pharmacy fulfillment before they are live
-- A founding reservation is a waitlist, not medical care
+- The quiz and starter plan are free. The Lean Mass nutrition box is not for sale until charge and ship work. A list signup is not medical care.
 - Lean mass is not the same as skeletal muscle
 - Use about 25% of lost weight as lean mass, never “40% muscle”
 - See `.cursor/skills/peptis-evidence-copy/SKILL.md` for claim rules

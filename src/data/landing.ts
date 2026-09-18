@@ -1,10 +1,10 @@
 import { images } from './images'
 
 export const trustBadges = [
-  '$0 reservation',
+  'Free 3-minute check',
+  'Written priorities',
+  'Starter training plan',
   'No payment details',
-  'State-by-state launch',
-  'Not medical care today',
 ] as const
 
 export const problemItems = [
@@ -33,46 +33,46 @@ export const problemItems = [
 
 export const protocolRows = [
   {
-    include: 'Priority access',
-    purpose: 'State-by-state notifications',
-    benefit: 'Know when screening opens',
+    include: 'Written summary',
+    purpose: 'Strength, protein, comfort and maintenance notes',
+    benefit: 'Keep the details the scale misses',
   },
   {
-    include: 'Personalized summary',
-    purpose: 'Strength, energy, comfort and maintenance priorities',
-    benefit: 'Keep the important details together',
+    include: 'Starter training plan',
+    purpose: 'Two-day strength template on this site',
+    benefit: 'Start this week without a subscription',
   },
   {
-    include: 'Readiness organizer',
-    purpose: 'Current routine and lab readiness checklists',
-    benefit: 'Prepare for future screening',
+    include: 'Box updates if you ask',
+    purpose: 'Lean Mass nutrition box at an intended $59 a month',
+    benefit: 'Hear first when we can charge and ship',
   },
   {
-    include: 'Reservation control',
-    purpose: 'No payment details and no automatic activation',
-    benefit: 'Cancel or decline enrollment',
+    include: 'No payment today',
+    purpose: 'No card, no charge, cancel any time',
+    benefit: 'You decide later whether to buy',
   },
 ] as const
 
 export const howSteps = [
   {
     n: '01',
-    title: 'Complete the continuity quiz',
-    body: 'Tell us what has changed and what you want to protect.',
+    title: 'Today: 8 questions',
+    body: 'Tell us what has changed with strength, energy, comfort and maintenance. About three minutes.',
     image: images.how1,
     alt: 'Adult completing the continuity quiz on a laptop in a colorful studio',
   },
   {
     n: '02',
-    title: 'Reserve for $0 today',
-    body: 'Save your summary and join the state launch list. No payment details are needed.',
+    title: 'Right after: your written summary',
+    body: 'Save a personal record of your priorities and open the free two-day strength starter plan. No payment details.',
     image: images.how2,
     alt: 'Adult organizing continuity notes in a colorful studio',
   },
   {
     n: '03',
-    title: 'Choose at launch',
-    body: 'If services reach your state and you are eligible, review the final terms and choose whether to enroll.',
+    title: 'Later: you decide',
+    body: 'If the Lean Mass nutrition box can ship, you choose whether to buy it. There is no paid clinical programme for sale today.',
     image: images.how3,
     alt: 'A calm sunlit path suggesting a future choice',
   },
@@ -80,27 +80,27 @@ export const howSteps = [
 
 export const faqs = [
   {
-    q: 'What does Peptis offer?',
-    a: 'Peptis is a continuity programme for adults on or after GLP-1 therapy: coaching and nutrition planning tools, exercise programmes with training tips, one curated Lean Mass / GLP support supplement bundle, and—when clinical services launch—a planned weight-management consultation pathway. Any medication decision follows review by a licensed clinician, and no prescription is guaranteed. See /offerings.',
+    q: 'What do I get from the free continuity check?',
+    a: 'A written record of your strength, protein, digestive comfort and maintenance priorities, plus the two-day strength starter plan on this site. This is a planning document, not a diagnosis or medical care. Nothing is charged.',
   },
   {
     q: 'Is this medical care or a replacement for my current therapy?',
-    a: 'No. The founding reservation is a waitlist and planning experience, not medical care. Keep working with your current clinician. No clinician review, prescription, or medication is provided today.',
+    a: 'No. The check and starter plan are educational tools, not medical care. Keep working with your current clinician. No clinician review, prescription, or medication is provided today.',
   },
   {
-    q: 'What does the planned $299 per month mean?',
-    a: 'It is the planned founding rate if clinical services launch, reach your state, you are eligible and you choose to enroll under the final terms. The planned standard rate is $399 per month. Pricing may change before activation.',
+    q: 'What is the Lean Mass nutrition box?',
+    a: 'It is the first paid product we intend to sell: a monthly nutrition box at an intended $59, built from private-label protein, creatine, hydration and micronutrient stock. It is not for sale today because we cannot charge or ship yet. Asking for updates does not place an order. Supplements are not medicines and do not treat medication side effects.',
   },
   {
-    q: 'Will I be charged for the reservation?',
-    a: 'No. The founding reservation costs $0, can be cancelled and does not collect payment details.',
+    q: 'Will I be charged if I leave my email?',
+    a: 'No. The check, summary and starter plan cost $0 and do not collect payment details. You can cancel updates any time from the confirmation email.',
   },
   {
-    q: 'Is the Lean Mass Supplement Bundle available now?',
-    a: 'No. You can ask for updates about an optional bundle that may cost an additional $59 per month at launch. This does not place an order and nothing ships today. Supplements are sourced from curated Supliful stock and are not a treatment for medication side effects.',
+    q: 'Is there a $299 continuity subscription?',
+    a: 'No. There is no clinician-staffed continuity programme for sale. A $299 monthly rate has been discussed only as a possible future founding rate if clinical services later launch, reach your state, you are eligible and you choose to enroll. That is not an offer today.',
   },
   {
-    q: 'When will clinical services be available?',
-    a: 'There is no promised launch date. Availability depends on state, provider, pharmacy, and operational readiness. Reservation holders will receive updates and can decide whether to pursue eligibility screening at launch.',
+    q: 'When will the nutrition box or clinical services be available?',
+    a: 'There is no promised date. The box ships only after we can charge and fulfill. Clinical services depend on state, provider, pharmacy and operational readiness. People who ask for updates will hear first and can still decline.',
   },
 ]

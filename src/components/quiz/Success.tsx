@@ -36,15 +36,14 @@ export function Success({ form, pathways, reservationId, onReset }: Props) {
         <span>✓</span>
       </div>
       <div className="quiz-body">
-        <p className="quiz-kicker">Founding reservation confirmed</p>
-        <h1 className="quiz-title">You are on the launch list, {form.firstName || 'there'}.</h1>
+        <p className="quiz-kicker">Your summary is saved</p>
+        <h1 className="quiz-title">Your summary is saved, {form.firstName || 'there'}.</h1>
         <p>
-          Your Peptis Core Continuity founding reservation and pathway summary are saved. We will
-          contact {form.email || 'your email'} with state-by-state launch and eligibility screening
-          updates.
+          We will email {form.email || 'your email'} with your written priorities and the starter
+          plan. This is not a purchase and not medical care.
         </p>
         {reservationId ? (
-          <p className="quiz-hint">Reservation reference: {reservationId}</p>
+          <p className="quiz-hint">List reference: {reservationId}</p>
         ) : null}
         <div className="success-recap">
           <h2>Your continuity summary</h2>
@@ -66,10 +65,15 @@ export function Success({ form, pathways, reservationId, onReset }: Props) {
           </ul>
         </div>
         <p className="quiz-hint">
-          No charge was made and no medical service, clinical review, prescription, or pharmacy
-          fulfillment has started. If services become available and you are eligible, you will
-          choose whether to activate and enroll.
+          No charge was made. The Lean Mass nutrition box and any clinical programme are not for
+          sale today. No clinician review, prescription or pharmacy fulfillment has started.
         </p>
+        {form.upsell ? (
+          <p className="quiz-hint">
+            You asked to hear when the Lean Mass nutrition box can ship at the intended $59 a
+            month. Asking does not place an order.
+          </p>
+        ) : null}
         <div className="success-next">
           <h2>Start this week</h2>
           <p>

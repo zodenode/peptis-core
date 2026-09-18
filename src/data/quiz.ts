@@ -362,7 +362,7 @@ export const stopBlocks: Record<StopBlockId, StopBlockStep> = {
     paragraphs: () => [
       'Weight loss can include lean tissue as well as body fat. Lean mass includes water, organs, connective tissue and skeletal muscle, so it should not be read as muscle alone.',
       'Tracking strength, protein intake and resistance activity can make this part of continuity planning more useful.',
-      'Your quiz summary can help you organize the questions and records to bring to your current clinician. Peptis is not providing medical services through this reservation today.',
+      'Your quiz summary can help you organize the questions and records to bring to your current clinician. Peptis is not providing medical services through this check today.',
     ],
   },
   B: {
@@ -386,26 +386,26 @@ export const stopBlocks: Record<StopBlockId, StopBlockStep> = {
     cta: 'Add comfort to my summary',
     paragraphs: () => [
       'Digestive changes can affect daily comfort and nutrition. Recording timing, meals, and current therapy details creates a clearer handoff for a future licensed provider.',
-      'The reservation adds GI comfort to your pathway summary. It does not include diagnosis, prescribing, or pharmacy fulfillment today.',
+      'The summary can include digestive-comfort notes. It does not include diagnosis, prescribing, or pharmacy fulfillment today.',
     ],
   },
 }
 
 export const checkoutCopy = {
-  eyebrow: 'Founding reservations are open',
+  eyebrow: 'Free summary, then a product you can buy later',
   title: 'Your continuity summary is ready.',
   steps: [
     {
-      title: 'Priority launch access',
-      body: 'Join the state-by-state launch list and receive readiness updates. No medical services are provided today.',
+      title: 'Keep the written summary',
+      body: 'Your strength, protein, digestive comfort and maintenance notes stay together. Education only, not medical care.',
     },
     {
-      title: 'A useful pathway summary',
-      body: 'Keep your strength, energy, digestive comfort and maintenance priorities together for a future screening.',
+      title: 'Use the starter training plan',
+      body: 'The two-day strength plan is on this site now. No subscription is required.',
     },
     {
-      title: 'You stay in control',
-      body: 'There is no charge today. You decide whether to enroll if services launch and you are eligible.',
+      title: 'Ask about the Lean Mass nutrition box',
+      body: 'The first paid product we intend to sell is a $59 monthly box. It is not for sale today because we cannot charge or ship yet.',
     },
   ],
 }
@@ -426,8 +426,8 @@ export function stepMeta(id: StepId): { type: StepType; step_id: string; step_in
   const map: Record<StepId, { type: StepType; step_index: number; block?: StopBlockId }> = {
     q1: { type: 'question', step_index: 0 },
     explain_q1: { type: 'explainer', step_index: 1 },
-    email_gate: { type: 'email_gate', step_index: 2 },
-    q2: { type: 'question', step_index: 3 },
+    q2: { type: 'question', step_index: 2 },
+    email_gate: { type: 'email_gate', step_index: 3 },
     explain_q2: { type: 'explainer', step_index: 4 },
     q3: { type: 'question', step_index: 5 },
     explain_q3: { type: 'explainer', step_index: 6 },
@@ -548,10 +548,10 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
     case 'q1':
       return 'explain_q1'
     case 'explain_q1':
-      return 'email_gate'
-    case 'email_gate':
       return 'q2'
     case 'q2':
+      return 'email_gate'
+    case 'email_gate':
       return nextAfterQ2(answers, shownSet)
     case 'explain_q2':
       return 'q3'
@@ -747,10 +747,10 @@ export function resolveExplainer(
       kind: 'social_proof',
       proofId: 'founding_trust',
       pathway: 'general',
-      eyebrow: 'Your reservation',
-      title: 'Keep your place and decide later',
+      eyebrow: 'Your next step',
+      title: 'Save the summary and decide later',
       body: checkoutCopy.steps.map((step) => `${step.title}. ${step.body}`),
-      cta: 'Review founding reservation',
+      cta: 'Save my summary',
     })
   }
   if (id.startsWith('explain_q')) {

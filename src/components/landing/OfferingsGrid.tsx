@@ -9,12 +9,12 @@ export function OfferingsGrid() {
     <section className="section section-mist" id="offerings" ref={ref} aria-labelledby="offerings-heading">
       <div className="section-inner">
         <div className="section-head">
-          <p className="eyebrow">What Peptis offers</p>
-          <h2 id="offerings-heading">Continuity planning, training, lean-mass support and planned clinical care</h2>
+          <p className="eyebrow">What you can do today</p>
+          <h2 id="offerings-heading">A free continuity check, then a box you can buy later</h2>
           <p>
-            Built for adults on or after GLP-1 therapy: planning tools for coaching and nutrition,
-            one training system, one curated supplement bundle, and a planned weight-management
-            consultation pathway when clinical services launch.
+            The quiz, written summary and starter training plan are available now. The Lean Mass
+            nutrition box is the first paid product we intend to sell, at $59 a month. It is not
+            for sale yet. There is no paid clinical programme to join today.
           </p>
         </div>
         <div className="offering-grid">
@@ -38,7 +38,7 @@ export function OfferingsGrid() {
         </div>
         <p className="offerings-more">
           <Link className="editorial-link" to="/offerings">
-            Full programme scope and core Supliful bundle <b>→</b>
+            Full programme scope, including what is still planned <b>→</b>
           </Link>
         </p>
       </div>
