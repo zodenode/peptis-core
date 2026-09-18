@@ -27,7 +27,7 @@ export function PublicationPartnersPage() {
   return (
     <PublicationChrome>
       <SeoHead
-        title={`${seo.title} | ${PUBLICATION_NAME}`}
+        title={seo.title}
         description={seo.description}
         path={PARTNERS_PATH}
         image={seo.image}
