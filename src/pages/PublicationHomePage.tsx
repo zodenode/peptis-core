@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { PublicationChrome } from '../components/publication/PublicationChrome'
+import { PublicationImage } from '../components/publication/PublicationImage'
 import { SeoHead } from '../components/SeoHead'
 import { articles } from '../data/blog'
 import {
@@ -38,13 +39,13 @@ export function PublicationHomePage() {
         path={homeSeo.path}
         image={homeSeo.image}
         imageAlt={homeSeo.imageAlt}
+        imageWidth={homeSeo.imageWidth}
+        imageHeight={homeSeo.imageHeight}
+        modifiedTime={homeSeo.dateModified}
         jsonLd={publicationHomeJsonLd()}
       />
       <main id="main" className="pub-main">
         <section className="pub-cover" aria-labelledby="cover-heading">
-          <Link className="pub-cover-media" to={articlePath(cover)}>
-            <img src={coverCategory.image} alt={coverCategory.imageAlt} />
-          </Link>
           <div className="pub-cover-copy">
             <p className="pub-kicker">Cover essay · {coverCategory.label}</p>
             <h1 id="cover-heading">
@@ -60,6 +61,9 @@ export function PublicationHomePage() {
               Read the cover essay <b>→</b>
             </Link>
           </div>
+          <Link className="pub-cover-media" to={articlePath(cover)}>
+            <PublicationImage src={coverCategory.image} alt={coverCategory.imageAlt} priority />
+          </Link>
         </section>
 
         <section className="pub-issue-bar" aria-label="Issue contents">
@@ -81,7 +85,7 @@ export function PublicationHomePage() {
               return (
                 <article className="pub-card" key={article.slug}>
                   <Link className="pub-card-media" to={articlePath(article)}>
-                    <img src={category.image} alt="" />
+                    <PublicationImage src={category.image} alt="" />
                   </Link>
                   <p className="pub-kicker">
                     <Link to={categoryPath(category.slug)}>{category.label}</Link>

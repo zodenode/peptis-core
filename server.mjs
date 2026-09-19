@@ -480,6 +480,12 @@ function injectPublicationHead(html, page, pagePath) {
     `<meta property="og:type" content="${page.type === 'article' ? 'article' : 'website'}" />`,
     `<meta property="og:url" content="${escapeAttr(url)}" />`,
     `<meta property="og:image" content="${image}" />`,
+    page.imageWidth ? `<meta property="og:image:width" content="${escapeAttr(String(page.imageWidth))}" />` : '',
+    page.imageHeight ? `<meta property="og:image:height" content="${escapeAttr(String(page.imageHeight))}" />` : '',
+    page.imageAlt ? `<meta property="og:image:alt" content="${escapeAttr(page.imageAlt)}" />` : '',
+    page.type === 'article' && page.dateModified
+      ? `<meta property="article:modified_time" content="${escapeAttr(page.dateModified)}" />`
+      : '',
     `<meta property="og:locale" content="en_US" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${title}" />`,
@@ -489,7 +495,7 @@ function injectPublicationHead(html, page, pagePath) {
       (block) =>
         `<script type="application/ld+json">${JSON.stringify(block).replace(/</g, '\\u003c')}</script>`,
     ),
-  ]
+  ].filter(Boolean)
   return next.replace('</head>', `${extra.join('\n    ')}\n  </head>`)
 }
 
