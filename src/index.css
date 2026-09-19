@@ -5189,6 +5189,12 @@ input:disabled {
   display: inline-flex;
 }
 
+@media (max-width: 859px) {
+  .pub-teaser {
+    padding-bottom: 7.5rem;
+  }
+}
+
 /* Peptis Publication */
 .pub-site {
   background: #f6f1e8;
