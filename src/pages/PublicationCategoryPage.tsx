@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { PublicationChrome } from '../components/publication/PublicationChrome'
+import { PublicationImage } from '../components/publication/PublicationImage'
 import { SeoHead } from '../components/SeoHead'
 import {
   articlePath,
@@ -41,6 +42,9 @@ export function PublicationCategoryPage() {
           path={seo.path}
           image={seo.image}
           imageAlt={seo.imageAlt}
+          imageWidth={seo.imageWidth}
+          imageHeight={seo.imageHeight}
+          modifiedTime={seo.dateModified}
           jsonLd={categoryJsonLd(category, entries)}
         />
       ) : null}
@@ -57,7 +61,7 @@ export function PublicationCategoryPage() {
             </p>
           </div>
           <figure className="pub-desk-hero-media">
-            <img src={category.image} alt={category.imageAlt} />
+            <PublicationImage src={category.image} alt={category.imageAlt} priority />
           </figure>
         </section>
 

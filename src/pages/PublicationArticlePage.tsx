@@ -8,12 +8,20 @@ import {
   categoryForArticle,
   findCategory,
   findPublicationArticle,
+  PUBLICATION_IMAGE_HEIGHT,
+  PUBLICATION_IMAGE_WIDTH,
   PUBLICATION_NAME,
   PUBLICATION_REVIEW_DATE,
   relatedArticles,
 } from '../data/publication'
 import { setQuizSource, track } from '../lib/analytics'
-import { articleFaqs, articleJsonLd, articleSeoDescription, articleSeoTitle } from '../lib/publicationDiscoverability'
+import {
+  articleFaqs,
+  articleJsonLd,
+  articleSeoDescription,
+  articleSeoTitle,
+  PAGE_UPDATED_ISO,
+} from '../lib/publicationDiscoverability'
 import { absoluteUrl } from '../lib/site'
 
 export function PublicationArticlePage() {
@@ -50,8 +58,11 @@ export function PublicationArticlePage() {
         type="article"
         image={absoluteUrl(expected.image)}
         imageAlt={expected.imageAlt}
+        imageWidth={PUBLICATION_IMAGE_WIDTH}
+        imageHeight={PUBLICATION_IMAGE_HEIGHT}
         jsonLd={articleJsonLd(article)}
         publishedTime="2026-08-21"
+        modifiedTime={PAGE_UPDATED_ISO}
       />
       <main id="main" className="pub-main">
         <article className="pub-essay" aria-labelledby="essay-heading">

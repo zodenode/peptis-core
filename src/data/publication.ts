@@ -1,5 +1,4 @@
 import { articles, EVIDENCE_REVIEW_DATE, type Article } from './blog'
-import { images } from './images'
 
 export type PublicationCategorySlug =
   | 'composition'
@@ -20,6 +19,8 @@ export type PublicationCategory = {
 export const PUBLICATION_NAME = 'Peptis Publication'
 export const PUBLICATION_ISSUE = 'Issue 1'
 export const PUBLICATION_REVIEW_DATE = EVIDENCE_REVIEW_DATE
+export const PUBLICATION_IMAGE_WIDTH = 800
+export const PUBLICATION_IMAGE_HEIGHT = 600
 
 export const publicationCategories: PublicationCategory[] = [
   {
@@ -27,7 +28,7 @@ export const publicationCategories: PublicationCategory[] = [
     label: 'Composition',
     full: 'Muscle and body composition',
     dek: 'Weight loss and fat loss are not the same. These essays explain what the trials measured, and why lean mass is not skeletal muscle.',
-    image: images.problemMuscle,
+    image: '/images/publication/composition.jpg',
     imageAlt: 'Adult pausing during a strength session at home',
   },
   {
@@ -35,7 +36,7 @@ export const publicationCategories: PublicationCategory[] = [
     label: 'Protein',
     full: 'Protein and nutrition',
     dek: 'Lower appetite can make protein, fluids and micronutrients harder to obtain. These pieces cover ranges, denominators and food-first structure.',
-    image: images.problemGi,
+    image: '/images/publication/protein.jpg',
     imageAlt: 'Leafy greens, berries and milk above a bowl',
   },
   {
@@ -43,7 +44,7 @@ export const publicationCategories: PublicationCategory[] = [
     label: 'Training',
     full: 'Training',
     dek: 'Resistance training has the strongest behavioral evidence for retaining lean tissue during weight loss. That evidence is mostly from general weight-loss research.',
-    image: images.q3,
+    image: '/images/publication/training.jpg',
     imageAlt: 'Everyday strength work in a studio',
   },
   {
@@ -51,7 +52,7 @@ export const publicationCategories: PublicationCategory[] = [
     label: 'Skin',
     full: 'Skin and appearance',
     dek: 'Loose skin mainly reflects volume lost, pace of loss and baseline skin quality. Exercise can support contour. It cannot remove substantial excess skin.',
-    image: images.proofGi,
+    image: '/images/publication/skin.jpg',
     imageAlt: 'Calm still life suggesting skin and tissue quality',
   },
   {
@@ -59,7 +60,7 @@ export const publicationCategories: PublicationCategory[] = [
     label: 'Maintenance',
     full: 'Maintenance',
     dek: 'Withdrawal studies show that regain is common when treatment stops. That reflects chronic biology, not personal failure.',
-    image: images.how3,
+    image: '/images/publication/maintenance.jpg',
     imageAlt: 'A calm sunlit path suggesting a later choice',
   },
 ]

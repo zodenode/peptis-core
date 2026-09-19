@@ -5,6 +5,7 @@ import { Header } from '../components/layout/Header'
 import { BodyCompositionGraphic } from '../components/landing/BodyCompositionGraphic'
 import { ContinuityFramework } from '../components/landing/ContinuityFramework'
 import { EvidenceCards } from '../components/landing/EvidenceCards'
+import { PublicationTeaser } from '../components/landing/PublicationTeaser'
 import { FoundingOfferVisual } from '../components/landing/FoundingOfferVisual'
 import { LeanMassPreview } from '../components/landing/LeanMassPreview'
 import { MeasuresBeyondWeight } from '../components/landing/MeasuresBeyondWeight'
@@ -327,6 +328,8 @@ export function LandingPage({ variant }: Props) {
         <ProteinTargetGraphic />
 
         <EvidenceCards />
+
+        <PublicationTeaser />
 
         <section className="section trust-band" ref={trustBandRef} aria-labelledby="trust-heading">
           <div className="section-inner trust-band-inner">

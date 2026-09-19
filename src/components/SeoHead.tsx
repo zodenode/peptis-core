@@ -8,8 +8,11 @@ type Props = {
   type?: 'website' | 'article'
   image?: string
   imageAlt?: string
+  imageWidth?: number
+  imageHeight?: number
   jsonLd?: unknown[]
   publishedTime?: string
+  modifiedTime?: string
 }
 
 function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
@@ -40,8 +43,11 @@ export function SeoHead({
   type = 'website',
   image,
   imageAlt,
+  imageWidth,
+  imageHeight,
   jsonLd = [],
   publishedTime,
+  modifiedTime,
 }: Props) {
   const serialized = JSON.stringify(jsonLd)
   useEffect(() => {
@@ -60,9 +66,11 @@ export function SeoHead({
     upsertMeta('property', 'og:image', ogImage)
     upsertMeta('property', 'og:locale', 'en_US')
     if (imageAlt) upsertMeta('property', 'og:image:alt', imageAlt)
-    if (publishedTime) {
-      upsertMeta('property', 'article:published_time', publishedTime)
-      upsertMeta('property', 'article:modified_time', publishedTime)
+    if (imageWidth) upsertMeta('property', 'og:image:width', String(imageWidth))
+    if (imageHeight) upsertMeta('property', 'og:image:height', String(imageHeight))
+    if (publishedTime) upsertMeta('property', 'article:published_time', publishedTime)
+    if (type === 'article' && (modifiedTime || publishedTime)) {
+      upsertMeta('property', 'article:modified_time', modifiedTime ?? publishedTime ?? '')
     }
     upsertMeta('name', 'twitter:card', 'summary_large_image')
     upsertMeta('name', 'twitter:title', title)
@@ -84,7 +92,19 @@ export function SeoHead({
     return () => {
       for (const node of nodes) node.remove()
     }
-  }, [description, image, imageAlt, serialized, path, publishedTime, title, type])
+  }, [
+    description,
+    image,
+    imageAlt,
+    imageHeight,
+    imageWidth,
+    modifiedTime,
+    serialized,
+    path,
+    publishedTime,
+    title,
+    type,
+  ])
 
   return null
 }

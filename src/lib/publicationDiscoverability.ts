@@ -7,6 +7,9 @@ import {
   categoryPath,
   findCategory,
   findPublicationArticle,
+  PUBLICATION_IMAGE_HEIGHT,
+  PUBLICATION_IMAGE_WIDTH,
+  PUBLICATION_ISSUE,
   PUBLICATION_NAME,
   PUBLICATION_REVIEW_DATE,
   publicationCategories,
@@ -36,10 +39,13 @@ export type DiscoverabilityPage = {
   type: 'website' | 'article'
   image: string
   imageAlt: string
+  imageWidth?: number
+  imageHeight?: number
   dateModified: string
 }
 
 const REVIEW_ISO = '2026-08-21'
+export const PAGE_UPDATED_ISO = '2026-09-19'
 
 export function articleFaqs(article: Article): FaqItem[] {
   const question = article.title.includes('?')
@@ -98,9 +104,14 @@ export function articleJsonLd(article: Article) {
       '@type': 'Article',
       headline: article.title,
       description: articleSeoDescription(article),
-      image: [absoluteUrl(category.image)],
+      image: {
+        '@type': 'ImageObject',
+        url: absoluteUrl(category.image),
+        width: PUBLICATION_IMAGE_WIDTH,
+        height: PUBLICATION_IMAGE_HEIGHT,
+      },
       datePublished: REVIEW_ISO,
-      dateModified: REVIEW_ISO,
+      dateModified: PAGE_UPDATED_ISO,
       author: {
         '@type': 'Organization',
         name: SITE_NAME,
@@ -155,6 +166,12 @@ export function categoryJsonLd(category: PublicationCategory, entries: Article[]
       name: `${category.label} | ${PUBLICATION_NAME}`,
       description: category.dek,
       url: absoluteUrl(categoryPath(category.slug)),
+      image: {
+        '@type': 'ImageObject',
+        url: absoluteUrl(category.image),
+        width: PUBLICATION_IMAGE_WIDTH,
+        height: PUBLICATION_IMAGE_HEIGHT,
+      },
       hasPart: entries.map((article) => ({
         '@type': 'Article',
         headline: article.title,
@@ -192,6 +209,18 @@ export function publicationHomeJsonLd() {
         logo: { '@type': 'ImageObject', url: SITE_LOGO },
       },
       inLanguage: 'en-US',
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: `${PUBLICATION_NAME}: ${PUBLICATION_ISSUE}`,
+      url: absoluteUrl('/publication'),
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: absoluteUrl(publicationCategories[0].image),
+        width: PUBLICATION_IMAGE_WIDTH,
+        height: PUBLICATION_IMAGE_HEIGHT,
+      },
     },
     {
       '@context': 'https://schema.org',
@@ -344,7 +373,9 @@ export function publicationCatalog(): DiscoverabilityPage[] {
     type: 'website',
     image: absoluteUrl(publicationCategories[0].image),
     imageAlt: publicationCategories[0].imageAlt,
-    dateModified: REVIEW_ISO,
+    imageWidth: PUBLICATION_IMAGE_WIDTH,
+    imageHeight: PUBLICATION_IMAGE_HEIGHT,
+    dateModified: PAGE_UPDATED_ISO,
   }
   const desks = publicationCategories.map((category) => ({
     path: categoryPath(category.slug),
@@ -353,7 +384,9 @@ export function publicationCatalog(): DiscoverabilityPage[] {
     type: 'website' as const,
     image: absoluteUrl(category.image),
     imageAlt: category.imageAlt,
-    dateModified: REVIEW_ISO,
+    imageWidth: PUBLICATION_IMAGE_WIDTH,
+    imageHeight: PUBLICATION_IMAGE_HEIGHT,
+    dateModified: PAGE_UPDATED_ISO,
   }))
   const essays = articles.map((article) => {
     const category = categoryForArticle(article)
@@ -364,7 +397,9 @@ export function publicationCatalog(): DiscoverabilityPage[] {
       type: 'article' as const,
       image: absoluteUrl(category.image),
       imageAlt: category.imageAlt,
-      dateModified: REVIEW_ISO,
+      imageWidth: PUBLICATION_IMAGE_WIDTH,
+      imageHeight: PUBLICATION_IMAGE_HEIGHT,
+      dateModified: PAGE_UPDATED_ISO,
     }
   })
   return [home, ...desks, ...essays]
