@@ -27,6 +27,7 @@ Logos/try1.png
 *.sw?
 # Runtime reservation / quiz progress store (not source modules under src/data/)
 /data/
+/ops/
 .tmp.driveupload/
 .tmp.drivedownload/
 Icon?

@@ -77,6 +77,7 @@ export function PublicationChrome({ children, active }: Props) {
             <Link to="/plan">Training plans</Link>
             <Link to="/privacy">Privacy</Link>
             <Link to="/health-data">Health data notice</Link>
+            <a href="/llms.txt">llms.txt</a>
           </div>
         </div>
       </footer>

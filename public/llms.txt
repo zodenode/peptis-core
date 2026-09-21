@@ -1,0 +1,29 @@
+# Peptis Publication
+
+> Education on strength, protein and maintenance during GLP-1 assisted weight loss. Written from original trials and official labels. Not medical advice. Not a description of Peptis product results.
+
+Evidence reviewed through August 21, 2026. Individual results vary. Lean mass is not skeletal muscle. About 25% of lost weight was lean mass in the SURMOUNT 1 DXA substudy.
+
+## Desks
+
+- [Composition](https://www.peptis.com/publication/composition): Weight loss and fat loss are not the same. These essays explain what the trials measured, and why lean mass is not skeletal muscle.
+- [Protein](https://www.peptis.com/publication/protein): Lower appetite can make protein, fluids and micronutrients harder to obtain. These pieces cover ranges, denominators and food-first structure.
+- [Training](https://www.peptis.com/publication/training): Resistance training has the strongest behavioral evidence for retaining lean tissue during weight loss. That evidence is mostly from general weight-loss research.
+- [Skin](https://www.peptis.com/publication/skin): Loose skin mainly reflects volume lost, pace of loss and baseline skin quality. Exercise can support contour. It cannot remove substantial excess skin.
+- [Maintenance](https://www.peptis.com/publication/maintenance): Withdrawal studies show that regain is common when treatment stops. That reflects chronic biology, not personal failure.
+
+## Essays
+
+- [Does Ozempic cause muscle loss? What the trials actually measured](https://www.peptis.com/publication/composition/does-ozempic-cause-muscle-loss): GLP-1 assisted weight loss can include lean tissue, but lean mass is not the same as muscle, fat generally falls more, and function must be measured rather than inferred from a scan.
+- [Lean mass vs muscle mass: why DEXA headlines can mislead](https://www.peptis.com/publication/composition/lean-mass-vs-muscle-mass): A DEXA lean mass estimate includes water, organs, connective tissue and bone mineral alongside skeletal muscle. Trend consistency and functional measures tell you more than any single scan.
+- [How much protein do you need on a GLP-1?](https://www.peptis.com/publication/protein/protein-on-glp1): Reviews support roughly 1.2 to 1.6 g/kg/day and 25 to 30 g per meal for many active weight loss contexts, but the weight denominator and your medical situation require individual guidance.
+- [A two-day strength plan for beginners during weight loss](https://www.peptis.com/publication/training/two-day-strength-plan): Two progressive full-body sessions each week are a credible minimum for beginners. Train the major movement patterns, leave repetitions in reserve, and progress only when technique is stable.
+- [What happens after stopping semaglutide? The STEP 1 extension explained](https://www.peptis.com/publication/maintenance/after-stopping-semaglutide): One year after semaglutide and lifestyle support ended, STEP 1 extension participants regained about two thirds of their prior weight loss. Maintenance habits deserve to begin before discontinuation, not after regain.
+- [Does collagen prevent loose skin after weight loss?](https://www.peptis.com/publication/skin/collagen-loose-skin): A 2025 analysis found no clear skin benefit from oral collagen in high-quality or non-industry-funded studies, and no supplement has been shown to prevent loose skin during GLP-1 assisted weight loss.
+
+## Site
+
+- [Home](https://www.peptis.com/)
+- [Free continuity check](https://www.peptis.com/quiz)
+- [Publication](https://www.peptis.com/publication)
+- [Full text index](https://www.peptis.com/llms-full.txt)
