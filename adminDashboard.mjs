@@ -314,9 +314,9 @@ function shell(title, body) {
       input, select, textarea { width: 100%; min-height: 2.8rem; padding: .6rem .8rem; border: 1px solid var(--line); border-radius: .7rem; font: inherit; background: #fff; }
       textarea { min-height: 8rem; }
       form { display: grid; gap: .8rem; max-width: 24rem; }
-      .article-form, .filter-form { max-width: 44rem; }
-      .filter-form { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); align-items: end; margin-bottom: 1rem; }
-      .filter-form .btn { display: inline-flex; align-items: center; justify-content: center; }
+      .article-form, .filter-form { max-width: 52rem; }
+      .filter-form { grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); align-items: end; margin-bottom: 1rem; }
+      .filter-form button, .filter-form .btn { width: auto; justify-self: start; display: inline-flex; align-items: center; justify-content: center; }
       .admin-nav { margin: .4rem 0 0; }
       .login { max-width: 28rem; margin: 4rem auto; padding: 1.6rem; background: var(--paper); border: 1px solid var(--line); border-radius: 1rem; }
       @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
