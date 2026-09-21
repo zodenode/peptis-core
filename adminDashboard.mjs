@@ -2,6 +2,7 @@ import { timingSafeEqual } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { Router } from 'express'
+import { attachAdminOps } from './adminPages.mjs'
 
 const COOKIE = 'peptis_admin'
 const HIDDEN_LANDINGS = [
@@ -9,6 +10,9 @@ const HIDDEN_LANDINGS = [
   { path: '/go/box', source: 'go_box', label: 'Box ad path' },
   { path: '/go/care', source: 'go_care', label: 'Care list path' },
   { path: '/go/plan', source: 'go_plan', label: 'Plan ad path' },
+  { path: '/go/start', source: 'go_start', label: 'Short ad path' },
+  { path: '/go/visual', source: 'go_visual', label: 'Visual evidence path' },
+  { path: '/go/compare', source: 'go_compare', label: 'Before-after education path' },
 ]
 const CRAWLER_FILES = [
   'sitemap.xml',
@@ -231,6 +235,8 @@ export function buildAdminSnapshot({ eventsFile, progressFile, distDir, publicDi
       { path: '/quiz', purpose: 'Free continuity check', indexable: true },
       { path: '/plan', purpose: 'Two-day strength starter plan', indexable: true },
       { path: '/offerings', purpose: 'What is live vs intended', indexable: true },
+      { path: '/terms', purpose: 'Terms of service', indexable: true },
+      { path: '/contact', purpose: 'Postal address and support email', indexable: true },
       { path: '/publication', purpose: 'Issue home', indexable: true },
       ...HIDDEN_LANDINGS.map((item) => ({
         path: item.path,
@@ -305,8 +311,13 @@ function shell(title, body) {
       .empty, .note { color: var(--body); }
       .actions { display: flex; gap: .6rem; align-items: center; }
       button, .btn { min-height: 2.4rem; padding: .5rem 1rem; border: 0; border-radius: .7rem; background: var(--forest); color: #fff; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; }
-      input { width: 100%; min-height: 2.8rem; padding: .6rem .8rem; border: 1px solid var(--line); border-radius: .7rem; font: inherit; }
+      input, select, textarea { width: 100%; min-height: 2.8rem; padding: .6rem .8rem; border: 1px solid var(--line); border-radius: .7rem; font: inherit; background: #fff; }
+      textarea { min-height: 8rem; }
       form { display: grid; gap: .8rem; max-width: 24rem; }
+      .article-form, .filter-form { max-width: 52rem; }
+      .filter-form { grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); align-items: end; margin-bottom: 1rem; }
+      .filter-form button, .filter-form .btn { width: auto; justify-self: start; display: inline-flex; align-items: center; justify-content: center; }
+      .admin-nav { margin: .4rem 0 0; }
       .login { max-width: 28rem; margin: 4rem auto; padding: 1.6rem; background: var(--paper); border: 1px solid var(--line); border-radius: 1rem; }
       @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
     </style>
@@ -342,8 +353,10 @@ export function renderAdminPage(snapshot) {
         <p class="kicker">Operator desk</p>
         <h1>What is live right now</h1>
         <p class="muted">Generated ${escapeHtml(snapshot.generatedAt)}. Emails stay on this desk. The public site does not link here.</p>
+        <p class="admin-nav"><a href="/admin">Overview</a> · <a href="/admin/articles">Articles</a> · <a href="/admin/people">Quiz users</a></p>
       </div>
       <div class="actions">
+        <a class="btn" href="/admin/people">Quiz users</a>
         <a class="btn" href="/admin">Refresh</a>
         <form method="post" action="/admin/logout"><button type="submit">Sign out</button></form>
       </div>
@@ -505,6 +518,18 @@ export function createAdminRouter(ctx) {
   router.get('/api/admin/snapshot', (req, res) => {
     if (!isAuthorized(req)) return res.status(401).json({ ok: false, error: 'unauthorized' })
     res.json({ ok: true, snapshot: buildAdminSnapshot(ctx) })
+  })
+
+  attachAdminOps(router, {
+    ctx,
+    isAuthorized,
+    noStore,
+    escapeHtml,
+    shell,
+    table,
+    pill,
+    sendMail: ctx.sendMail,
+    logEvent: ctx.logEvent,
   })
 
   return router

@@ -24,8 +24,8 @@ export function PricingStrip({ variant }: Props) {
             <span>{variant?.pricingMid ?? 'intended Lean Mass box'}</span>
           </div>
           <div>
-            <strong>Not for sale</strong>
-            <span>{variant?.pricingRight ?? 'nothing ships today'}</span>
+            <strong>No card</strong>
+            <span>{variant?.pricingRight ?? 'reserve the box if you want it'}</span>
           </div>
         </div>
         <Link
@@ -41,7 +41,7 @@ export function PricingStrip({ variant }: Props) {
       </div>
       <p className="pricing-strip-note">
         {variant?.pricingNote ??
-          '$59 a month is the intended price for the Lean Mass nutrition box. It is not an offer until we can charge and ship. There is no paid clinical programme for sale. Not medical care today.'}
+          '$59 a month is the founding Lean Mass box rate when we can charge and ship. Reserve it with no card. Clinical services are not offered.'}
       </p>
     </section>
   )

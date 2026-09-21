@@ -433,7 +433,7 @@ export function coreSitePages(): DiscoverabilityPage[] {
       path: '/offerings',
       title: 'What Peptis offers today | Peptis',
       description:
-        'A free continuity check and starter plan. The Lean Mass nutrition box is the first paid product we intend to sell. It is not for sale yet.',
+        'A free continuity check and starter plan. Reserve the founding $59 Lean Mass box with no card.',
       type: 'website',
       image,
       imageAlt,
@@ -444,6 +444,24 @@ export function coreSitePages(): DiscoverabilityPage[] {
       title: 'Two-day strength starter plan | Peptis',
       description:
         'A beginner full-body structure for people losing weight. Education only. Not a medical exercise prescription.',
+      type: 'website',
+      image,
+      imageAlt,
+      dateModified: REVIEW_ISO,
+    },
+    {
+      path: '/terms',
+      title: 'Terms of Service | Peptis',
+      description: 'Terms for the free continuity check, starter plan and box reservation.',
+      type: 'website',
+      image,
+      imageAlt,
+      dateModified: REVIEW_ISO,
+    },
+    {
+      path: '/contact',
+      title: 'Contact | Peptis',
+      description: 'How to reach Information Edge Insights LLC, trading as Peptis.',
       type: 'website',
       image,
       imageAlt,

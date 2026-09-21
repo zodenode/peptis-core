@@ -56,9 +56,8 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
         <p className="quiz-kicker">{checkoutCopy.eyebrow}</p>
         <h1 className="quiz-title">Save your summary</h1>
         <p className="quiz-hint">
-          The check and starter plan are free. The first paid product we intend to sell is the
-          Lean Mass nutrition box at $59 a month. It is not for sale today because we cannot
-          charge or ship.
+          The check and starter plan are free. Reserve the founding $59 Lean Mass box with no
+          card. We email you when we can charge and ship.
         </p>
 
         <fieldset className="plan-box">
@@ -70,7 +69,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             </div>
             <div>
               <p className="plan-name">Lean Mass box</p>
-              <p className="plan-price">Not for sale</p>
+              <p className="plan-price">Reserve $59</p>
             </div>
           </div>
           <p className="plan-savings">
@@ -92,7 +91,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             <h2>What may happen later</h2>
             <ul>
               <li>A chance to buy the Lean Mass nutrition box if we can charge and ship</li>
-              <li>Separate notice if a clinical programme later launches in your state</li>
+              <li>A reserved founding price if you asked about the box</li>
             </ul>
           </div>
           <div className="plan-section plan-not-promised">

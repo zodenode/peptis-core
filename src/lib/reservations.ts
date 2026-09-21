@@ -42,6 +42,10 @@ export type ProgressPayload = {
   entryPrompt?: string
   sendGuide?: boolean
   source?: string
+  responses?: { id: string; prompt: string; labels: string[] }[]
+  healthConsent?: boolean
+  marketingConsent?: boolean
+  reserveBox?: boolean
 }
 
 /* Fire-and-forget: progress capture must never block or break the quiz. */

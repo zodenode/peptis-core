@@ -14,6 +14,7 @@ const {
   sitemapXml,
   siteSitemapPages,
 } = await import('../src/lib/publicationDiscoverability.ts')
+const { articles } = await import('../src/data/blog.ts')
 
 const publicDir = path.join(process.cwd(), 'public')
 mkdirSync(publicDir, { recursive: true })
@@ -26,6 +27,7 @@ const files = {
   'publication-feed.xml': publicationRssXml(),
   'publication-catalog.json': `${JSON.stringify(publicationCatalog(), null, 2)}\n`,
   'publication-seo.json': `${JSON.stringify(publicationSeoBundle(), null, 2)}\n`,
+  'publication-articles.json': `${JSON.stringify(articles, null, 2)}\n`,
 }
 
 for (const [name, contents] of Object.entries(files)) {

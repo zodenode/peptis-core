@@ -12,6 +12,7 @@ import {
   type StepId,
   type StopBlockId,
 } from '../data/quiz'
+import { labeledQuizResponses } from '../data/quiz'
 import { getQuizPrompt, getQuizSource, identifyPerson, track } from '../lib/analytics'
 import { pixelTrack } from '../lib/pixel'
 import { postQuizProgress, submitReservation } from '../lib/reservations'
@@ -29,6 +30,8 @@ export type CheckoutForm = {
   attest: boolean
   upsell: boolean
   smsOptIn: boolean
+  healthConsent: boolean
+  marketingConsent: boolean
 }
 
 /* Hero prompt chip → matching q2 priority option. */
@@ -70,6 +73,8 @@ const emptyCheckout: CheckoutForm = {
   attest: false,
   upsell: false,
   smsOptIn: false,
+  healthConsent: false,
+  marketingConsent: false,
 }
 
 function loadSnapshot(): QuizSnapshot | null {
@@ -288,13 +293,41 @@ export function useQuizEngine() {
   )
 
   const captureEmail = useCallback(
-    ({ firstName, email }: { firstName: string; email: string }) => {
+    ({
+      firstName,
+      email,
+      healthConsent,
+      marketingConsent,
+    }: {
+      firstName: string
+      email: string
+      healthConsent: boolean
+      marketingConsent: boolean
+    }) => {
       const clean = email.trim()
       const name = firstName.trim()
-      if (!isValidEmail(clean) || name.length < 2) return
-      setCheckout((c) => ({ ...c, firstName: name, email: clean }))
-      track('quiz_email_captured', { step_id: current })
-      pixelTrack('Lead')
+      if (!isValidEmail(clean) || name.length < 2 || !healthConsent) return
+      let reserveBox = false
+      try {
+        reserveBox = sessionStorage.getItem('peptis.reserve.box') === '1'
+      } catch {
+        reserveBox = false
+      }
+      setCheckout((c) => ({
+        ...c,
+        firstName: name,
+        email: clean,
+        healthConsent,
+        marketingConsent,
+        upsell: c.upsell || reserveBox,
+      }))
+      track('quiz_email_captured', {
+        step_id: current,
+        health_consent: healthConsent,
+        marketing_consent: marketingConsent,
+        reserve_box: reserveBox,
+      })
+      track('email_submitted', { source: getQuizSource(), reserve_box: reserveBox })
       identifyPerson(clean, { first_name: name, quiz_source: getQuizSource() })
       setIdentifiedEmail(clean)
       postQuizProgress({
@@ -302,12 +335,16 @@ export function useQuizEngine() {
         step: current,
         email: clean,
         firstName: name,
-        pathways: [],
+        pathways: derivePathways(answers),
         sendGuide: true,
         source: getQuizSource(),
+        responses: healthConsent ? labeledQuizResponses(answers) : [],
+        healthConsent,
+        marketingConsent,
+        reserveBox,
       })
     },
-    [current, quizId],
+    [answers, current, quizId],
   )
 
   const submitCheckout = useCallback(async () => {

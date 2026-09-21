@@ -14,8 +14,10 @@ import {
   type PlanIntake,
   type Sensitivity,
 } from '../lib/program'
+import { ReserveBoxButton } from '../components/landing/ReserveBoxButton'
 import { postQuizProgress } from '../lib/reservations'
 import { QUIZ_STORAGE_KEY } from '../hooks/useQuizEngine'
+import { isValidEmail } from '../lib/validate'
 
 const INTAKE_KEY = 'peptis.plan.intake'
 
@@ -62,12 +64,17 @@ export function TrainingPlanPage() {
   const [equipment, setEquipment] = useState<Equipment | null>(intake?.equipment ?? null)
   const [days, setDays] = useState<DaysPerWeek | null>(intake?.days ?? null)
   const [sensitivities, setSensitivities] = useState<Sensitivity[]>(intake?.sensitivities ?? [])
+  const [planEmail, setPlanEmail] = useState('')
+  const [planName, setPlanName] = useState('')
+  const [planMarketing, setPlanMarketing] = useState(false)
+  const [planSent, setPlanSent] = useState<'idle' | 'sent' | 'error'>('idle')
   const viewed = useRef(false)
 
   useEffect(() => {
     if (viewed.current) return
     viewed.current = true
     track('plan_page_viewed', { has_saved_plan: Boolean(intake) })
+    track('plan_opened', { page: '/plan' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -337,6 +344,61 @@ export function TrainingPlanPage() {
                 </div>
               </div>
 
+              <form
+                className="plan-email no-print"
+                onSubmit={(event) => {
+                  event.preventDefault()
+                  if (!isValidEmail(planEmail) || planName.trim().length < 2) {
+                    setPlanSent('error')
+                    return
+                  }
+                  void fetch('/api/leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      firstName: planName.trim(),
+                      email: planEmail.trim(),
+                      source: 'plan_email',
+                      marketingConsent: planMarketing,
+                    }),
+                  })
+                    .then((res) => {
+                      if (!res.ok) throw new Error('lead')
+                      setPlanSent('sent')
+                      track('email_submitted', { source: 'plan_email' })
+                    })
+                    .catch(() => setPlanSent('error'))
+                }}
+              >
+                <h2>Email me this plan</h2>
+                <p>We will send the two-day starter plan and keep this programme attached to your email.</p>
+                <label>
+                  First name
+                  <input value={planName} onChange={(event) => setPlanName(event.target.value)} />
+                </label>
+                <label>
+                  Email
+                  <input
+                    type="email"
+                    value={planEmail}
+                    onChange={(event) => setPlanEmail(event.target.value)}
+                  />
+                </label>
+                <label className="consent-line">
+                  <input
+                    type="checkbox"
+                    checked={planMarketing}
+                    onChange={(event) => setPlanMarketing(event.target.checked)}
+                  />
+                  <span>Email me product updates, including when the $59 box can ship.</span>
+                </label>
+                <button className="btn btn-primary" type="submit">
+                  Email my plan
+                </button>
+                {planSent === 'sent' ? <p>Saved. Check your inbox for the starter plan.</p> : null}
+                {planSent === 'error' ? <p>Enter a name and a valid email.</p> : null}
+                <ReserveBoxButton source="plan_box" />
+              </form>
               <div className="plan-legal">
                 {program.stopRules.map((n) => (
                   <p key={n}>{n}</p>

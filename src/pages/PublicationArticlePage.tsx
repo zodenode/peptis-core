@@ -14,6 +14,7 @@ import {
   PUBLICATION_REVIEW_DATE,
   relatedArticles,
 } from '../data/publication'
+import { useLiveArticles } from '../hooks/useLiveArticles'
 import { setQuizSource, track } from '../lib/analytics'
 import {
   articleFaqs,
@@ -26,7 +27,8 @@ import { absoluteUrl } from '../lib/site'
 
 export function PublicationArticlePage() {
   const { category: categorySlug, slug } = useParams()
-  const article = findPublicationArticle(slug)
+  const { articles: liveArticles, ready } = useLiveArticles()
+  const article = findPublicationArticle(slug, liveArticles)
   const expected = article ? categoryForArticle(article) : undefined
   const category = findCategory(categorySlug)
 
@@ -41,13 +43,22 @@ export function PublicationArticlePage() {
   }, [article, expected])
 
   if (!article || !expected) {
+    if (!ready) {
+      return (
+        <PublicationChrome>
+          <main className="pub-main">
+            <p className="pub-empty">Loading essay…</p>
+          </main>
+        </PublicationChrome>
+      )
+    }
     return <Navigate to="/publication" replace />
   }
   if (!category || category.slug !== expected.slug) {
     return <Navigate to={articlePath(article)} replace />
   }
 
-  const related = relatedArticles(article)
+  const related = relatedArticles(article, 3, liveArticles)
 
   return (
     <PublicationChrome active={expected.slug}>

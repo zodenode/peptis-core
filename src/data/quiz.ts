@@ -405,7 +405,7 @@ export const checkoutCopy = {
     },
     {
       title: 'Ask about the Lean Mass nutrition box',
-      body: 'The first paid product we intend to sell is a $59 monthly box. It is not for sale today because we cannot charge or ship yet.',
+      body: 'Reserve the founding $59 Lean Mass box with no card. We email you when we can charge and ship. Asking does not place an order.',
     },
   ],
 }
@@ -486,6 +486,27 @@ export function derivePathways(answers: Answers): string[] {
   if (q2.includes('c') || answers.q5 === 'q5_c' || answers.q8 === 'q8_a') pathways.add('gi_repair')
   if (q2.includes('d')) pathways.add('rebound_protection')
   return [...pathways]
+}
+
+export type LabeledResponse = {
+  id: string
+  prompt: string
+  labels: string[]
+}
+
+export function labeledQuizResponses(answers: Answers): LabeledResponse[] {
+  const rows: LabeledResponse[] = []
+  for (const id of QUESTION_ORDER) {
+    const question = questions[id]
+    const value = answers[id]
+    if (!value) continue
+    const ids = Array.isArray(value) ? value : [value]
+    const labels = ids
+      .map((optionId) => question.options.find((option) => option.id === optionId)?.label)
+      .filter((label): label is string => Boolean(label))
+    if (labels.length) rows.push({ id, prompt: question.prompt, labels })
+  }
+  return rows
 }
 
 function has(answers: Answers, key: 'a' | 'b' | 'c') {
