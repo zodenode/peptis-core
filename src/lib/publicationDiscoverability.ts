@@ -508,6 +508,7 @@ export function robotsTxt(): string {
   return `User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /admin
 Disallow: /cancel
 Disallow: /go/
 Disallow: /publication/partners

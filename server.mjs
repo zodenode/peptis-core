@@ -2,6 +2,7 @@ import { randomUUID, randomBytes } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import express from 'express'
+import { adminEnabled, createAdminRouter } from './adminDashboard.mjs'
 
 const app = express()
 const PORT = Number(process.env.PORT || 8787)
@@ -13,6 +14,7 @@ const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL || 'https://www.peptis.com'
 fs.mkdirSync(DATA_DIR, { recursive: true })
 
 app.use(express.json({ limit: '64kb' }))
+app.use(express.urlencoded({ extended: false, limit: '8kb' }))
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const STATE_RE = /^[A-Z]{2}$/
@@ -506,6 +508,15 @@ app.get('/publication-partner-kit.json', (_req, res) => {
   res.status(404).end()
 })
 
+app.use(
+  createAdminRouter({
+    eventsFile: EVENTS_FILE,
+    progressFile: PROGRESS_FILE,
+    distDir,
+    publicDir: path.join(process.cwd(), 'public'),
+  }),
+)
+
 app.use(express.static(distDir))
 app.use((req, res, next) => {
   if (req.method !== 'GET' || req.path.startsWith('/api/')) return next()
@@ -523,4 +534,5 @@ app.use((req, res, next) => {
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`peptis server listening on ${PORT}, data dir ${DATA_DIR}`)
+  console.log(adminEnabled() ? 'admin desk enabled at /admin' : 'admin desk off (set ADMIN_TOKEN, 16+ characters)')
 })
