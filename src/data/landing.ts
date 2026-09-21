@@ -72,7 +72,7 @@ export const howSteps = [
   {
     n: '03',
     title: 'Later: you decide',
-    body: 'If the Lean Mass nutrition box can ship, you choose whether to buy it. There is no paid clinical programme for sale today.',
+    body: 'If the Lean Mass nutrition box can ship, you choose whether to buy it. Clinical services are not offered.',
     image: images.how3,
     alt: 'A calm sunlit path suggesting a future choice',
   },
@@ -89,7 +89,7 @@ export const faqs = [
   },
   {
     q: 'What is the Lean Mass nutrition box?',
-    a: 'It is the first paid product we intend to sell: a monthly nutrition box at an intended $59, built from private-label protein, creatine, hydration and micronutrient stock. It is not for sale today because we cannot charge or ship yet. Asking for updates does not place an order. Supplements are not medicines and do not treat medication side effects.',
+    a: 'A monthly box of protein, creatine, hydration and micronutrients at an intended $59. Reserve the founding price with no card. Asking does not place an order. Supplements are not medicines and do not treat medication side effects.',
   },
   {
     q: 'Will I be charged if I leave my email?',
@@ -97,7 +97,7 @@ export const faqs = [
   },
   {
     q: 'Is there a $299 continuity subscription?',
-    a: 'No. There is no clinician-staffed continuity programme for sale. A $299 monthly rate has been discussed only as a possible future founding rate if clinical services later launch, reach your state, you are eligible and you choose to enroll. That is not an offer today.',
+    a: 'No. Clinical services are not offered.',
   },
   {
     q: 'When will the nutrition box or clinical services be available?',

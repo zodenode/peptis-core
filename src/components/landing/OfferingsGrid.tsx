@@ -12,9 +12,8 @@ export function OfferingsGrid() {
           <p className="eyebrow">What you can do today</p>
           <h2 id="offerings-heading">A free continuity check, then a box you can buy later</h2>
           <p>
-            The quiz, written summary and starter training plan are available now. The Lean Mass
-            nutrition box is the first paid product we intend to sell, at $59 a month. It is not
-            for sale yet. There is no paid clinical programme to join today.
+            The quiz, written summary and starter training plan are available now. Reserve the
+            founding $59 Lean Mass box with no card if you want updates when it can ship.
           </p>
         </div>
         <div className="offering-grid">
@@ -38,7 +37,7 @@ export function OfferingsGrid() {
         </div>
         <p className="offerings-more">
           <Link className="editorial-link" to="/offerings">
-            Full programme scope, including what is still planned <b>→</b>
+            See the check, plan and founding box <b>→</b>
           </Link>
         </p>
       </div>

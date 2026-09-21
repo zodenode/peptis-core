@@ -10,13 +10,15 @@ import {
   PUBLICATION_NAME,
   PUBLICATION_REVIEW_DATE,
 } from '../data/publication'
+import { useLiveArticles } from '../hooks/useLiveArticles'
 import { track } from '../lib/analytics'
 import { categoryJsonLd, publicationCatalog } from '../lib/publicationDiscoverability'
 
 export function PublicationCategoryPage() {
   const { category: slug } = useParams()
   const category = findCategory(slug)
-  const entries = category ? articlesInCategory(category.slug) : []
+  const { articles: liveArticles } = useLiveArticles()
+  const entries = category ? articlesInCategory(category.slug, liveArticles) : []
 
   useEffect(() => {
     if (!category) return

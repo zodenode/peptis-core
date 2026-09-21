@@ -1,30 +1,22 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { ReserveBoxButton } from '../components/landing/ReserveBoxButton'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
 import { offeringAudience, offeringPillars } from '../data/offerings'
-import { suplifulStockLists } from '../data/suplifulStock'
 import { track } from '../lib/analytics'
 
-const publicBundleListIds = [
-  'protein-lean-mass',
-  'strength-training-support',
-  'micronutrient-repletion',
-  'glp-digestive-comfort',
-] as const
+const boxContents = [
+  { title: 'Protein', body: 'A complete-protein option for low-appetite weeks.' },
+  { title: 'Creatine', body: 'A training staple that supports strength work.' },
+  { title: 'Hydration', body: 'Electrolytes for days when food and fluid volume fall.' },
+  { title: 'Micronutrients', body: 'A foundational multivitamin and mineral layer.' },
+]
 
 export function OfferingsPage() {
   useEffect(() => {
     track('offerings_viewed', { page: '/offerings' })
   }, [])
-
-  const publicLists = publicBundleListIds
-    .map((id) => suplifulStockLists.find((list) => list.id === id))
-    .filter((list): list is NonNullable<typeof list> => Boolean(list))
-    .map((list) => ({
-      ...list,
-      items: list.items.filter((item) => item.pickPriority === 'core'),
-    }))
 
   return (
     <div className="site">
@@ -33,17 +25,10 @@ export function OfferingsPage() {
         <section className="section offerings-hero">
           <div className="section-inner guide-narrow">
             <p className="eyebrow">Peptis offerings</p>
-            <h1>Continuity care, not a catalog</h1>
-            <p className="offerings-lead">
-              Peptis focuses on a free continuity check, training programmes, one Lean Mass
-              nutrition box we intend to sell, and a planned weight-management consultation
-              pathway. {offeringAudience}
-            </p>
-            <p className="offerings-status-note">
-              The check and starter plan are available today. The Lean Mass nutrition box is not
-              for sale until we can charge and ship. Live prescribing and pharmacy fulfillment
-              require a later clinical launch.
-            </p>
+            <h1>A free check, a starter plan, and a box you can reserve</h1>
+            <p className="offerings-lead">{offeringAudience}</p>
+            <p>Clinical services are not offered.</p>
+            <ReserveBoxButton source="offerings_hero" />
           </div>
         </section>
 
@@ -51,7 +36,7 @@ export function OfferingsPage() {
           <div className="section-inner">
             <div className="section-head">
               <p className="eyebrow">Product offer</p>
-              <h2 id="pillars-heading">Four things Peptis is built to deliver</h2>
+              <h2 id="pillars-heading">What Peptis is built to deliver</h2>
             </div>
             <div className="offering-grid">
               {offeringPillars.map((pillar) => (
@@ -83,84 +68,24 @@ export function OfferingsPage() {
         <section className="section" id="lean-mass-bundle" aria-labelledby="bundle-heading">
           <div className="section-inner">
             <div className="section-head">
-              <p className="eyebrow">Intended first paid product</p>
+              <p className="eyebrow">Founding box</p>
               <h2 id="bundle-heading">Lean Mass nutrition box</h2>
               <p>
-                Intended first paid product at $59 a month, not for sale yet. Public assortment
-                stays narrow: protein, creatine, hydration, foundational micronutrients and
-                digestive-comfort support. This is a private-label test assortment, not a 20 to
-                25 g identity-tested clear whey. Appearance and metabolic add-ons stay off the
-                customer offer. Supplements do not treat medication side effects.
+                Four contents. Intended $59 a month. Reserve now with no card. We email you when we
+                can charge and ship. Asking does not place an order.
               </p>
             </div>
-
-            <div className="stock-lists">
-              {publicLists.map((list) => (
-                <article className="stock-list" key={list.id} id={list.id}>
-                  <header>
-                    <h3>{list.title}</h3>
-                    <p className="stock-problem">
-                      <strong>For:</strong> {list.intendedUse}
-                    </p>
-                    <p className="stock-compliance">{list.complianceNote}</p>
-                  </header>
-                  <div className="stock-table-wrap" role="region" aria-label={`${list.title} core SKUs`}>
-                    <table className="stock-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">SKU</th>
-                          <th scope="col">Product</th>
-                          <th scope="col">Form</th>
-                          <th scope="col">Why</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {list.items.map((item) => (
-                          <tr key={item.sku}>
-                            <td>
-                              <code>{item.sku}</code>
-                            </td>
-                            <td>
-                              <a href={item.url} target="_blank" rel="noreferrer">
-                                {item.name}
-                              </a>
-                            </td>
-                            <td>{item.form}</td>
-                            <td>{item.why}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+            <div className="offering-grid">
+              {boxContents.map((item) => (
+                <article className="offering-card" key={item.title}>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
                 </article>
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="section section-mist" id="clinical-care" aria-labelledby="clinical-care-heading">
-          <div className="section-inner guide-narrow">
-            <p className="eyebrow">Planned clinical pathway</p>
-            <h2 id="clinical-care-heading">Weight-management consultations</h2>
             <p>
-              If clinical services launch in a member’s state, licensed practitioners through the
-              contracted telehealth platform may assess eligibility for weight-management care.
-              Compounded semaglutide or tirzepatide may be considered only after clinician review
-              when appropriate. A prescription is never guaranteed.
+              <ReserveBoxButton source="offerings_box" />
             </p>
-            <ul className="walkaway-list">
-              <li>
-                <strong>Not part of the free check</strong>
-                <span>No clinician review, prescription or pharmacy fulfillment today.</span>
-              </li>
-              <li>
-                <strong>Distinct from the nutrition box</strong>
-                <span>
-                  Protein, digestive comfort and creatine products are dietary supplements, not
-                  treatments for medication side effects.
-                </span>
-              </li>
-            </ul>
           </div>
         </section>
       </main>

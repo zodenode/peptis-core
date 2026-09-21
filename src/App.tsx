@@ -1,15 +1,18 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { BlogArticleRedirect, BlogIndexRedirect } from './pages/BlogRedirects'
 import { CancelPage } from './pages/CancelPage'
+import { ContactPage } from './pages/ContactPage'
 import { HealthDataNoticePage } from './pages/HealthDataNoticePage'
 import { GoLandingPage } from './pages/GoLandingPage'
 import { LandingPage } from './pages/LandingPage'
+import { NotFoundPage } from './pages/NotFoundPage'
 import { OfferingsPage } from './pages/OfferingsPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { PublicationArticlePage } from './pages/PublicationArticlePage'
 import { PublicationCategoryPage } from './pages/PublicationCategoryPage'
 import { PublicationHomePage } from './pages/PublicationHomePage'
 import { QuizPage } from './pages/QuizPage'
+import { TermsPage } from './pages/TermsPage'
 import { TrainingPlanPage } from './pages/TrainingPlanPage'
 
 export default function App() {
@@ -26,10 +29,13 @@ export default function App() {
       <Route path="/publication/:category" element={<PublicationCategoryPage />} />
       <Route path="/blog" element={<BlogIndexRedirect />} />
       <Route path="/blog/:slug" element={<BlogArticleRedirect />} />
+      <Route path="/terms" element={<TermsPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/privacy-policy" element={<PrivacyPage />} />
       <Route path="/health-data" element={<HealthDataNoticePage />} />
+      <Route path="/contact" element={<ContactPage />} />
       <Route path="/cancel" element={<CancelPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }

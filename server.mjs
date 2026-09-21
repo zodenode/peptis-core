@@ -1,25 +1,53 @@
-import { randomUUID, randomBytes } from 'node:crypto'
+import { createHash, randomUUID, randomBytes } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import express from 'express'
 import { adminEnabled, createAdminRouter } from './adminDashboard.mjs'
+import { createContentStore } from './contentStore.mjs'
 
 const app = express()
 const PORT = Number(process.env.PORT || 8787)
 const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), 'data')
 const EVENTS_FILE = path.join(DATA_DIR, 'reservations.jsonl')
 const PROGRESS_FILE = path.join(DATA_DIR, 'quiz-progress.jsonl')
+const ANALYTICS_FILE = path.join(DATA_DIR, 'analytics.jsonl')
 const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL || 'https://www.peptis.com'
 
 fs.mkdirSync(DATA_DIR, { recursive: true })
 
-app.use(express.json({ limit: '64kb' }))
-app.use(express.urlencoded({ extended: false, limit: '8kb' }))
+app.use(express.json({ limit: '256kb' }))
+app.use(express.urlencoded({ extended: false, limit: '256kb' }))
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const STATE_RE = /^[A-Z]{2}$/
 const SOURCE_RE = /^[a-z0-9_-]{1,40}$/i
 const DEFAULT_OPS_EMAILS = ['Josephedwardbrady@gmail.com', 'edozieizegbu@gmail.com']
+const KNOWN_APP_PATHS = new Set([
+  '/',
+  '/quiz',
+  '/plan',
+  '/offerings',
+  '/publication',
+  '/blog',
+  '/terms',
+  '/privacy',
+  '/privacy-policy',
+  '/health-data',
+  '/contact',
+  '/cancel',
+])
+const KNOWN_GO_SLUGS = new Set(['strength', 'box', 'care', 'plan', 'start', 'visual', 'compare'])
+
+function companyPostalLines() {
+  const raw = process.env.VITE_COMPANY_POSTAL_ADDRESS || process.env.COMPANY_POSTAL_ADDRESS
+  if (raw) return raw.split('|').map((line) => line.trim()).filter(Boolean)
+  return [
+    'Information Edge Insights LLC',
+    'Registered in Wyoming, United States',
+    'Registered office on file with the Wyoming Secretary of State',
+    'support@peptis.com',
+  ]
+}
 
 function opsRecipients() {
   const raw = process.env.OPS_NOTIFY_EMAILS
@@ -137,6 +165,7 @@ async function sendConfirmationEmail(reservation) {
     `You can cancel these updates at any time: ${cancelUrl}`,
     '',
     'Peptis is operated by Information Edge Insights LLC.',
+    ...companyPostalLines(),
   ].join('\n')
 
   return sendResend({
@@ -155,11 +184,12 @@ async function sendStarterPlanEmail(email, firstName) {
     `Two day strength starter plan: ${PUBLIC_BASE_URL}/publication/training/two-day-strength-plan`,
     `Continue your continuity check: ${PUBLIC_BASE_URL}/quiz`,
     '',
-    'When you finish the check you will receive your personalized summary of strength, protein and maintenance priorities, plus the starter training plan. The Lean Mass nutrition box is not for sale yet.',
+    'When you finish the check you will receive your personalized summary of strength, protein and maintenance priorities, plus the starter training plan. You can reserve the founding $59 box with no card.',
     '',
     'This content is education only and is not medical advice. Talk with your current clinician before changing exercise, diet or medication.',
     '',
     'Peptis is operated by Information Edge Insights LLC. Reply to this email to unsubscribe.',
+    ...companyPostalLines(),
   ].join('\n')
 
   return sendResend({
@@ -167,6 +197,35 @@ async function sendStarterPlanEmail(email, firstName) {
     subject: 'Your two day strength starter plan',
     text,
   })
+}
+
+async function sendMetaLead({ email, source }) {
+  const pixelId = process.env.META_PIXEL_ID || process.env.VITE_META_PIXEL_ID
+  const token = process.env.META_CAPI_TOKEN
+  if (!pixelId || !token) return { sent: false, reason: 'not_configured' }
+  const hashed = createHash('sha256').update(email.trim().toLowerCase()).digest('hex')
+  try {
+    const res = await fetch(`https://graph.facebook.com/v21.0/${pixelId}/events`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        data: [
+          {
+            event_name: 'Lead',
+            event_time: Math.floor(Date.now() / 1000),
+            action_source: 'website',
+            user_data: { em: [hashed] },
+            custom_data: { content_name: 'continuity_check', source },
+          },
+        ],
+        access_token: token,
+      }),
+    })
+    if (!res.ok) return { sent: false, reason: `status_${res.status}` }
+    return { sent: true }
+  } catch {
+    return { sent: false, reason: 'network' }
+  }
 }
 
 function readProgressEvents() {
@@ -200,9 +259,23 @@ app.post('/api/quiz-progress', async (req, res) => {
   const entryPrompt = String(body.entryPrompt ?? '').slice(0, 30)
   const sendGuide = body.sendGuide === true
   const source = cleanSource(body.source)
+  const healthConsent = body.healthConsent === true
+  const marketingConsent = body.marketingConsent === true
+  const reserveBox = body.reserveBox === true
   const pathways = Array.isArray(body.pathways)
     ? body.pathways.filter((p) => typeof p === 'string').slice(0, 8)
     : []
+  const responses =
+    healthConsent && Array.isArray(body.responses)
+      ? body.responses
+          .filter((row) => row && typeof row === 'object')
+          .slice(0, 12)
+          .map((row) => ({
+            id: String(row.id || '').slice(0, 20),
+            prompt: String(row.prompt || '').slice(0, 200),
+            labels: Array.isArray(row.labels) ? row.labels.map((label) => String(label).slice(0, 80)).slice(0, 6) : [],
+          }))
+      : []
   if (!UUID_RE.test(quizId) || !step) {
     return res.status(400).json({ ok: false, error: 'invalid_payload' })
   }
@@ -218,10 +291,30 @@ app.post('/api/quiz-progress', async (req, res) => {
           email,
           firstName: firstName || undefined,
           source,
+          healthConsent,
+          marketingConsent,
+          reserveBox,
+          responses,
           at: new Date().toISOString(),
         },
         PROGRESS_FILE,
       )
+      if (healthConsent && responses.length) {
+        appendEvent(
+          {
+            type: 'quiz_response',
+            email,
+            firstName: firstName || undefined,
+            source,
+            healthConsent,
+            marketingConsent,
+            reserveBox,
+            responses,
+            at: new Date().toISOString(),
+          },
+          PROGRESS_FILE,
+        )
+      }
     } else {
       appendEvent(
         {
@@ -238,6 +331,10 @@ app.post('/api/quiz-progress', async (req, res) => {
   } catch (error) {
     console.error('progress write failed', error)
     return res.status(500).json({ ok: false, error: 'write_failed' })
+  }
+
+  if (email && marketingConsent) {
+    void sendMetaLead({ email, source })
   }
 
   let guideSent = false
@@ -291,6 +388,7 @@ app.post('/api/leads', async (req, res) => {
   const firstName = String(body.firstName ?? '').trim().slice(0, 80)
   const email = String(body.email ?? '').trim().toLowerCase()
   const source = cleanSource(body.source)
+  const marketingConsent = body.marketingConsent === true
   if (firstName.length < 2) {
     return res.status(400).json({ ok: false, error: 'invalid_name' })
   }
@@ -305,6 +403,7 @@ app.post('/api/leads', async (req, res) => {
         email,
         firstName,
         source,
+        marketingConsent,
         at: new Date().toISOString(),
       },
       PROGRESS_FILE,
@@ -501,6 +600,49 @@ function injectPublicationHead(html, page, pagePath) {
   return next.replace('</head>', `${extra.join('\n    ')}\n  </head>`)
 }
 
+const contentStore = createContentStore({
+  dataDir: DATA_DIR,
+  publicDir: path.join(process.cwd(), 'public'),
+  distDir,
+})
+
+app.get('/api/publication/articles', (_req, res) => {
+  res.set('Cache-Control', 'public, max-age=30')
+  res.json({ ok: true, articles: contentStore.listArticles() })
+})
+
+app.post('/api/events', (req, res) => {
+  const body = req.body ?? {}
+  const event = String(body.event || '').slice(0, 80)
+  if (!/^[a-z][a-z0-9_]{1,78}$/i.test(event)) {
+    return res.status(400).json({ ok: false, error: 'invalid_event' })
+  }
+  const properties =
+    body.properties && typeof body.properties === 'object'
+      ? Object.fromEntries(
+          Object.entries(body.properties)
+            .slice(0, 20)
+            .map(([key, value]) => [String(key).slice(0, 40), typeof value === 'string' ? value.slice(0, 120) : value]),
+        )
+      : {}
+  try {
+    appendEvent(
+      {
+        type: 'analytics',
+        event,
+        properties,
+        path: String(body.path || '').slice(0, 120),
+        at: String(body.at || new Date().toISOString()).slice(0, 40),
+      },
+      ANALYTICS_FILE,
+    )
+  } catch (error) {
+    console.error('analytics write failed', error)
+    return res.status(500).json({ ok: false, error: 'write_failed' })
+  }
+  res.json({ ok: true })
+})
+
 app.get(['/publication/partners', '/publication/partners/'], (_req, res) => {
   res.redirect(301, '/publication')
 })
@@ -514,8 +656,24 @@ app.use(
     progressFile: PROGRESS_FILE,
     distDir,
     publicDir: path.join(process.cwd(), 'public'),
+    dataDir: DATA_DIR,
+    sendMail: sendResend,
+    logEvent: appendEvent,
   }),
 )
+
+function isKnownAppPath(pagePath) {
+  if (KNOWN_APP_PATHS.has(pagePath)) return true
+  if (pagePath.startsWith('/go/')) return KNOWN_GO_SLUGS.has(pagePath.slice(4))
+  if (pagePath.startsWith('/blog/')) return pagePath.split('/').length === 3
+  if (pagePath.startsWith('/publication/')) {
+    if (loadPublicationSeo()[pagePath]) return true
+    const parts = pagePath.split('/').filter(Boolean)
+    if (parts.length === 2) return true
+    if (parts.length === 3) return Boolean(contentStore.getArticle(parts[2]))
+  }
+  return false
+}
 
 app.use(express.static(distDir))
 app.use((req, res, next) => {
@@ -525,6 +683,10 @@ app.use((req, res, next) => {
     return res.redirect(301, '/publication')
   }
   const page = pagePath.startsWith('/publication') ? loadPublicationSeo()[pagePath] : null
+  const known = Boolean(page) || isKnownAppPath(pagePath)
+  if (!known) {
+    res.status(404)
+  }
   if (!page) {
     return res.sendFile(path.join(distDir, 'index.html'))
   }

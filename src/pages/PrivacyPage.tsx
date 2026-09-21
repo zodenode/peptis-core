@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
+import { COMPANY, companyPostalBlock } from '../data/company'
 
 export function PrivacyPage() {
   useEffect(() => {
@@ -17,7 +18,7 @@ export function PrivacyPage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Privacy Policy</h1>
-            <p className="notice-updated">Effective and last updated: September 16, 2026</p>
+            <p className="notice-updated">Effective and last updated: September 21, 2026</p>
             <p>
               Peptis is operated by Information Edge Insights LLC, a Wyoming limited liability
               company, trading as Peptis. This Privacy Policy explains how we collect, use,
@@ -56,16 +57,8 @@ export function PrivacyPage() {
               medication side effects.
             </p>
 
-            <h2>Clinical and telehealth services</h2>
-            <p>
-              Peptis may introduce clinical services in eligible states through contracted
-              telehealth providers. Clinical services are separate from Peptis coaching and
-              supplement products and are subject to availability, eligibility and licensed
-              clinician review. Where a clinical provider collects information for medical care,
-              that provider may provide its own privacy notice and may be subject to additional
-              health-information privacy requirements. Participation in Peptis does not guarantee a
-              consultation, prescription or other clinical service.
-            </p>
+            <h2>Clinical services</h2>
+            <p>Clinical services are not offered today. We do not collect information in order to prescribe or fulfill medication.</p>
 
             <h2>How we disclose information</h2>
             <p>
@@ -125,10 +118,17 @@ export function PrivacyPage() {
               change. The effective date above identifies the latest revision.
             </p>
 
-            <h2>Contact</h2>
+            <h2>SMS</h2>
             <p>
-              Information Edge Insights LLC, trading as Peptis. Privacy questions and requests can
-              be sent to <a href="mailto:privacy@peptis.com">privacy@peptis.com</a>.
+              We do not send marketing SMS today. If we later collect a mobile number for product
+              updates, we will ask for separate TCPA consent before sending those messages. Reply
+              STOP to opt out of any SMS programme we launch.
+            </p>
+            <h2>Contact</h2>
+            <pre className="legal-address">{companyPostalBlock()}</pre>
+            <p>
+              {COMPANY.legalName}, trading as {COMPANY.tradeName}. Privacy questions:{' '}
+              <a href={`mailto:${COMPANY.privacyEmail}`}>{COMPANY.privacyEmail}</a>.
             </p>
           </div>
         </section>

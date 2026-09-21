@@ -4,7 +4,6 @@ import {
   progressPercent,
   questions,
   resolveExplainer,
-  stepMeta,
 } from '../../data/quiz'
 import { useContinuityTerms } from '../../hooks/useContinuityTerms'
 import { useQuizEngine } from '../../hooks/useQuizEngine'
@@ -25,7 +24,6 @@ type Props = {
 export function QuizFlow({ embedded = false }: Props) {
   const terms = useContinuityTerms()
   const quiz = useQuizEngine()
-  const meta = stepMeta(quiz.current)
   const question = isQuestionId(quiz.current) ? questions[quiz.current] : undefined
   const explainer = resolveExplainer(quiz.current, quiz.answers, terms)
   const percent = progressPercent(quiz.current)
@@ -146,10 +144,9 @@ export function QuizFlow({ embedded = false }: Props) {
       </div>
 
       <p className="quiz-trust">
-        Free check. No payment today. The nutrition box is not for sale yet.
+        Free check. Eight questions. After the first two we save your summary email.
         {embedded ? ` ${checkoutCopy.eyebrow}.` : null}
       </p>
-      <p className="visually-hidden">Step type: {meta.step_id}</p>
     </div>
   )
 }

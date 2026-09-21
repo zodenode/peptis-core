@@ -1,5 +1,6 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
+import { ReserveBoxButton } from './ReserveBoxButton'
 import type { LandingVariant } from '../../data/landingVariants'
 import { useSectionView } from '../../hooks/useSectionView'
 import { setQuizSource, track } from '../../lib/analytics'
@@ -48,38 +49,37 @@ export function FoundingOfferVisual({ variant }: Props) {
             {variant?.offerEyebrow ?? 'Free check, then a box you can buy later'}
           </p>
           <h2 id="offer-heading">
-            {variant?.offerHeadline ??
-              'Get the summary and starter plan now. The $59 box is not for sale yet.'}
+            {variant?.offerHeadline ?? 'Get the summary and starter plan now. Reserve the $59 box if you want it.'}
           </h2>
           <p>
             {variant?.offerBody ??
-              'The continuity check and two-day strength plan are free. The first paid product we intend to sell is the Lean Mass nutrition box at $59 a month. It is not for sale today because we cannot charge or ship. There is no paid clinical programme to join.'}
+              'The continuity check and two-day strength plan are free. Reserve the founding $59 Lean Mass box with no card. We will email you when we can charge and ship.'}
           </p>
           <ul className="offer-benefits">
             {benefits.map((benefit) => (
               <li key={benefit}><span aria-hidden="true">✓</span>{benefit}</li>
             ))}
           </ul>
-          <Link
-            className="btn btn-primary"
-            to={variant?.ctaTo ?? '/quiz'}
-            onClick={() => {
-              setQuizSource(variant ? `${variant.source}_offer` : 'founding_offer')
-              track('quiz_cta_clicked', { location: variant ? `${variant.source}_offer` : 'founding_offer' })
-            }}
-          >
-            {variant?.ctaLabel ?? 'Get my free summary'}
-          </Link>
-          <p className="offer-caveat">
-            No charge now. No payment details. $59 is the intended box price, not a live offer.
-          </p>
+          <div className="hero-actions">
+            <Link
+              className="btn btn-primary"
+              to={variant?.ctaTo ?? '/quiz'}
+              onClick={() => {
+                setQuizSource(variant ? `${variant.source}_offer` : 'founding_offer')
+                track('quiz_cta_clicked', { location: variant ? `${variant.source}_offer` : 'founding_offer' })
+              }}
+            >
+              {variant?.ctaLabel ?? 'Get my free summary'}
+            </Link>
+            <ReserveBoxButton source={variant ? `${variant.source}_offer_box` : 'founding_offer_box'} />
+          </div>
         </div>
 
         <figure className="offer-visual" aria-labelledby="offer-chart-title">
           <figcaption id="offer-chart-title">What is for sale today</figcaption>
           <p className="visually-hidden">
-            The check and starter plan cost nothing. The Lean Mass nutrition box and any clinical
-            programme are not for sale today.
+            The check and starter plan cost nothing. The founding $59 box can be reserved with no
+            card. Clinical services are not offered.
           </p>
           <div className="offer-today">
             <span>Today</span>
@@ -90,16 +90,7 @@ export function FoundingOfferVisual({ variant }: Props) {
             <div className="offer-bar-row founding">
               <div className="offer-bar-label">
                 <span>Lean Mass nutrition box</span>
-                <strong>Not for sale</strong>
-              </div>
-              <div className="offer-bar-track" aria-hidden="true">
-                <span style={{ '--bar-size': '0%' } as CSSProperties} />
-              </div>
-            </div>
-            <div className="offer-bar-row standard">
-              <div className="offer-bar-label">
-                <span>Clinical continuity programme</span>
-                <strong>Not for sale</strong>
+                <strong>Reserve $59/mo</strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
                 <span style={{ '--bar-size': '0%' } as CSSProperties} />

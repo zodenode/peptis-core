@@ -72,17 +72,17 @@ const categoryByFull = Object.fromEntries(
 export const featuredArticleSlug = 'does-ozempic-cause-muscle-loss'
 
 export function categoryForArticle(article: Article): PublicationCategory {
-  return categoryByFull[article.category]
+  return categoryByFull[article.category] ?? publicationCategories[0]
 }
 
 export function findCategory(slug: string | undefined): PublicationCategory | undefined {
   return publicationCategories.find((category) => category.slug === slug)
 }
 
-export function articlesInCategory(slug: string): Article[] {
+export function articlesInCategory(slug: string, list: Article[] = articles): Article[] {
   const category = findCategory(slug)
   if (!category) return []
-  return articles.filter((article) => article.category === category.full)
+  return list.filter((article) => article.category === category.full)
 }
 
 export function articlePath(article: Article): string {
@@ -93,21 +93,21 @@ export function categoryPath(slug: PublicationCategorySlug): string {
   return `/publication/${slug}`
 }
 
-export function findPublicationArticle(slug: string | undefined): Article | undefined {
-  return articles.find((article) => article.slug === slug)
+export function findPublicationArticle(slug: string | undefined, list: Article[] = articles): Article | undefined {
+  return list.find((article) => article.slug === slug)
 }
 
-export function relatedArticles(article: Article, limit = 3): Article[] {
-  const same = articles.filter((item) => item.category === article.category && item.slug !== article.slug)
-  const rest = articles.filter((item) => item.category !== article.category && item.slug !== article.slug)
+export function relatedArticles(article: Article, limit = 3, list: Article[] = articles): Article[] {
+  const same = list.filter((item) => item.category === article.category && item.slug !== article.slug)
+  const rest = list.filter((item) => item.category !== article.category && item.slug !== article.slug)
   return [...same, ...rest].slice(0, limit)
 }
 
-export function coverArticle(): Article {
-  return articles.find((article) => article.slug === featuredArticleSlug) ?? articles[0]
+export function coverArticle(list: Article[] = articles): Article {
+  return list.find((article) => article.slug === featuredArticleSlug) ?? list[0] ?? articles[0]
 }
 
-export function issueArticles(): Article[] {
-  const cover = coverArticle()
-  return articles.filter((article) => article.slug !== cover.slug)
+export function issueArticles(list: Article[] = articles): Article[] {
+  const cover = coverArticle(list)
+  return list.filter((article) => article.slug !== cover.slug)
 }

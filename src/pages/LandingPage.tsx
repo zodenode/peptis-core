@@ -2,10 +2,15 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
+import { BeforeAfterEducationSlider } from '../components/landing/BeforeAfterEducationSlider'
 import { BodyCompositionGraphic } from '../components/landing/BodyCompositionGraphic'
+import { CompositionCompareSlider } from '../components/landing/CompositionCompareSlider'
+import { ProteinRangeControl } from '../components/landing/ProteinRangeControl'
+import { RegainGraph } from '../components/landing/RegainGraph'
 import { ContinuityFramework } from '../components/landing/ContinuityFramework'
 import { EvidenceCards } from '../components/landing/EvidenceCards'
 import { PublicationTeaser } from '../components/landing/PublicationTeaser'
+import { ReserveBoxButton } from '../components/landing/ReserveBoxButton'
 import { FoundingOfferVisual } from '../components/landing/FoundingOfferVisual'
 import { LeanMassPreview } from '../components/landing/LeanMassPreview'
 import { MeasuresBeyondWeight } from '../components/landing/MeasuresBeyondWeight'
@@ -92,7 +97,7 @@ export function LandingPage({ variant }: Props) {
               </h1>
               <p className="hero-lead">
                 {variant?.lead ??
-                  'Eight questions. You leave with written priorities on strength, protein and keeping the weight off, plus the free two-day strength starter plan. About 3 minutes. No card.'}
+                  'Eight questions. After the first two we save your summary email. You leave with written priorities on strength, protein and keeping the weight off, plus the free two-day strength starter plan. About 3 minutes. No card.'}
               </p>
               <div className="hero-quiz-start">
                 {variant?.showHeroPrompts !== false ? (
@@ -128,6 +133,7 @@ export function LandingPage({ variant }: Props) {
                   <Link className="btn btn-primary" to={variant?.ctaTo ?? '/quiz'} onClick={heroCta}>
                     {variant?.ctaLabel ?? 'Get my free summary'}
                   </Link>
+                  <ReserveBoxButton source={sourceFor('hero_box')} />
                   {variant?.secondaryCtaLabel && variant.secondaryCtaTo ? (
                     <Link
                       className="btn btn-ghost"
@@ -142,7 +148,7 @@ export function LandingPage({ variant }: Props) {
                   ) : null}
                 </div>
                 <p className="hero-micro">
-                  {variant?.micro ?? 'Education only, not care today.'}{' '}
+                  {variant?.micro ?? 'Education only.'}{' '}
                   <a
                     href="#preview"
                     onClick={() => track('lean_preview_link_clicked', { location: sourceFor('hero') })}
@@ -243,6 +249,10 @@ export function LandingPage({ variant }: Props) {
         <PricingStrip variant={variant} />
 
         <BodyCompositionGraphic />
+        <CompositionCompareSlider />
+        <BeforeAfterEducationSlider />
+        <RegainGraph />
+        <ProteinRangeControl />
 
         <section className="section" id="problem" ref={problemRef} aria-labelledby="problem-heading">
           <div className="section-inner">
@@ -291,9 +301,8 @@ export function LandingPage({ variant }: Props) {
                   <p className="eyebrow">What you get now</p>
                   <h2 id="protocol-heading">A useful start now, with a clear choice later</h2>
                   <p>
-                    The check and starter plan are free. The Lean Mass nutrition box is the first
-                    paid product we intend to sell. Medical care, prescribing and pharmacy
-                    fulfillment are not available today.
+                    The check and starter plan are free. Reserve the founding $59 box with no card
+                    if you want updates when it can ship.
                   </p>
                 </div>
                 <div className="matrix" role="table" aria-label="Continuity system features">
@@ -338,12 +347,12 @@ export function LandingPage({ variant }: Props) {
             </figure>
             <div>
               <p className="eyebrow">Built for an honest launch</p>
-              <h2 id="trust-heading">We will not claim care is ready before it is</h2>
+              <h2 id="trust-heading">Reserve the box. Decide later.</h2>
               <p>
-                The nutrition box ships only after we can charge and fulfill. Clinical services
-                depend on state, provider, pharmacy and operational readiness. People who ask for
-                updates will hear first. A prescription is never guaranteed.
+                The founding $59 price is held when you reserve. No card. We email you when we can
+                charge and ship. Clinical services are not offered.
               </p>
+              <ReserveBoxButton source={sourceFor('trust_box')} />
             </div>
           </div>
         </section>

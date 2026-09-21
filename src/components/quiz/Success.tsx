@@ -65,8 +65,8 @@ export function Success({ form, pathways, reservationId, onReset }: Props) {
           </ul>
         </div>
         <p className="quiz-hint">
-          No charge was made. The Lean Mass nutrition box and any clinical programme are not for
-          sale today. No clinician review, prescription or pharmacy fulfillment has started.
+          No charge was made. The founding box can be reserved with no card. Clinical services
+          are not offered. No clinician review, prescription or pharmacy fulfillment has started.
         </p>
         {form.upsell ? (
           <p className="quiz-hint">

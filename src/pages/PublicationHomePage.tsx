@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { PublicationChrome } from '../components/publication/PublicationChrome'
 import { PublicationImage } from '../components/publication/PublicationImage'
 import { SeoHead } from '../components/SeoHead'
-import { articles } from '../data/blog'
 import {
   articlePath,
   categoryForArticle,
@@ -15,13 +14,15 @@ import {
   PUBLICATION_REVIEW_DATE,
   publicationCategories,
 } from '../data/publication'
+import { useLiveArticles } from '../hooks/useLiveArticles'
 import { track } from '../lib/analytics'
 import { publicationHomeJsonLd, publicationCatalog } from '../lib/publicationDiscoverability'
 
 export function PublicationHomePage() {
-  const cover = coverArticle()
+  const { articles: liveArticles } = useLiveArticles()
+  const cover = coverArticle(liveArticles)
   const coverCategory = categoryForArticle(cover)
-  const rest = issueArticles()
+  const rest = issueArticles(liveArticles)
 
   useEffect(() => {
     document.title = `${PUBLICATION_NAME}: ${PUBLICATION_ISSUE}`
@@ -55,7 +56,7 @@ export function PublicationHomePage() {
             <p className="pub-meta">
               {cover.readingMinutes} minute read
               <span aria-hidden="true"> · </span>
-              {articles.length} essays in this issue
+              {liveArticles.length} essays in this issue
             </p>
             <Link className="editorial-link" to={articlePath(cover)}>
               Read the cover essay <b>→</b>
