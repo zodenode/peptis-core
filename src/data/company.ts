@@ -5,7 +5,7 @@ export const COMPANY = {
   tradeName: 'Peptis',
   jurisdiction: 'Wyoming, United States',
   supportEmail: 'support@peptis.com',
-  privacyEmail: 'privacy@peptis.com',
+  privacyEmail: 'support@peptis.com',
   responseTime: 'We answer support email within two business days.',
   postalLines: (
     typeof import.meta !== 'undefined' && import.meta.env?.VITE_COMPANY_POSTAL_ADDRESS

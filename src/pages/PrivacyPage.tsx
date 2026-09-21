@@ -105,7 +105,7 @@ export function PrivacyPage() {
               deletion of, or a copy of certain personal information, and to exercise other rights
               provided by applicable privacy law. You may unsubscribe from marketing email using
               the link provided in those messages. To submit a privacy request, email{' '}
-              <a href="mailto:privacy@peptis.com">privacy@peptis.com</a>. We may need to verify your
+              <a href={`mailto:${COMPANY.privacyEmail}`}>{COMPANY.privacyEmail}</a>. We may need to verify your
               identity before completing a request.
             </p>
 

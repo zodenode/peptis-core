@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
+import { COMPANY } from '../data/company'
 
 export function HealthDataNoticePage() {
   useEffect(() => {
@@ -72,7 +73,7 @@ export function HealthDataNoticePage() {
             </ul>
             <p>
               To exercise any of these rights, email{' '}
-              <a href="mailto:privacy@peptis.com">privacy@peptis.com</a>. If your request is
+              <a href={`mailto:${COMPANY.privacyEmail}`}>{COMPANY.privacyEmail}</a>. If your request is
               denied, you may appeal by replying to our decision, and we will review the appeal.
             </p>
 
