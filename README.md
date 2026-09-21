@@ -21,6 +21,7 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 - Publication: `/publication`, `/publication/{category}`, `/publication/{category}/{slug}`
 - Legacy blog URLs redirect to the publication
 - Privacy: `/privacy`, health data notice: `/health-data`, cancellation: `/cancel?token=…`
+- Operator desk: `/admin` (requires `ADMIN_TOKEN`; not in the public nav)
 - Brand kit (static): `/brand-kit/`
 
 ## Reservation API
@@ -40,6 +41,7 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 | `RESERVATION_EMAIL_FROM` | No | Defaults to `Peptis <reservations@peptis.com>` |
 | `OPS_NOTIFY_EMAILS` | No | Defaults to Joseph and Edozie. Comma-separated operator inboxes for form completions |
 | `PUBLIC_BASE_URL` | No | Cancellation link base, defaults to `https://www.peptis.com` |
+| `ADMIN_TOKEN` | For `/admin` | 16+ character token. The desk stays 404 until this is set. |
 
 ## Production
 
