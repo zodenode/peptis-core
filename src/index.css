@@ -5795,9 +5795,9 @@ input:disabled {
 }
 
 .short-hero {
-  min-height: 72vh;
+  min-height: 0;
   display: grid;
-  align-items: end;
+  align-items: start;
   background:
     radial-gradient(circle at 80% 10%, rgba(196, 168, 130, 0.28), transparent 28%),
     linear-gradient(160deg, #1e3a2f, #142018);
@@ -5805,7 +5805,9 @@ input:disabled {
 }
 
 .short-hero .hero-inner {
-  padding-bottom: 4rem;
+  grid-template-columns: 1fr;
+  padding-top: clamp(5.5rem, 10vw, 7rem);
+  padding-bottom: 2.4rem;
 }
 
 .visual-compare,
