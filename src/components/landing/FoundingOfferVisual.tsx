@@ -49,11 +49,11 @@ export function FoundingOfferVisual({ variant }: Props) {
             {variant?.offerEyebrow ?? 'Free check, then a box you can buy later'}
           </p>
           <h2 id="offer-heading">
-            {variant?.offerHeadline ?? 'Get the summary and starter plan now. Reserve the $59 box if you want it.'}
+            {variant?.offerHeadline ?? 'Get the summary and starter plan now. Get box updates if you want them.'}
           </h2>
           <p>
             {variant?.offerBody ??
-              'The continuity check and two-day strength plan are free. Reserve the founding $59 Lean Mass box with no card. We will email you when we can charge and ship.'}
+              'The continuity check and two-day strength plan are free. Join the Lean Mass box launch list. Target price: $59/month. We will email you when we can charge and ship.'}
           </p>
           <ul className="offer-benefits">
             {benefits.map((benefit) => (
@@ -78,8 +78,7 @@ export function FoundingOfferVisual({ variant }: Props) {
         <figure className="offer-visual" aria-labelledby="offer-chart-title">
           <figcaption id="offer-chart-title">What is for sale today</figcaption>
           <p className="visually-hidden">
-            The check and starter plan cost nothing. The founding $59 box can be reserved with no
-            card. Clinical services are not offered.
+            The check and starter plan cost nothing. Get launch updates for the planned box. Clinical services are not offered.
           </p>
           <div className="offer-today">
             <span>Today</span>
@@ -90,7 +89,7 @@ export function FoundingOfferVisual({ variant }: Props) {
             <div className="offer-bar-row founding">
               <div className="offer-bar-label">
                 <span>Lean Mass nutrition box</span>
-                <strong>Reserve $59/mo</strong>
+                <strong>Target $59/mo</strong>
               </div>
               <div className="offer-bar-track" aria-hidden="true">
                 <span style={{ '--bar-size': '0%' } as CSSProperties} />

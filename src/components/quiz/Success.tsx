@@ -5,6 +5,7 @@ type Props = {
   form: CheckoutForm
   pathways: string[]
   reservationId: string | null
+  emailSent: boolean
   onReset: () => void
 }
 
@@ -27,7 +28,7 @@ const pathwayRecap: Record<string, { label: string; body: string }> = {
   },
 }
 
-export function Success({ form, pathways, reservationId, onReset }: Props) {
+export function Success({ form, pathways, reservationId, emailSent, onReset }: Props) {
   const recap = pathways.map((p) => pathwayRecap[p]).filter(Boolean)
 
   return (
@@ -39,8 +40,7 @@ export function Success({ form, pathways, reservationId, onReset }: Props) {
         <p className="quiz-kicker">Your summary is saved</p>
         <h1 className="quiz-title">Your summary is saved, {form.firstName || 'there'}.</h1>
         <p>
-          We will email {form.email || 'your email'} with your written priorities and the starter
-          plan. This is not a purchase and not medical care.
+          {emailSent ? `We sent your written priorities and starter guide to ${form.email}.` : 'Your summary is saved, but we could not send the email just now. Your priorities and starter plan are available below.'}
         </p>
         {reservationId ? (
           <p className="quiz-hint">List reference: {reservationId}</p>
@@ -65,8 +65,7 @@ export function Success({ form, pathways, reservationId, onReset }: Props) {
           </ul>
         </div>
         <p className="quiz-hint">
-          No charge was made. The founding box can be reserved with no card. Clinical services
-          are not offered. No clinician review, prescription or pharmacy fulfillment has started.
+          Your check and starter plan are free. Clinical services are not offered.
         </p>
         {form.upsell ? (
           <p className="quiz-hint">

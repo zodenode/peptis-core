@@ -24,7 +24,7 @@ export const offeringPillars: OfferingPillar[] = [
     includes: [
       'Continuity quiz with strength, protein and maintenance priorities',
       'Written summary you can keep',
-      'Low-appetite nutrition notes, not a prescribed diet',
+      'Practical nutrition notes for low-appetite weeks',
     ],
     status: 'planning-tools-available',
     statusLabel: 'Available now: quiz and summary',
@@ -36,7 +36,7 @@ export const offeringPillars: OfferingPillar[] = [
     title: 'Exercise programmes and training tips',
     eyebrow: 'Free movement system',
     summary:
-      'Progressive training on /plan: starter programmes, illustrated movements, weight-selection tips, low-appetite session rules and app exports. Available now without a subscription.',
+      'Build a training routine with starter programmes, illustrated movements, weight-selection tips, low-appetite session rules and app exports. Available now without a subscription.',
     includes: [
       'Personalised starter programmes',
       'Starting-weight and progression tips',
@@ -50,9 +50,9 @@ export const offeringPillars: OfferingPillar[] = [
   {
     id: 'supplements',
     title: 'Lean Mass nutrition box',
-    eyebrow: 'Founding box, $59/mo',
+    eyebrow: 'Planned box · target $59/mo',
     summary:
-      `A monthly nutrition box at an intended $${offer.leanMassBoxIntendedMonthly}: protein, creatine, hydration and foundational micronutrients. Reserve the founding price with no card. Supplements are not medicines and do not treat medication side effects.`,
+      `A monthly nutrition box at an intended $${offer.leanMassBoxIntendedMonthly}: protein, creatine, hydration and foundational micronutrients. Get an email when the final price and launch date are confirmed. Supplements are not medicines and do not treat medication side effects.`,
     includes: [
       'Protein to support daily targets when appetite is low',
       'Creatine for training weeks',
@@ -60,11 +60,11 @@ export const offeringPillars: OfferingPillar[] = [
       'Foundational micronutrients',
     ],
     status: 'programme-planned',
-    statusLabel: 'Reserve $59/mo, no card',
+    statusLabel: 'Launch updates available',
     href: '/offerings#lean-mass-bundle',
     cta: 'See the intended box',
   },
 ]
 
 export const offeringAudience =
-  'Adults who want a written strength and maintenance record, a starter training plan, and later a nutrition box they can actually buy. This is not a general supplement marketplace.'
+  'Adults who want a written strength and maintenance record, a starter training plan, and later a nutrition box they can actually buy. '

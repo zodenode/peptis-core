@@ -12,8 +12,7 @@ export function OfferingsGrid() {
           <p className="eyebrow">What you can do today</p>
           <h2 id="offerings-heading">A free continuity check, then a box you can buy later</h2>
           <p>
-            The quiz, written summary and starter training plan are available now. Reserve the
-            founding $59 Lean Mass box with no card if you want updates when it can ship.
+            The quiz, written summary and starter training plan are available now. Join the box launch list to hear when contents, pricing and shipping are confirmed.
           </p>
         </div>
         <div className="offering-grid">

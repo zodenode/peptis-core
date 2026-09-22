@@ -25,7 +25,7 @@ export function OfferingsPage() {
         <section className="section offerings-hero">
           <div className="section-inner guide-narrow">
             <p className="eyebrow">Peptis offerings</p>
-            <h1>A free check, a starter plan, and a box you can reserve</h1>
+            <h1>A free check, a starter plan, and nutrition for what comes next</h1>
             <p className="offerings-lead">{offeringAudience}</p>
             <p>Clinical services are not offered.</p>
             <ReserveBoxButton source="offerings_hero" />
@@ -71,8 +71,7 @@ export function OfferingsPage() {
               <p className="eyebrow">Founding box</p>
               <h2 id="bundle-heading">Lean Mass nutrition box</h2>
               <p>
-                Four contents. Intended $59 a month. Reserve now with no card. We email you when we
-                can charge and ship. Asking does not place an order.
+                Four planned essentials. Target price: $59 a month. We will confirm the contents, price and shipping date before you decide to buy.
               </p>
             </div>
             <div className="offering-grid">

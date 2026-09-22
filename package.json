@@ -15,6 +15,7 @@
     "publication:partner-kit": "node --experimental-strip-types --no-warnings scripts/write-partner-kit.mjs",
     "build": "npm run publication:qa && npm run publication:discoverability && tsc -b && vite build",
     "lint": "oxlint",
+    "test:launch": "node --test tests/soft-launch.test.mjs",
     "preview": "vite preview",
     "start": "node server.mjs"
   },

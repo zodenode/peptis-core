@@ -1,3 +1,4 @@
+import { COMPANY } from '../../data/company'
 import { Link } from 'react-router-dom'
 
 export function Footer() {
@@ -24,10 +25,11 @@ export function Footer() {
         <p className="footer-secure">Free check and starter plan. No payment details today.</p>
         <p className="footer-note">
           Peptis is operated by Information Edge Insights LLC, registered in Wyoming, United
-          States. Education tools only. The $59 Lean Mass box can be reserved with no card.
+          States. Free education tools. Join the nutrition-box launch list for updates.
           Clinical services are not offered. © {new Date().getFullYear()} Information Edge
           Insights LLC.
         </p>
+        <address>{COMPANY.postalLines.slice(1).join(', ')} · <a href={`mailto:${COMPANY.supportEmail}`}>{COMPANY.supportEmail}</a></address>
       </div>
     </footer>
   )

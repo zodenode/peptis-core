@@ -1,7 +1,9 @@
-import { createHash, randomUUID, randomBytes } from 'node:crypto'
+import { randomUUID, randomBytes } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import express from 'express'
+import { funnelEvent } from './shared/funnel.mjs'
+import { cleanPriorities, postalLines, resourceEmail } from './emailTemplates.mjs'
 import { adminEnabled, createAdminRouter } from './adminDashboard.mjs'
 import { createContentStore } from './contentStore.mjs'
 
@@ -17,6 +19,28 @@ fs.mkdirSync(DATA_DIR, { recursive: true })
 
 app.use(express.json({ limit: '256kb' }))
 app.use(express.urlencoded({ extended: false, limit: '256kb' }))
+// Bound abuse without persisting IP addresses. Railway proxy headers are not trusted.
+const requestWindows = new Map()
+app.use('/api', (req, res, next) => {
+  if (req.method !== 'POST') return next()
+  const now = Date.now()
+  for (const [key, window] of requestWindows) if (window.until < now) requestWindows.delete(key)
+  const key = req.socket.remoteAddress || 'unknown'
+  const window = requestWindows.get(key) || { count: 0, until: now + 60_000 }
+  window.count += 1
+  requestWindows.set(key, window)
+  if (window.count > 300) return res.status(429).json({ ok: false, error: 'try_later' })
+  next()
+})
+
+// Never claim a production signup is saved when email or durable storage is absent.
+const productionRuntime = Boolean(process.env.RAILWAY_ENVIRONMENT_ID) || process.env.NODE_ENV === 'production'
+const signupReady = !productionRuntime || Boolean(process.env.RESEND_API_KEY && process.env.DATA_DIR && process.env.RAILWAY_VOLUME_MOUNT_PATH && (DATA_DIR === process.env.RAILWAY_VOLUME_MOUNT_PATH || DATA_DIR.startsWith(`${process.env.RAILWAY_VOLUME_MOUNT_PATH}/`)))
+app.get('/api/readiness', (_req, res) => res.json({ signupReady }))
+app.use(['/api/leads', '/api/quiz-progress', '/api/reservations'], (req, res, next) => {
+  if (req.method === 'POST' && req.path !== '/cancel' && !signupReady) return res.status(503).json({ ok: false, error: 'signup_unavailable' })
+  next()
+})
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const STATE_RE = /^[A-Z]{2}$/
@@ -34,20 +58,10 @@ const KNOWN_APP_PATHS = new Set([
   '/privacy-policy',
   '/health-data',
   '/contact',
+  '/box-updates',
   '/cancel',
 ])
 const KNOWN_GO_SLUGS = new Set(['strength', 'box', 'care', 'plan', 'start', 'visual', 'compare', 'ad', 'examples'])
-
-function companyPostalLines() {
-  const raw = process.env.VITE_COMPANY_POSTAL_ADDRESS || process.env.COMPANY_POSTAL_ADDRESS
-  if (raw) return raw.split('|').map((line) => line.trim()).filter(Boolean)
-  return [
-    'Information Edge Insights LLC',
-    'Registered in Wyoming, United States',
-    'Registered office on file with the Wyoming Secretary of State',
-    'support@peptis.com',
-  ]
-}
 
 function opsRecipients() {
   const raw = process.env.OPS_NOTIFY_EMAILS
@@ -62,7 +76,7 @@ function cleanSource(value) {
   return SOURCE_RE.test(source) ? source : 'direct'
 }
 
-async function sendResend({ to, subject, text }) {
+async function sendResend({ to, subject, text, idempotencyKey }) {
   const key = process.env.RESEND_API_KEY
   if (!key) return { sent: false, reason: 'no_api_key' }
   const from = process.env.RESERVATION_EMAIL_FROM || 'Peptis <reservations@peptis.com>'
@@ -72,8 +86,10 @@ async function sendResend({ to, subject, text }) {
       headers: {
         Authorization: `Bearer ${key}`,
         'Content-Type': 'application/json',
+        ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}),
       },
-      body: JSON.stringify({ from, to, subject, text }),
+      signal: AbortSignal.timeout(8000),
+      body: JSON.stringify({ from, to, subject, text, reply_to: 'support@peptis.com' }),
     })
     if (!res.ok) {
       const detail = await res.text().catch(() => '')
@@ -141,91 +157,28 @@ function readEvents() {
     .filter(Boolean)
 }
 
-async function sendConfirmationEmail(reservation) {
-  const cancelUrl = `${PUBLIC_BASE_URL}/cancel?token=${reservation.cancelToken}`
-  const firstName = reservation.firstName || 'there'
-
-  const text = [
-    `Hi ${firstName},`,
-    '',
-    'Your Peptis continuity summary is saved.',
-    `Reference: ${reservation.id}`,
-    '',
-    'What this is:',
-    '- A free written summary and the two-day strength starter plan. No payment details were collected.',
-    '- Not a purchase, subscription, or medical service.',
-    '- No clinician review, prescription, medication or pharmacy fulfillment is included.',
-    '',
-    reservation.upsell
-      ? 'You asked to hear when the Lean Mass nutrition box can ship. The intended price is $59 a month. Asking does not place an order. Nothing ships until we can charge and fulfill, and you choose to buy.'
-      : 'The first paid product we intend to sell is the Lean Mass nutrition box at $59 a month. It is not for sale yet. Reply if you want to hear when it can ship.',
-    '',
-    'There is no paid clinical programme to join today.',
-    '',
-    `You can cancel these updates at any time: ${cancelUrl}`,
-    '',
-    'Peptis is operated by Information Edge Insights LLC.',
-    ...companyPostalLines(),
-  ].join('\n')
-
-  return sendResend({
-    to: [reservation.email],
-    subject: 'Your Peptis continuity summary is saved',
-    text,
-  })
+function recordFunnel(event) {
+  appendEvent({ type: 'analytics', ...funnelEvent(event, {}, true), at: new Date().toISOString() }, ANALYTICS_FILE)
 }
 
-async function sendStarterPlanEmail(email, firstName) {
-  const text = [
-    `Hi ${firstName || 'there'},`,
-    '',
-    'Here is the two day strength starter plan we promised, plus where to pick your continuity check back up.',
-    '',
-    `Two day strength starter plan: ${PUBLIC_BASE_URL}/publication/training/two-day-strength-plan`,
-    `Continue your continuity check: ${PUBLIC_BASE_URL}/quiz`,
-    '',
-    'When you finish the check you will receive your personalized summary of strength, protein and maintenance priorities, plus the starter training plan. You can reserve the founding $59 box with no card.',
-    '',
-    'This content is education only and is not medical advice. Talk with your current clinician before changing exercise, diet or medication.',
-    '',
-    'Peptis is operated by Information Edge Insights LLC. Reply to this email to unsubscribe.',
-    ...companyPostalLines(),
-  ].join('\n')
+function unsubscribeToken(email) {
+  const existing = readProgressEvents().find((e) => e.type === 'update_token' && e.email === email)
+  if (existing) return existing.token
+  const token = randomBytes(24).toString('hex')
+  appendEvent({ type: 'update_token', email, token, at: new Date().toISOString() }, PROGRESS_FILE)
+  return token
+}
 
-  return sendResend({
+async function sendResource({ email, firstName, priorities, box = false, id }) {
+  const token = unsubscribeToken(email)
+  const result = await sendResend({
     to: [email],
-    subject: 'Your two day strength starter plan',
-    text,
+    subject: box ? 'Your Peptis box launch updates' : priorities ? 'Your Peptis priorities and starter plan' : 'Your two-day strength starter guide',
+    text: resourceEmail({ firstName, priorities, box, baseUrl: PUBLIC_BASE_URL, unsubscribeUrl: `${PUBLIC_BASE_URL}/unsubscribe?token=${token}` }),
+    idempotencyKey: id,
   })
-}
-
-async function sendMetaLead({ email, source }) {
-  const pixelId = process.env.META_PIXEL_ID || process.env.VITE_META_PIXEL_ID
-  const token = process.env.META_CAPI_TOKEN
-  if (!pixelId || !token) return { sent: false, reason: 'not_configured' }
-  const hashed = createHash('sha256').update(email.trim().toLowerCase()).digest('hex')
-  try {
-    const res = await fetch(`https://graph.facebook.com/v21.0/${pixelId}/events`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        data: [
-          {
-            event_name: 'Lead',
-            event_time: Math.floor(Date.now() / 1000),
-            action_source: 'website',
-            user_data: { em: [hashed] },
-            custom_data: { content_name: 'continuity_check', source },
-          },
-        ],
-        access_token: token,
-      }),
-    })
-    if (!res.ok) return { sent: false, reason: `status_${res.status}` }
-    return { sent: true }
-  } catch {
-    return { sent: false, reason: 'network' }
-  }
+  recordFunnel(result.sent ? (priorities ? 'summary_sent' : 'guide_sent') : 'email_failed')
+  return result
 }
 
 function readProgressEvents() {
@@ -256,26 +209,13 @@ app.post('/api/quiz-progress', async (req, res) => {
   const step = String(body.step ?? '').slice(0, 40)
   const email = String(body.email ?? '').trim().toLowerCase()
   const firstName = String(body.firstName ?? '').trim().slice(0, 80)
-  const entryPrompt = String(body.entryPrompt ?? '').slice(0, 30)
   const sendGuide = body.sendGuide === true
   const source = cleanSource(body.source)
   const healthConsent = body.healthConsent === true
   const marketingConsent = body.marketingConsent === true
-  const reserveBox = body.reserveBox === true
-  const pathways = Array.isArray(body.pathways)
-    ? body.pathways.filter((p) => typeof p === 'string').slice(0, 8)
-    : []
-  const responses =
-    healthConsent && Array.isArray(body.responses)
-      ? body.responses
-          .filter((row) => row && typeof row === 'object')
-          .slice(0, 12)
-          .map((row) => ({
-            id: String(row.id || '').slice(0, 20),
-            prompt: String(row.prompt || '').slice(0, 200),
-            labels: Array.isArray(row.labels) ? row.labels.map((label) => String(label).slice(0, 80)).slice(0, 6) : [],
-          }))
-      : []
+  const reserveBox = body.reserveBox === true && marketingConsent
+  if (email && !healthConsent) return res.status(400).json({ ok: false, error: 'health_consent_required' })
+  // No prescription answers or derived health categories are accepted by this endpoint.
   if (!UUID_RE.test(quizId) || !step) {
     return res.status(400).json({ ok: false, error: 'invalid_payload' })
   }
@@ -294,47 +234,16 @@ app.post('/api/quiz-progress', async (req, res) => {
           healthConsent,
           marketingConsent,
           reserveBox,
-          responses,
-          at: new Date().toISOString(),
-        },
-        PROGRESS_FILE,
-      )
-      if (healthConsent && responses.length) {
-        appendEvent(
-          {
-            type: 'quiz_response',
-            email,
-            firstName: firstName || undefined,
-            source,
-            healthConsent,
-            marketingConsent,
-            reserveBox,
-            responses,
-            at: new Date().toISOString(),
-          },
-          PROGRESS_FILE,
-        )
-      }
-    } else {
-      appendEvent(
-        {
-          type: 'progress',
-          quizId,
-          step,
-          entryPrompt: entryPrompt || undefined,
-          pathways,
+          consentVersion: '2026-09-22',
           at: new Date().toISOString(),
         },
         PROGRESS_FILE,
       )
     }
+
   } catch (error) {
     console.error('progress write failed', error)
     return res.status(500).json({ ok: false, error: 'write_failed' })
-  }
-
-  if (email && marketingConsent) {
-    void sendMetaLead({ email, source })
   }
 
   let guideSent = false
@@ -367,8 +276,9 @@ app.post('/api/quiz-progress', async (req, res) => {
     const alreadySent = readProgressEvents().some(
       (e) => e.type === 'guide_email' && e.email === email,
     )
+    if (alreadySent) guideSent = true
     if (!alreadySent) {
-      const result = await sendStarterPlanEmail(email, firstName)
+      const result = await sendResource({ email, firstName, id: `guide-${quizId}` })
       guideSent = result.sent
       if (result.sent) {
         try {
@@ -380,6 +290,7 @@ app.post('/api/quiz-progress', async (req, res) => {
     }
   }
 
+  if (email) recordFunnel('email_submitted')
   res.json({ ok: true, guideSent, opsNotified })
 })
 
@@ -389,6 +300,8 @@ app.post('/api/leads', async (req, res) => {
   const email = String(body.email ?? '').trim().toLowerCase()
   const source = cleanSource(body.source)
   const marketingConsent = body.marketingConsent === true
+  const box = body.purpose === 'box_updates'
+  if (box && !marketingConsent) return res.status(400).json({ ok: false, error: 'marketing_consent_required' })
   if (firstName.length < 2) {
     return res.status(400).json({ ok: false, error: 'invalid_name' })
   }
@@ -404,6 +317,9 @@ app.post('/api/leads', async (req, res) => {
         firstName,
         source,
         marketingConsent,
+        reserveBox: box,
+        marketingScope: box ? 'box_updates' : 'all_product_updates',
+        consentVersion: '2026-09-22',
         at: new Date().toISOString(),
       },
       PROGRESS_FILE,
@@ -433,30 +349,37 @@ app.post('/api/leads', async (req, res) => {
   }
 
   let guideSent = false
-  const alreadySent = readProgressEvents().some((e) => e.type === 'guide_email' && e.email === email)
+  const kind = box ? 'box_email' : 'guide_email'
+  const alreadySent = readProgressEvents().some((e) => e.type === kind && e.email === email)
+  if (alreadySent) guideSent = true
   if (!alreadySent) {
-    const result = await sendStarterPlanEmail(email, firstName)
+    const result = await sendResource({ email, firstName, box, id: `${kind}-${unsubscribeToken(email)}` })
     guideSent = result.sent
     if (result.sent) {
       try {
-        appendEvent({ type: 'guide_email', email, at: new Date().toISOString() }, PROGRESS_FILE)
+        appendEvent({ type: kind, email, at: new Date().toISOString() }, PROGRESS_FILE)
       } catch (error) {
         console.error('guide email log failed', error)
       }
     }
   }
 
+  recordFunnel(box ? 'box_interest_saved' : 'email_submitted')
   res.json({ ok: true, guideSent, opsNotified })
 })
 
 app.post('/api/reservations', async (req, res) => {
   const body = req.body ?? {}
+  const quizId = String(body.quizId || '')
+  if (!UUID_RE.test(quizId)) return res.status(400).json({ ok: false, error: 'invalid_quiz' })
   const firstName = String(body.firstName ?? '').trim()
   const lastName = String(body.lastName ?? '').trim()
   const email = String(body.email ?? '').trim().toLowerCase()
-  const phone = String(body.phone ?? '').trim()
+  const phone = '' // SMS collection is off until a separate SMS programme is ready.
   const state = String(body.state ?? '').trim().toUpperCase()
-  const upsell = Boolean(body.upsell)
+  const upsell = body.upsell === true
+  if (body.healthConsent !== true) return res.status(400).json({ ok: false, error: 'health_consent_required' })
+  const priorities = cleanPriorities(body.priorities)
   const source = cleanSource(body.source)
 
   if (firstName.length < 2) {
@@ -472,8 +395,10 @@ app.post('/api/reservations', async (req, res) => {
     return res.status(400).json({ ok: false, error: 'missing_attestations' })
   }
 
-  const reservation = {
+  const existing = readEvents().find((e) => e.type === 'reservation' && e.quizId === quizId && e.email === email)
+  const reservation = existing || {
     type: 'reservation',
+    quizId,
     id: randomUUID(),
     cancelToken: randomBytes(24).toString('hex'),
     createdAt: new Date().toISOString(),
@@ -481,20 +406,28 @@ app.post('/api/reservations', async (req, res) => {
     lastName,
     email,
     phone,
-    smsOptIn: Boolean(body.smsOptIn),
+    smsOptIn: false,
+    healthConsent: true,
+    marketingConsent: body.marketingConsent === true,
+    boxUpdatesConsent: upsell,
+    consentVersion: '2026-09-22',
+    priorities,
     state,
     upsell,
     source,
   }
 
   try {
-    appendEvent(reservation)
+    if (!existing) appendEvent(reservation)
   } catch (error) {
     console.error('reservation write failed', error)
     return res.status(500).json({ ok: false, error: 'write_failed' })
   }
 
-  const emailResult = await sendConfirmationEmail(reservation)
+  const alreadySent = readEvents().some((e) => e.type === 'summary_email' && e.reservationId === reservation.id)
+  const emailResult = alreadySent ? { sent: true } : await sendResource({ email, firstName: reservation.firstName, priorities: reservation.priorities, id: `summary-${reservation.id}` })
+  if (emailResult.sent && !alreadySent) appendEvent({ type: 'summary_email', reservationId: reservation.id, at: new Date().toISOString() })
+  if (!existing) recordFunnel('quiz_completed')
   const opsResult = await sendOpsNotification({
     event: 'reservation',
     firstName,
@@ -528,6 +461,7 @@ app.post('/api/reservations/cancel', (req, res) => {
   }
 
   try {
+    appendEvent({ type: 'unsubscribe', email: reservation.email, at: new Date().toISOString() }, PROGRESS_FILE)
     appendEvent({
       type: 'cancellation',
       reservationId: reservation.id,
@@ -612,35 +546,30 @@ app.get('/api/publication/articles', (_req, res) => {
 })
 
 app.post('/api/events', (req, res) => {
-  const body = req.body ?? {}
-  const event = String(body.event || '').slice(0, 80)
-  if (!/^[a-z][a-z0-9_]{1,78}$/i.test(event)) {
-    return res.status(400).json({ ok: false, error: 'invalid_event' })
-  }
-  const properties =
-    body.properties && typeof body.properties === 'object'
-      ? Object.fromEntries(
-          Object.entries(body.properties)
-            .slice(0, 20)
-            .map(([key, value]) => [String(key).slice(0, 40), typeof value === 'string' ? value.slice(0, 120) : value]),
-        )
-      : {}
+  const safe = funnelEvent(req.body?.event, req.body?.properties)
+  if (!safe) return res.status(400).json({ ok: false, error: 'unsupported_event' })
   try {
-    appendEvent(
-      {
-        type: 'analytics',
-        event,
-        properties,
-        path: String(body.path || '').slice(0, 120),
-        at: String(body.at || new Date().toISOString()).slice(0, 40),
-      },
-      ANALYTICS_FILE,
-    )
-  } catch (error) {
-    console.error('analytics write failed', error)
-    return res.status(500).json({ ok: false, error: 'write_failed' })
+    appendEvent({ type: 'analytics', ...safe, at: new Date().toISOString() }, ANALYTICS_FILE)
+    res.json({ ok: true })
+  } catch {
+    res.status(500).json({ ok: false, error: 'write_failed' })
   }
-  res.json({ ok: true })
+})
+
+app.get('/go/care', (_req, res) => res.redirect(301, '/quiz'))
+app.get('/go/box', (_req, res) => res.redirect(301, '/box-updates'))
+
+app.get('/unsubscribe', (req, res) => {
+  const token = String(req.query.token || '')
+  if (!/^[a-f0-9]{48}$/.test(token)) return res.status(400).send('Invalid unsubscribe link.')
+  res.set('Cache-Control', 'no-store').set('Referrer-Policy', 'no-referrer').type('html').send(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Email preferences | Peptis</title><main><h1>Stop Peptis product updates</h1><form method="post" action="/unsubscribe"><input type="hidden" name="token" value="${token}"><button>Unsubscribe from all product updates</button></form></main></html>`)
+})
+app.post('/unsubscribe', (req, res) => {
+  const token = String(req.body?.token || '')
+  const person = /^[a-f0-9]{48}$/.test(token) && readProgressEvents().find((e) => e.type === 'update_token' && e.token === token)
+  if (!person) return res.status(404).send('Unsubscribe link not found. Contact support@peptis.com.')
+  appendEvent({ type: 'unsubscribe', email: person.email, at: new Date().toISOString() }, PROGRESS_FILE)
+  res.set('Cache-Control', 'no-store').type('html').send('<!doctype html><html lang="en"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Unsubscribed | Peptis</title><main><h1>You are unsubscribed</h1><p>Peptis product-update emails are turned off.</p><a href="/">Back to Peptis</a></main></html>')
 })
 
 app.get(['/publication/partners', '/publication/partners/'], (_req, res) => {
@@ -657,7 +586,12 @@ app.use(
     distDir,
     publicDir: path.join(process.cwd(), 'public'),
     dataDir: DATA_DIR,
-    sendMail: sendResend,
+    sendMail: async (mail) => {
+      const email = mail.to?.[0]
+      if (readProgressEvents().some((e) => e.type === 'unsubscribe' && e.email === email)) return { sent: false, reason: 'unsubscribed' }
+      const token = unsubscribeToken(email)
+      return sendResend({ ...mail, text: `${mail.text}\n\nUnsubscribe: ${PUBLIC_BASE_URL}/unsubscribe?token=${token}\n${postalLines().join('\n')}` })
+    },
     logEvent: appendEvent,
   }),
 )
@@ -665,12 +599,15 @@ app.use(
 function isKnownAppPath(pagePath) {
   if (KNOWN_APP_PATHS.has(pagePath)) return true
   if (pagePath.startsWith('/go/')) return KNOWN_GO_SLUGS.has(pagePath.slice(4))
-  if (pagePath.startsWith('/blog/')) return pagePath.split('/').length === 3
+  if (pagePath.startsWith('/blog/')) return Boolean(contentStore.getArticle(pagePath.slice(6)))
   if (pagePath.startsWith('/publication/')) {
     if (loadPublicationSeo()[pagePath]) return true
     const parts = pagePath.split('/').filter(Boolean)
-    if (parts.length === 2) return true
-    if (parts.length === 3) return Boolean(contentStore.getArticle(parts[2]))
+    if (parts.length === 2) return false
+    if (parts.length === 3) {
+      const article = contentStore.getArticle(parts[2])
+      return article && String(article.category).toLowerCase() === parts[1]
+    }
   }
   return false
 }
@@ -682,7 +619,7 @@ app.use((req, res, next) => {
   if (pagePath === '/publication/partners') {
     return res.redirect(301, '/publication')
   }
-  const page = pagePath.startsWith('/publication') ? loadPublicationSeo()[pagePath] : null
+  const page = loadPublicationSeo()[pagePath] || (pagePath === '/privacy-policy' ? loadPublicationSeo()['/privacy'] : null)
   const known = Boolean(page) || isKnownAppPath(pagePath)
   if (!known) {
     res.status(404)

@@ -1,16 +1,14 @@
-import { getPostHog } from './posthog'
+import { funnelEvent } from '../../shared/funnel.mjs'
 
 export type AnalyticsProps = Record<string, string | number | boolean | string[] | null | undefined>
 
 export function track(event: string, properties?: AnalyticsProps) {
-  getPostHog()?.capture(event, properties)
+  const safe = funnelEvent(event, properties)
+  if (!safe) return
   if (typeof window === 'undefined') return
   try {
     const body = JSON.stringify({
-      event,
-      properties: properties ?? {},
-      path: window.location.pathname,
-      at: new Date().toISOString(),
+      ...safe,
     })
     if (navigator.sendBeacon) {
       navigator.sendBeacon('/api/events', new Blob([body], { type: 'application/json' }))
@@ -25,13 +23,6 @@ export function track(event: string, properties?: AnalyticsProps) {
   } catch {
     // analytics must never break the page
   }
-}
-
-export function identifyPerson(
-  email: string,
-  traits: { first_name?: string; state?: string; plan?: string; quiz_source?: string },
-) {
-  getPostHog()?.identify(email, traits)
 }
 
 const QUIZ_SOURCE_KEY = 'peptis.quiz.source'

@@ -12,9 +12,7 @@ import {
   type StepId,
   type StopBlockId,
 } from '../data/quiz'
-import { labeledQuizResponses } from '../data/quiz'
-import { getQuizPrompt, getQuizSource, identifyPerson, track } from '../lib/analytics'
-import { pixelTrack } from '../lib/pixel'
+import { getQuizPrompt, getQuizSource, track } from '../lib/analytics'
 import { postQuizProgress, submitReservation } from '../lib/reservations'
 import { isValidEmail } from '../lib/validate'
 
@@ -115,10 +113,11 @@ export function useQuizEngine() {
   const [hydrated, setHydrated] = useState(false)
   const [submitState, setSubmitState] = useState<'idle' | 'submitting' | 'error'>('idle')
   const [reservationId, setReservationId] = useState<string | null>(null)
+  const [emailSent, setEmailSent] = useState(false)
 
   useEffect(() => {
     const saved = loadSnapshot()
-    if (saved && !saved.completed && isStepId(saved.current)) {
+    if (saved && saved.checkout?.healthConsent && !saved.completed && isStepId(saved.current)) {
       if (saved.quizId) setQuizId(saved.quizId)
       setEntryPrompt(saved.entryPrompt ?? getQuizPrompt())
       setCurrent(saved.current)
@@ -143,7 +142,7 @@ export function useQuizEngine() {
   }, [])
 
   useEffect(() => {
-    if (!hydrated) return
+    if (!hydrated || !checkout.healthConsent) return
     persist({
       quizId,
       entryPrompt,
@@ -184,19 +183,6 @@ export function useQuizEngine() {
       }
     }
   }, [answers, current, hydrated])
-
-  // Durable per-step capture so drop-offs can be retargeted, not only completions.
-  useEffect(() => {
-    if (!hydrated || current === 'success') return
-    postQuizProgress({
-      quizId,
-      step: current,
-      pathways: derivePathways(answers),
-      entryPrompt,
-    })
-    // Step-only funnel analytics. Identity and prescription answers stay off this write.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, hydrated, quizId])
 
   useEffect(() => {
     if (!hydrated) return
@@ -282,18 +268,13 @@ export function useQuizEngine() {
   const identifyIfReady = useCallback(
     (email = checkout.email) => {
       if (!isValidEmail(email) || identifiedEmail === email.trim()) return
-      identifyPerson(email.trim(), {
-        first_name: checkout.firstName,
-        state: checkout.state,
-        plan: checkout.upsell ? 'core_founding_plus_lean_mass_interest' : 'core_founding_reservation',
-      })
       setIdentifiedEmail(email.trim())
     },
-    [checkout.email, checkout.firstName, checkout.state, checkout.upsell, identifiedEmail],
+    [checkout.email, identifiedEmail],
   )
 
   const captureEmail = useCallback(
-    ({
+    async ({
       firstName,
       email,
       healthConsent,
@@ -306,13 +287,10 @@ export function useQuizEngine() {
     }) => {
       const clean = email.trim()
       const name = firstName.trim()
-      if (!isValidEmail(clean) || name.length < 2 || !healthConsent) return
-      let reserveBox = false
-      try {
-        reserveBox = sessionStorage.getItem('peptis.reserve.box') === '1'
-      } catch {
-        reserveBox = false
-      }
+      if (!isValidEmail(clean) || name.length < 2 || !healthConsent) return false
+      const reserveBox = false
+      const saved = await postQuizProgress({ quizId, step: current, email: clean, firstName: name, pathways: [], sendGuide: true, source: getQuizSource(), healthConsent, marketingConsent, reserveBox })
+      if (!saved.ok) return false
       setCheckout((c) => ({
         ...c,
         firstName: name,
@@ -328,23 +306,10 @@ export function useQuizEngine() {
         reserve_box: reserveBox,
       })
       track('email_submitted', { source: getQuizSource(), reserve_box: reserveBox })
-      identifyPerson(clean, { first_name: name, quiz_source: getQuizSource() })
       setIdentifiedEmail(clean)
-      postQuizProgress({
-        quizId,
-        step: current,
-        email: clean,
-        firstName: name,
-        pathways: derivePathways(answers),
-        sendGuide: true,
-        source: getQuizSource(),
-        responses: healthConsent ? labeledQuizResponses(answers) : [],
-        healthConsent,
-        marketingConsent,
-        reserveBox,
-      })
+      return true
     },
-    [answers, current, quizId],
+    [current, quizId],
   )
 
   const submitCheckout = useCallback(async () => {
@@ -358,6 +323,7 @@ export function useQuizEngine() {
     })
 
     const result = await submitReservation({
+      quizId,
       firstName: checkout.firstName,
       lastName: checkout.lastName,
       email: checkout.email,
@@ -368,6 +334,9 @@ export function useQuizEngine() {
       attest: checkout.attest,
       upsell: checkout.upsell,
       source: getQuizSource(),
+      healthConsent: checkout.healthConsent,
+      marketingConsent: checkout.marketingConsent,
+      priorities: derivePathways(answers),
     })
 
     if (!result.ok) {
@@ -378,6 +347,7 @@ export function useQuizEngine() {
 
     setSubmitState('idle')
     setReservationId(result.id)
+    setEmailSent(result.emailSent)
     identifyIfReady()
     track('quiz_completed', { pathways: derivePathways(answers) })
     track('founding_reservation_submitted', {
@@ -387,12 +357,11 @@ export function useQuizEngine() {
       due_today: 0,
       reservation_id: result.id,
     })
-    pixelTrack('CompleteRegistration')
     setCompleted(true)
     abandonedSent.current = true
     setHistory((h) => [...h, current])
     setCurrent('success')
-  }, [answers, checkout, current, identifyIfReady, submitState])
+  }, [answers, checkout, current, identifyIfReady, quizId, submitState])
 
   const reset = useCallback(() => {
     localStorage.removeItem(QUIZ_STORAGE_KEY)
@@ -407,6 +376,7 @@ export function useQuizEngine() {
     setIdentifiedEmail(undefined)
     setSubmitState('idle')
     setReservationId(null)
+    setEmailSent(false)
     lastViewed.current = null
     abandonedSent.current = false
     completedEvent.current = false
@@ -421,6 +391,7 @@ export function useQuizEngine() {
     completed,
     submitState,
     reservationId,
+    emailSent,
     canGoBack: history.length > 0 && current !== 'success',
     pathways: derivePathways(answers),
     selectOption,

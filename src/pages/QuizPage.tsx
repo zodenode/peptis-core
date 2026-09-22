@@ -10,14 +10,6 @@ export function QuizPage() {
   useEffect(() => {
     const source = params.get('source')
     if (source) setQuizSource(source)
-    if (params.get('reserve') === 'box') {
-      try {
-        sessionStorage.setItem('peptis.reserve.box', '1')
-      } catch {
-        // private mode
-      }
-      track('box_reserve_clicked', { source: source || 'quiz_query' })
-    }
     track('quiz_start', { source: source || 'quiz' })
   }, [params])
 
@@ -27,7 +19,7 @@ export function QuizPage() {
       <main>
         <QuizFlow />
         <p className="quiz-page-note">
-          Eight questions. After the first two we save your summary email. See our{' '}
+          Eight core questions, then a few planning details. Email is requested after question two. See our{' '}
           <Link to="/terms">Terms</Link>, <Link to="/privacy">Privacy Notice</Link> and{' '}
           <Link to="/health-data">Consumer Health Data Notice</Link>.
         </p>

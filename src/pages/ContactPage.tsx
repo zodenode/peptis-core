@@ -32,7 +32,7 @@ export function ContactPage() {
             <p>{COMPANY.responseTime}</p>
             <h2>What we can help with</h2>
             <p>
-              Questions about the free continuity check, the starter plan, a reserved box update, or
+              Questions about the free continuity check, the starter plan, nutrition-box updates, or
               a privacy request. We cannot provide medical advice, prescriptions or pharmacy
               fulfillment.
             </p>

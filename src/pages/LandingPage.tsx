@@ -305,7 +305,7 @@ export function LandingPage({ variant }: Props) {
                   <p className="eyebrow">What you get now</p>
                   <h2 id="protocol-heading">A useful start now, with a clear choice later</h2>
                   <p>
-                    The check and starter plan are free. Reserve the founding $59 box with no card
+                    The check and starter plan are free. Get box launch updates
                     if you want updates when it can ship.
                   </p>
                 </div>
@@ -349,14 +349,13 @@ export function LandingPage({ variant }: Props) {
         <section className="section trust-band" ref={trustBandRef} aria-labelledby="trust-heading">
           <div className="section-inner trust-band-inner">
             <figure>
-              <img src={images.trust} alt="Sterile compounding still life without branded labels" />
+              <img src={images.trust} alt="Peptis nutrition and training essentials" />
             </figure>
             <div>
-              <p className="eyebrow">Built for an honest launch</p>
-              <h2 id="trust-heading">Reserve the box. Decide later.</h2>
+              <p className="eyebrow">Coming next</p>
+              <h2 id="trust-heading">Hear when the box is ready.</h2>
               <p>
-                The founding $59 price is held when you reserve. No card. We email you when we can
-                charge and ship. Clinical services are not offered.
+                Join the launch list for confirmed contents, pricing and shipping dates. The current target is $59/month; a place on the list does not guarantee a price.
               </p>
               <ReserveBoxButton source={sourceFor('trust_box')} />
             </div>

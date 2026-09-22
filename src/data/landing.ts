@@ -89,7 +89,7 @@ export const faqs = [
   },
   {
     q: 'What is the Lean Mass nutrition box?',
-    a: 'A monthly box of protein, creatine, hydration and micronutrients at an intended $59. Reserve the founding price with no card. Asking does not place an order. Supplements are not medicines and do not treat medication side effects.',
+    a: 'A monthly box of protein, creatine, hydration and micronutrients at an intended $59. Get an email when the final price and launch date are confirmed. Asking does not place an order. Supplements are not medicines and do not treat medication side effects.',
   },
   {
     q: 'Will I be charged if I leave my email?',

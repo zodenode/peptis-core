@@ -58,7 +58,7 @@ function combo(
     pathways,
     priorities: pathways.map((id) => pathwayCopy[id].priority),
     plan: pathways.map((id) => pathwayCopy[id].action).join(' '),
-    box: 'Reserve the founding $59 Lean Mass box with no card if you want protein, creatine, hydration and micronutrient updates. Asking is not a sale.',
+    box: 'Get updates about the planned protein, creatine, hydration and micronutrient box. Target price: $59/month.',
     ...extras,
   }
 }
@@ -240,11 +240,11 @@ export const liveOffers = [
   },
   {
     id: 'box',
-    title: 'Box reservation',
+    title: 'Box launch updates',
     status: 'Email list only',
-    body: 'Reserve the founding $59 Lean Mass box. No card. Not a sale. We email you when we can charge and ship.',
-    href: '/quiz?reserve=box&source=live_offer',
-    cta: 'Reserve, no card',
+    body: 'Join the box launch list. Target price: $59/month. We will confirm contents, price and shipping before you decide.',
+    href: '/box-updates',
+    cta: 'Get launch updates',
   },
 ] as const
 

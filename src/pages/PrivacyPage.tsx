@@ -18,7 +18,7 @@ export function PrivacyPage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Privacy Policy</h1>
-            <p className="notice-updated">Effective and last updated: September 21, 2026</p>
+            <p className="notice-updated">Effective and last updated: September 22, 2026</p>
             <p>
               Peptis is operated by Information Edge Insights LLC, a Wyoming limited liability
               company, trading as Peptis. This Privacy Policy explains how we collect, use,
@@ -29,11 +29,11 @@ export function PrivacyPage() {
 
             <h2>Information we collect</h2>
             <ul>
-              <li><strong>Contact and account information:</strong> name, email address, phone number, state and information you provide when joining a programme, reservation or waitlist.</li>
+              <li><strong>Contact and account information:</strong> name, email address, state and information you provide when joining a programme, reservation or waitlist.</li>
               <li><strong>Programme and quiz information:</strong> information you choose to provide about goals, treatment timeline, current provider or medication, nutrition, strength, exercise, energy, digestive comfort, routine and programme progress.</li>
               <li><strong>Order and fulfilment information:</strong> products selected, transaction status, shipping address and related fulfilment information. Payment-card information may be collected directly by our payment processor rather than stored by Peptis.</li>
               <li><strong>Communications:</strong> messages, support requests, survey responses and other communications with Peptis.</li>
-              <li><strong>Device and usage information:</strong> pages viewed, interactions, referral information, approximate location derived from IP address, browser/device information and analytics events.</li>
+              <li><strong>Device and usage information:</strong> pages viewed, interactions, referral information, anonymous analytics events. Security controls may temporarily process connection information to prevent abuse.</li>
             </ul>
 
             <h2>How we use information</h2>
@@ -64,10 +64,7 @@ export function PrivacyPage() {
             <p>
               We may disclose information as reasonably necessary to service providers that help us
               operate Peptis, including hosting, analytics, communications, payment processing,
-              programme operations, product fulfilment and professional advisers. If clinical
-              services are activated, information may also be exchanged with contracted clinical or
-              telehealth providers when necessary to facilitate services you request and as
-              permitted by law.
+              programme operations, product fulfilment and professional advisers. We will update this notice before introducing new services that change how data is used.
             </p>
             <p>
               We do not sell personal information for money. We do not disclose quiz or programme
@@ -76,11 +73,12 @@ export function PrivacyPage() {
 
             <h2>Analytics, cookies and advertising technologies</h2>
             <p>
-              We use analytics technologies, including PostHog, to understand product usage. We may
-              use cookies and advertising measurement technologies on appropriate public marketing
-              pages. We do not intentionally send sensitive quiz or programme responses to
-              advertising platforms. Browser settings and applicable consent controls may allow you
-              to limit cookies or similar technologies.
+              We count a limited set of anonymous events on our own server, such as a quiz start,
+              a completed signup or a plan opened. These events contain no email, quiz answer,
+              medication, provider, derived health priority, advertising identifier or full URL.
+              We do not load advertising pixels, PostHog, session replay or third-party analytics.
+              Quiz answers and your custom training programme are saved in your browser so you
+              can return on the same device.
             </p>
 
             <h2>Consumer health data</h2>
@@ -121,8 +119,7 @@ export function PrivacyPage() {
             <h2>SMS</h2>
             <p>
               We do not send marketing SMS today. If we later collect a mobile number for product
-              updates, we will ask for separate TCPA consent before sending those messages. Reply
-              STOP to opt out of any SMS programme we launch.
+              updates, we will ask for separate TCPA consent before sending those messages. We currently collect no mobile numbers in the signup flow.
             </p>
             <h2>Contact</h2>
             <pre className="legal-address">{companyPostalBlock()}</pre>

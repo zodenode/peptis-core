@@ -155,7 +155,8 @@ export function buildPeople({ progress, reservations }) {
     if (event.firstName) current.firstName = event.firstName
     if (event.source) current.source = event.source
     if (event.healthConsent) current.healthConsent = true
-    if (event.marketingConsent) current.marketingConsent = true
+    if (event.marketingConsent && event.marketingScope !== 'box_updates') current.marketingConsent = true
+    if (event.marketingScope === 'box_updates' && event.marketingConsent) current.boxUpdatesConsent = true
     if (event.reserveBox) current.reserveBox = true
     if (Array.isArray(event.responses) && event.responses.length) current.responses = event.responses
     if (event.step) current.steps.push(event.step)
@@ -178,9 +179,20 @@ export function buildPeople({ progress, reservations }) {
     }
     current.firstName = row.firstName || current.firstName
     current.state = row.state
+    if (row.marketingConsent) current.marketingConsent = true
+    if (row.healthConsent) current.healthConsent = true
+    if (row.boxUpdatesConsent) current.boxUpdatesConsent = true
     current.reserveBox = current.reserveBox || Boolean(row.upsell)
     current.reservationId = row.id
     byEmail.set(row.email, current)
+  }
+  // A previous unsubscribe wins until a separate verified re-subscription flow exists.
+  for (const event of progress) {
+    if (event.type === 'unsubscribe' && byEmail.has(event.email)) {
+      byEmail.get(event.email).marketingConsent = false
+      byEmail.get(event.email).reserveBox = false
+      byEmail.get(event.email).boxUpdatesConsent = false
+    }
   }
   return [...byEmail.values()].sort((a, b) => String(b.lastAt || '').localeCompare(String(a.lastAt || '')))
 }

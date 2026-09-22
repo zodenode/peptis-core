@@ -15,8 +15,7 @@ import {
   type Sensitivity,
 } from '../lib/program'
 import { ReserveBoxButton } from '../components/landing/ReserveBoxButton'
-import { postQuizProgress } from '../lib/reservations'
-import { QUIZ_STORAGE_KEY } from '../hooks/useQuizEngine'
+import { useSignupReady } from '../hooks/useSignupReady'
 import { isValidEmail } from '../lib/validate'
 
 const INTAKE_KEY = 'peptis.plan.intake'
@@ -59,6 +58,7 @@ function download(filename: string, contents: string, type: string) {
 }
 
 export function TrainingPlanPage() {
+  const signupReady = useSignupReady()
   const [intake, setIntake] = useState<PlanIntake | null>(() => loadIntake())
   const [experience, setExperience] = useState<Experience | null>(intake?.experience ?? null)
   const [equipment, setEquipment] = useState<Equipment | null>(intake?.equipment ?? null)
@@ -67,7 +67,7 @@ export function TrainingPlanPage() {
   const [planEmail, setPlanEmail] = useState('')
   const [planName, setPlanName] = useState('')
   const [planMarketing, setPlanMarketing] = useState(false)
-  const [planSent, setPlanSent] = useState<'idle' | 'sent' | 'error'>('idle')
+  const [planSent, setPlanSent] = useState<'idle' | 'sending' | 'sent' | 'saved' | 'error'>('idle')
   const viewed = useRef(false)
 
   useEffect(() => {
@@ -91,22 +91,6 @@ export function TrainingPlanPage() {
     }
     const built = generateProgram(next)
     track('plan_generated', { archetype: built.archetype })
-    // Attach plan generation to the quiz progress record when a quiz exists.
-    try {
-      const raw = localStorage.getItem(QUIZ_STORAGE_KEY)
-      if (raw) {
-        const snapshot = JSON.parse(raw)
-        if (snapshot?.quizId) {
-          postQuizProgress({
-            quizId: snapshot.quizId,
-            step: 'plan_generated',
-            pathways: [],
-          })
-        }
-      }
-    } catch {
-      // ignore
-    }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -352,6 +336,8 @@ export function TrainingPlanPage() {
                     setPlanSent('error')
                     return
                   }
+                  if (planSent === 'sending') return
+                  setPlanSent('sending')
                   void fetch('/api/leads', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -362,16 +348,18 @@ export function TrainingPlanPage() {
                       marketingConsent: planMarketing,
                     }),
                   })
-                    .then((res) => {
-                      if (!res.ok) throw new Error('lead')
-                      setPlanSent('sent')
+                    .then(async (res) => {
+                      const data = await res.json()
+                      if (!res.ok || !data.ok) throw new Error('lead')
+                      setPlanSent(data.guideSent ? 'sent' : 'saved')
                       track('email_submitted', { source: 'plan_email' })
                     })
                     .catch(() => setPlanSent('error'))
                 }}
               >
-                <h2>Email me this plan</h2>
-                <p>We will send the two-day starter plan and keep this programme attached to your email.</p>
+                <h2>Email me the starter guide</h2>
+                {signupReady === false && <p role="status">Email delivery is temporarily unavailable. You can export your programme above.</p>}
+                <p>We’ll send the two-day starter guide. Your custom programme stays on this device; export it above to keep a copy.</p>
                 <label>
                   First name
                   <input value={planName} onChange={(event) => setPlanName(event.target.value)} />
@@ -392,11 +380,12 @@ export function TrainingPlanPage() {
                   />
                   <span>Email me product updates, including when the $59 box can ship.</span>
                 </label>
-                <button className="btn btn-primary" type="submit">
-                  Email my plan
+                <button className="btn btn-primary" type="submit" disabled={!signupReady || planSent === 'sending'}>
+                  Email my starter guide
                 </button>
                 {planSent === 'sent' ? <p>Saved. Check your inbox for the starter plan.</p> : null}
-                {planSent === 'error' ? <p>Enter a name and a valid email.</p> : null}
+                {planSent === 'saved' ? <p>Your request is saved, but email delivery is unavailable. Your programme is still here; use Export to keep a copy.</p> : null}
+                {planSent === 'error' ? <p>Check your name and email, then try again. We could not save your request.</p> : null}
                 <ReserveBoxButton source="plan_box" />
               </form>
               <div className="plan-legal">

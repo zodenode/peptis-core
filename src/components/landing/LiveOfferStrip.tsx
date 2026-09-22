@@ -11,9 +11,9 @@ export function LiveOfferStrip({ source = 'live_offers' }: Props) {
     <section className="section live-offers" id="live-today" aria-labelledby="live-offers-heading">
       <div className="section-inner">
         <div className="section-head">
-          <p className="eyebrow">What is live for ads</p>
-          <h2 id="live-offers-heading">Four things you can use today</h2>
-          <p>No payment details. Clinical services are not offered. The box is a reservation, not a sale.</p>
+          <p className="eyebrow">Start here</p>
+          <h2 id="live-offers-heading">Your next step with Peptis</h2>
+          <p>No payment details. Clinical services are not offered. The nutrition box is coming later.</p>
         </div>
         <div className="live-offer-grid">
           {liveOffers.map((offer) => (

@@ -9,7 +9,7 @@ type Props = {
 
 export function PricingStrip({ variant }: Props) {
   const source = variant ? `${variant.source}_pricing` : 'pricing_strip'
-  const midLabel = variant?.id === 'care' ? 'Not for sale' : offer.leanMassBoxPriceLabel
+  const midLabel = offer.leanMassBoxPriceLabel
 
   return (
     <section className="pricing-strip" aria-label="Planned pricing at a glance">
@@ -25,7 +25,7 @@ export function PricingStrip({ variant }: Props) {
           </div>
           <div>
             <strong>No card</strong>
-            <span>{variant?.pricingRight ?? 'reserve the box if you want it'}</span>
+            <span>{variant?.pricingRight ?? 'get box updates if you want them'}</span>
           </div>
         </div>
         <Link
@@ -41,7 +41,7 @@ export function PricingStrip({ variant }: Props) {
       </div>
       <p className="pricing-strip-note">
         {variant?.pricingNote ??
-          '$59 a month is the founding Lean Mass box rate when we can charge and ship. Reserve it with no card. Clinical services are not offered.'}
+          '$59/month is the target price. Contents, final price and shipping date will be confirmed before orders open.'}
       </p>
     </section>
   )

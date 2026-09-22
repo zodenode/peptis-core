@@ -324,7 +324,7 @@ export function attachAdminOps(router, { ctx, isAuthorized, noStore, escapeHtml,
 
   router.post('/admin/outreach', async (req, res) => {
     if (!requireAdmin(req, res)) return
-    const people = filterPeople(ctx, req.body).filter((person) => person.marketingConsent && person.email)
+    const people = filterPeople(ctx, req.body).filter((person) => person.email && (person.marketingConsent || (req.body.box === 'yes' && person.boxUpdatesConsent)))
     const subject = String(req.body.subject || '').slice(0, 140)
     const text = String(req.body.text || '').slice(0, 5000)
     let sent = 0

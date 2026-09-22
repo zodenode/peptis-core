@@ -1,4 +1,5 @@
-/** Public company identity. Set COMPANY_POSTAL_ADDRESS to the registered office if it is not yet in this file. */
+import company from '../../shared/company.json'
+/** Business correspondence address verified against the shared company record on 22 September 2026. */
 
 export const COMPANY = {
   legalName: 'Information Edge Insights LLC',
@@ -6,14 +7,12 @@ export const COMPANY = {
   jurisdiction: 'Wyoming, United States',
   supportEmail: 'support@peptis.com',
   privacyEmail: 'support@peptis.com',
-  responseTime: 'We answer support email within two business days.',
+  responseTime: 'We aim to reply within two business days.',
   postalLines: (
     typeof import.meta !== 'undefined' && import.meta.env?.VITE_COMPANY_POSTAL_ADDRESS
       ? String(import.meta.env.VITE_COMPANY_POSTAL_ADDRESS).split('|')
       : [
-          'Information Edge Insights LLC',
-          'Registered in Wyoming, United States',
-          'Registered office on file with the Wyoming Secretary of State',
+          ...company.postalLines,
         ]
   ),
 } as const

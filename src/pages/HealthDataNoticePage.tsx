@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
-import { COMPANY } from '../data/company'
+import { COMPANY, companyPostalBlock } from '../data/company'
 
 export function HealthDataNoticePage() {
   useEffect(() => {
@@ -18,7 +18,7 @@ export function HealthDataNoticePage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Consumer Health Data Notice</h1>
-            <p className="notice-updated">Last updated: September 10, 2026</p>
+            <p className="notice-updated">Last updated: September 22, 2026</p>
             <p>
               Some information collected on this website may be considered consumer health data
               under state laws such as the Washington My Health My Data Act. This notice explains
@@ -41,12 +41,12 @@ export function HealthDataNoticePage() {
               <li>Your interest in optional future wellness products.</li>
             </ul>
             <p>
-              We collect this data directly from you when you choose to answer the quiz. Provider
-              and prescription answers stay in your browser so the on-screen summary can be built.
-              They are not written to the same server file as your name, email or state. Funnel
-              progress on the server is stored as a step name and, separately, a launch-list
-              contact record. We do not collect health data from third parties, and we do not use
-              geofencing.
+              We ask for your consent before you begin the check. Your individual answers,
+              provider and prescription stay in your browser. When you ask us to email your
+              completed summary, we save its priority categories with your contact details and
+              consent record, and send the summary through our email provider. We do not save
+              individual quiz answers on our server. We do not collect health data from third
+              parties or use geofencing.
             </p>
 
             <h2>Why we collect it</h2>
@@ -60,7 +60,7 @@ export function HealthDataNoticePage() {
             <h2>Sharing</h2>
             <p>
               We do not sell consumer health data. We share it only with service providers that
-              process it on our behalf, such as our hosting provider and analytics processor, under
+              process it on our behalf, such as our hosting and email providers, under
               contractual obligations. We do not share health data with advertisers or data
               brokers.
             </p>
@@ -77,6 +77,7 @@ export function HealthDataNoticePage() {
               denied, you may appeal by replying to our decision, and we will review the appeal.
             </p>
 
+            <h2>Contact</h2><pre className="legal-address">{companyPostalBlock()}</pre>
             <h2>Related notices</h2>
             <p>
               Our general <Link to="/privacy">Privacy Notice</Link> describes all categories of

@@ -405,7 +405,7 @@ export const checkoutCopy = {
     },
     {
       title: 'Ask about the Lean Mass nutrition box',
-      body: 'Reserve the founding $59 Lean Mass box with no card. We email you when we can charge and ship. Asking does not place an order.',
+      body: 'Join the Lean Mass box launch list. Target price: $59/month. We email you when we can charge and ship. Asking does not place an order.',
     },
   ],
 }
@@ -458,7 +458,7 @@ export function stepMeta(id: StepId): { type: StepType; step_id: string; step_in
 }
 
 export function isStepId(id: unknown): id is StepId {
-  return typeof id === 'string' && stepMeta(id as StepId).type !== undefined
+  return typeof id === 'string' && stepMeta(id as StepId)?.type !== undefined
 }
 
 export type Answers = {

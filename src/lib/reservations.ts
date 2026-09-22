@@ -1,4 +1,5 @@
 export type ReservationPayload = {
+  quizId: string
   firstName: string
   lastName: string
   email: string
@@ -9,10 +10,13 @@ export type ReservationPayload = {
   attest: boolean
   upsell: boolean
   source?: string
+  healthConsent: boolean
+  marketingConsent: boolean
+  priorities: string[]
 }
 
 export type ReservationResult =
-  | { ok: true; id: string }
+  | { ok: true; id: string; emailSent: boolean }
   | { ok: false; error: string }
 
 export async function submitReservation(payload: ReservationPayload): Promise<ReservationResult> {
@@ -21,13 +25,13 @@ export async function submitReservation(payload: ReservationPayload): Promise<Re
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(25000),
     })
-    const data = (await res.json().catch(() => null)) as { ok?: boolean; id?: string; error?: string } | null
+    const data = (await res.json().catch(() => null)) as { ok?: boolean; id?: string; emailSent?: boolean; error?: string } | null
     if (!res.ok || !data?.ok || !data.id) {
       return { ok: false, error: data?.error ?? `status_${res.status}` }
     }
-    return { ok: true, id: data.id }
+    return { ok: true, id: data.id, emailSent: data.emailSent === true }
   } catch {
     return { ok: false, error: 'network' }
   }
@@ -48,18 +52,15 @@ export type ProgressPayload = {
   reserveBox?: boolean
 }
 
-/* Fire-and-forget: progress capture must never block or break the quiz. */
-export function postQuizProgress(payload: ProgressPayload) {
+export async function postQuizProgress(payload: ProgressPayload): Promise<{ ok: boolean; guideSent?: boolean }> {
   try {
-    void fetch('/api/quiz-progress', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      keepalive: true,
-    }).catch(() => {})
-  } catch {
-    // ignore
-  }
+    const res = await fetch('/api/quiz-progress', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload), signal: AbortSignal.timeout(25000),
+    })
+    const data = await res.json()
+    return { ok: res.ok && data?.ok === true, guideSent: data?.guideSent === true }
+  } catch { return { ok: false } }
 }
 
 export async function cancelReservation(token: string): Promise<{ ok: boolean; error?: string }> {
@@ -68,7 +69,7 @@ export async function cancelReservation(token: string): Promise<{ ok: boolean; e
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token }),
-      signal: AbortSignal.timeout(12000),
+      signal: AbortSignal.timeout(25000),
     })
     const data = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null
     if (!res.ok || !data?.ok) return { ok: false, error: data?.error ?? `status_${res.status}` }

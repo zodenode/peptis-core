@@ -517,6 +517,23 @@ export function createAdminRouter(ctx) {
     res.redirect(303, '/admin')
   })
 
+  router.get('/admin/funnel', (req, res) => {
+    noStore(res)
+    if (!isAuthorized(req)) return res.redirect(303, '/admin')
+    const file = path.join(ctx.dataDir, 'analytics.jsonl')
+    const counts = new Map()
+    if (fs.existsSync(file)) for (const line of fs.readFileSync(file, 'utf8').split('\n').filter(Boolean)) {
+      try {
+        const row = JSON.parse(line)
+        const day = String(row.at || '').slice(0, 10)
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) continue
+        const key = `${day} ${String(row.event)}`
+        counts.set(key, (counts.get(key) || 0) + 1)
+      } catch { /* skip malformed legacy rows */ }
+    }
+    res.type('html').send(shell('Funnel | Peptis', `<main><h1>Anonymous funnel events</h1><p>Event counts, not unique people. Reloads and repeat visits may count again. Sent means accepted by the email provider, not inbox delivery.</p>${table(['Date and event', 'Count'], [...counts].sort().reverse().map(([key, count]) => [escapeHtml(key), String(count)]))}<a href="/admin">Back to dashboard</a></main>`))
+  })
+
   router.get('/api/admin/snapshot', (req, res) => {
     if (!isAuthorized(req)) return res.status(401).json({ ok: false, error: 'unauthorized' })
     res.json({ ok: true, snapshot: buildAdminSnapshot(ctx) })

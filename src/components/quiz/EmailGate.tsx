@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useSignupReady } from '../../hooks/useSignupReady'
 import { isValidEmail } from '../../lib/validate'
 
 export type EmailGatePayload = {
@@ -12,7 +13,7 @@ export type EmailGatePayload = {
 type Props = {
   initialFirstName: string
   initialEmail: string
-  onCapture: (payload: EmailGatePayload) => void
+  onCapture: (payload: EmailGatePayload) => Promise<boolean>
   onContinue: () => void
   onBack: () => void
   canGoBack: boolean
@@ -26,10 +27,13 @@ export function EmailGate({
   onBack,
   canGoBack,
 }: Props) {
+  const signupReady = useSignupReady()
   const [firstName, setFirstName] = useState(initialFirstName)
   const [email, setEmail] = useState(initialEmail)
   const [healthConsent, setHealthConsent] = useState(false)
   const [marketingConsent, setMarketingConsent] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(false)
   const [touched, setTouched] = useState(false)
 
   const nameReady = firstName.trim().length > 1
@@ -39,18 +43,23 @@ export function EmailGate({
   const showEmailError = touched && email.trim().length > 0 && !emailReady
   const showConsentError = touched && !healthConsent
 
-  const submit = () => {
+  const submit = async () => {
     setTouched(true)
-    if (!valid) return
-    onCapture({
+    if (!valid || saving) return
+    setSaving(true)
+    setError(false)
+    const saved = await onCapture({
       firstName: firstName.trim(),
       email: email.trim(),
       healthConsent,
       marketingConsent,
     })
-    onContinue()
+    setSaving(false)
+    if (saved) onContinue()
+    else setError(true)
   }
 
+  if (signupReady === false) return <article className="quiz-card"><div className="quiz-body"><h1>Continue with your free check</h1><p>Email delivery is temporarily unavailable. You can see your priorities on screen and build your starter plan.</p><button className="btn btn-primary" type="button" onClick={onContinue}>Continue without email</button></div></article>
   return (
     <article className="quiz-card email-gate-card">
       <div className="email-gate-visual" aria-hidden="true">
@@ -63,10 +72,9 @@ export function EmailGate({
       </div>
       <div className="quiz-body email-gate-body">
         <p className="quiz-kicker">Save your continuity check</p>
-        <h1>Where should we send your summary?</h1>
+        <h1>Where should we send your starter guide?</h1>
         <p>
-          Two of eight questions are in. Leave your name and email for written priorities and the
-          free two-day strength starter plan. No card.
+          Two of eight questions are in. We’ll send your free starter guide now. Finish the check to receive your written priorities. No card.
         </p>
         <div className="email-gate-field">
           <label htmlFor="email-gate-name">First name</label>
@@ -132,14 +140,15 @@ export function EmailGate({
             Health-data consent is required to save your summary.
           </p>
         ) : null}
+        {error && <p role="alert">We could not save your details. Your answers are still here. You can <Link to="/plan">open the free training plan</Link> now.</p>}
         <div className="quiz-actions">
           {canGoBack ? (
             <button type="button" className="btn btn-ghost" onClick={onBack}>
               Back
             </button>
           ) : null}
-          <button type="button" className="btn btn-primary" onClick={submit} disabled={!valid}>
-            Email my summary
+          <button type="button" className="btn btn-primary" onClick={submit} disabled={!signupReady || !valid || saving}>
+            {saving ? 'Saving…' : 'Send my starter guide and continue'}
           </button>
         </div>
         <p className="email-gate-note">

@@ -1,4 +1,94 @@
 {
+  "/": {
+    "path": "/",
+    "title": "Peptis Core Continuity: free check and starter plan",
+    "description": "A free written summary of strength, protein and maintenance priorities, plus a starter training plan. No card. Not medical care today.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
+  "/quiz": {
+    "path": "/quiz",
+    "title": "Free GLP-1 continuity check | Peptis",
+    "description": "Eight questions. A written strength and maintenance summary. Not medical care today.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
+  "/offerings": {
+    "path": "/offerings",
+    "title": "What Peptis offers today | Peptis",
+    "description": "A free continuity check and starter plan. Reserve the founding $59 Lean Mass box with no card.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
+  "/plan": {
+    "path": "/plan",
+    "title": "Two-day strength starter plan | Peptis",
+    "description": "A beginner full-body structure for people losing weight. Education only. Not a medical exercise prescription.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
+  "/terms": {
+    "path": "/terms",
+    "title": "Terms of Service | Peptis",
+    "description": "Terms for the free continuity check, starter plan and box launch updates.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
+  "/box-updates": {
+    "path": "/box-updates",
+    "title": "Nutrition box updates | Peptis",
+    "description": "Hear when the Lean Mass nutrition box is ready, with confirmed pricing and shipping.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
+  "/contact": {
+    "path": "/contact",
+    "title": "Contact | Peptis",
+    "description": "How to reach Information Edge Insights LLC, trading as Peptis.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
+  "/privacy": {
+    "path": "/privacy",
+    "title": "Privacy | Peptis",
+    "description": "How Peptis handles personal information.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
+  "/health-data": {
+    "path": "/health-data",
+    "title": "Health data notice | Peptis",
+    "description": "How Peptis treats health-related information collected in the continuity check.",
+    "type": "website",
+    "image": "https://www.peptis.com/peptis-logo-green.png",
+    "imageAlt": "Peptis wordmark",
+    "dateModified": "2026-08-21",
+    "jsonLd": []
+  },
   "/publication": {
     "path": "/publication",
     "title": "Peptis Publication: evidence on GLP-1 body recomposition",

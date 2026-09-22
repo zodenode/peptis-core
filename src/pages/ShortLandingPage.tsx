@@ -76,8 +76,7 @@ export function ShortLandingPage({ variant, visual = false, compact = false }: P
           <div className="section-inner">
             <h2 id="short-faq-heading">One clear limit</h2>
             <p>
-              The check and plan are education, not medical care. The $59 box can be reserved
-              without a card. Clinical services are not offered.
+              The check and plan are free educational tools. The planned box has a target price of $59/month. We will confirm the final price and launch date before you decide to buy.
             </p>
           </div>
         </section>

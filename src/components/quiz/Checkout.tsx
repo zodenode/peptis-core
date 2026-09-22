@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+import { useSignupReady } from '../../hooks/useSignupReady'
 import { useState, type FormEvent } from 'react'
 import { checkoutCopy } from '../../data/quiz'
 import { US_STATES } from '../../data/usStates'
@@ -22,6 +24,7 @@ const pathwayLabels: Record<string, string> = {
 }
 
 export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways, submitState }: Props) {
+  const signupReady = useSignupReady()
   const [attempted, setAttempted] = useState(false)
   const errors = {
     firstName: form.firstName.trim().length > 1 ? '' : 'Enter your first name.',
@@ -39,7 +42,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
     !errors.phone &&
     !errors.state &&
     form.resident &&
-    form.attest
+    form.attest && form.healthConsent
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -50,14 +53,14 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
 
   const fieldError = (key: keyof typeof errors) => (attempted && errors[key] ? errors[key] : null)
 
+  if (signupReady === false) return <div className="quiz-card"><div className="quiz-body"><h1>Your priorities</h1><ul>{pathways.map((key) => <li key={key}>{pathwayLabels[key]}</li>)}</ul><p>Email delivery is temporarily unavailable. Your answers stay on this device. You can build and export your free training programme now.</p><Link to="/plan" className="btn btn-primary">Build my training plan</Link></div></div>
   return (
     <div className="quiz-card checkout-card">
       <form className="quiz-body" onSubmit={handleSubmit} noValidate>
         <p className="quiz-kicker">{checkoutCopy.eyebrow}</p>
         <h1 className="quiz-title">Save your summary</h1>
         <p className="quiz-hint">
-          The check and starter plan are free. Reserve the founding $59 Lean Mass box with no
-          card. We email you when we can charge and ship.
+          Finish your free check and receive your written priorities and starter guide by email.
         </p>
 
         <fieldset className="plan-box">
@@ -69,7 +72,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             </div>
             <div>
               <p className="plan-name">Lean Mass box</p>
-              <p className="plan-price">Reserve $59</p>
+              <p className="plan-price">Target $59/mo</p>
             </div>
           </div>
           <p className="plan-savings">
@@ -91,7 +94,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             <h2>What may happen later</h2>
             <ul>
               <li>A chance to buy the Lean Mass nutrition box if we can charge and ship</li>
-              <li>A reserved founding price if you asked about the box</li>
+              <li>Confirmed contents, pricing and shipping details before you decide</li>
             </ul>
           </div>
           <div className="plan-section plan-not-promised">
@@ -154,34 +157,6 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
               <span className="field-error" id="error-email">{errors.email}</span>
             ) : null}
           </label>
-          <label>
-            Mobile phone (optional)
-            <input
-              type="tel"
-              autoComplete="tel"
-              value={form.phone}
-              onChange={(e) => onChange({ phone: e.target.value })}
-              aria-invalid={Boolean(fieldError('phone'))}
-              aria-describedby={fieldError('phone') ? 'error-phone' : undefined}
-            />
-            {fieldError('phone') ? (
-              <span className="field-error" id="error-phone">{errors.phone}</span>
-            ) : null}
-          </label>
-          {form.phone.trim().length >= 7 ? (
-            <label className={`check-card optional-card span-2${form.smsOptIn ? ' is-selected' : ''}`}>
-              <input
-                type="checkbox"
-                checked={form.smsOptIn}
-                onChange={(e) => onChange({ smsOptIn: e.target.checked })}
-              />
-              <span className="check-mark" aria-hidden="true">✓</span>
-              <span className="check-copy">
-                <strong>Text me when the nutrition box can ship</strong>
-                <span>Optional. Product updates only. You can stop any time.</span>
-              </span>
-            </label>
-          ) : null}
           <label className="span-2">
             State of residence
             <select
@@ -258,7 +233,7 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
           <button type="button" className="btn-text" onClick={onBack} disabled={!canGoBack}>
             ← Back
           </button>
-          <button type="submit" className="btn btn-solid" disabled={submitState === 'submitting'}>
+          <button type="submit" className="btn btn-solid" disabled={!signupReady || submitState === 'submitting'}>
             {submitState === 'submitting' ? 'Saving your summary…' : 'Save my summary'}
           </button>
         </div>

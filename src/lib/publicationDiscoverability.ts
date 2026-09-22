@@ -452,12 +452,13 @@ export function coreSitePages(): DiscoverabilityPage[] {
     {
       path: '/terms',
       title: 'Terms of Service | Peptis',
-      description: 'Terms for the free continuity check, starter plan and box reservation.',
+      description: 'Terms for the free continuity check, starter plan and box launch updates.',
       type: 'website',
       image,
       imageAlt,
       dateModified: REVIEW_ISO,
     },
+    { path: '/box-updates', title: 'Nutrition box updates | Peptis', description: 'Hear when the Lean Mass nutrition box is ready, with confirmed pricing and shipping.', type: 'website', image, imageAlt, dateModified: REVIEW_ISO },
     {
       path: '/contact',
       title: 'Contact | Peptis',
@@ -494,7 +495,7 @@ export function siteSitemapPages(): DiscoverabilityPage[] {
 
 export function publicationSeoBundle() {
   return Object.fromEntries(
-    publicationCatalog().map((page) => [
+    siteSitemapPages().map((page) => [
       page.path,
       {
         ...page,

@@ -18,7 +18,7 @@ export function TermsPage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Terms of Service</h1>
-            <p className="notice-updated">Effective and last updated: September 21, 2026</p>
+            <p className="notice-updated">Effective and last updated: September 22, 2026</p>
             <p>
               These terms govern your use of peptis.com and related Peptis tools operated by{' '}
               {COMPANY.legalName}, trading as {COMPANY.tradeName}. By using the site you agree to
@@ -47,8 +47,7 @@ export function TermsPage() {
 
             <h2>Health information</h2>
             <p>
-              Some quiz answers can be consumer health data. We store those answers only when you
-              give the health-data consent on the email step. See the{' '}
+              Some quiz answers can be consumer health data. We ask for consent before you start. Individual answers stay in your browser; requested summary priorities are saved with your contact details. See the{' '}
               <Link to="/health-data">Consumer Health Data Notice</Link> and the{' '}
               <Link to="/privacy">Privacy Policy</Link>.
             </p>

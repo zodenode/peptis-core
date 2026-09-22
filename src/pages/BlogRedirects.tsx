@@ -1,3 +1,4 @@
+import { NotFoundPage } from './NotFoundPage'
 import { Navigate, useParams } from 'react-router-dom'
 import { articlePath, findPublicationArticle } from '../data/publication'
 
@@ -8,5 +9,5 @@ export function BlogIndexRedirect() {
 export function BlogArticleRedirect() {
   const { slug } = useParams()
   const article = findPublicationArticle(slug)
-  return <Navigate to={article ? articlePath(article) : '/publication'} replace />
+  return article ? <Navigate to={articlePath(article)} replace /> : <NotFoundPage />
 }

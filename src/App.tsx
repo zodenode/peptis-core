@@ -1,3 +1,4 @@
+import { BoxUpdatesPage } from './pages/BoxUpdatesPage'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { BlogArticleRedirect, BlogIndexRedirect } from './pages/BlogRedirects'
 import { CancelPage } from './pages/CancelPage'
@@ -33,6 +34,7 @@ export default function App() {
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/privacy-policy" element={<PrivacyPage />} />
       <Route path="/health-data" element={<HealthDataNoticePage />} />
+      <Route path="/box-updates" element={<BoxUpdatesPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/cancel" element={<CancelPage />} />
       <Route path="*" element={<NotFoundPage />} />
