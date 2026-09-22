@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
 import { BeforeAfterEducationSlider } from '../components/landing/BeforeAfterEducationSlider'
+import { LiveOfferStrip } from '../components/landing/LiveOfferStrip'
+import { ResultExamples } from '../components/landing/ResultExamples'
 import { BodyCompositionGraphic } from '../components/landing/BodyCompositionGraphic'
 import { CompositionCompareSlider } from '../components/landing/CompositionCompareSlider'
 import { ProteinRangeControl } from '../components/landing/ProteinRangeControl'
@@ -165,6 +167,8 @@ export function LandingPage({ variant }: Props) {
             </div>
           </div>
         </section>
+
+        <LiveOfferStrip source={sourceFor('live')} />
 
         <LeanMassPreview />
 
@@ -337,6 +341,8 @@ export function LandingPage({ variant }: Props) {
         <ProteinTargetGraphic />
 
         <EvidenceCards />
+
+        <ResultExamples />
 
         <PublicationTeaser />
 

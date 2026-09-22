@@ -11,6 +11,7 @@
     "publication:qa": "node --experimental-strip-types --no-warnings scripts/publication-qa.mjs",
     "publication:qa:accept": "node --experimental-strip-types --no-warnings scripts/publication-qa.mjs --accept",
     "publication:discoverability": "node --experimental-strip-types --no-warnings scripts/write-discoverability.mjs",
+    "product-examples": "node --experimental-strip-types --no-warnings scripts/write-product-examples.mjs",
     "publication:partner-kit": "node --experimental-strip-types --no-warnings scripts/write-partner-kit.mjs",
     "build": "npm run publication:qa && npm run publication:discoverability && tsc -b && vite build",
     "lint": "oxlint",

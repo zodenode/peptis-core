@@ -36,7 +36,7 @@ const KNOWN_APP_PATHS = new Set([
   '/contact',
   '/cancel',
 ])
-const KNOWN_GO_SLUGS = new Set(['strength', 'box', 'care', 'plan', 'start', 'visual', 'compare'])
+const KNOWN_GO_SLUGS = new Set(['strength', 'box', 'care', 'plan', 'start', 'visual', 'compare', 'ad', 'examples'])
 
 function companyPostalLines() {
   const raw = process.env.VITE_COMPANY_POSTAL_ADDRESS || process.env.COMPANY_POSTAL_ADDRESS
