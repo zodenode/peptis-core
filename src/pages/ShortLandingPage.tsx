@@ -2,9 +2,11 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { BeforeAfterEducationSlider } from '../components/landing/BeforeAfterEducationSlider'
 import { CompositionCompareSlider } from '../components/landing/CompositionCompareSlider'
+import { LiveOfferStrip } from '../components/landing/LiveOfferStrip'
 import { ProteinRangeControl } from '../components/landing/ProteinRangeControl'
 import { RegainGraph } from '../components/landing/RegainGraph'
 import { ReserveBoxButton } from '../components/landing/ReserveBoxButton'
+import { ResultExamples } from '../components/landing/ResultExamples'
 import { Footer } from '../components/layout/Footer'
 import { Header } from '../components/layout/Header'
 import { StickyQuizCta } from '../components/landing/StickyQuizCta'
@@ -14,9 +16,10 @@ import { setQuizSource, track } from '../lib/analytics'
 type Props = {
   variant: LandingVariant
   visual?: boolean
+  compact?: boolean
 }
 
-export function ShortLandingPage({ variant, visual = false }: Props) {
+export function ShortLandingPage({ variant, visual = false, compact = false }: Props) {
   const viewed = useRef(false)
 
   useEffect(() => {
@@ -55,6 +58,12 @@ export function ShortLandingPage({ variant, visual = false }: Props) {
             </div>
           </div>
         </section>
+        {compact ? (
+          <>
+            <LiveOfferStrip source={variant.source} />
+            <ResultExamples limit={4} />
+          </>
+        ) : null}
         {visual ? (
           <>
             <CompositionCompareSlider />

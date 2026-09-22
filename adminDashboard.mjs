@@ -11,6 +11,8 @@ const HIDDEN_LANDINGS = [
   { path: '/go/care', source: 'go_care', label: 'Care list path' },
   { path: '/go/plan', source: 'go_plan', label: 'Plan ad path' },
   { path: '/go/start', source: 'go_start', label: 'Short ad path' },
+  { path: '/go/ad', source: 'go_ad', label: 'Paid-ad landing' },
+  { path: '/go/examples', source: 'go_examples', label: 'Result permutation examples' },
   { path: '/go/visual', source: 'go_visual', label: 'Visual evidence path' },
   { path: '/go/compare', source: 'go_compare', label: 'Before-after education path' },
 ]

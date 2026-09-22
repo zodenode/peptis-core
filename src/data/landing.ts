@@ -1,10 +1,10 @@
 import { images } from './images'
 
 export const trustBadges = [
-  'Free 3-minute check',
+  '8 questions, email after 2',
   'Written priorities',
-  'Starter training plan',
-  'No payment details',
+  'Free starter plan',
+  'Reserve $59 box, no card',
 ] as const
 
 export const problemItems = [

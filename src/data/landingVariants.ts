@@ -1,4 +1,12 @@
-export type LandingVariantId = 'strength' | 'box' | 'care' | 'plan' | 'start' | 'visual' | 'compare'
+export type LandingVariantId =
+  | 'strength'
+  | 'box'
+  | 'care'
+  | 'plan'
+  | 'start'
+  | 'visual'
+  | 'compare'
+  | 'ad'
 
 export type LandingVariant = {
   id: LandingVariantId
@@ -161,7 +169,7 @@ export const landingVariants: Record<LandingVariantId, LandingVariant> = {
     documentTitle: 'Peptis: start the free continuity check',
     eyebrow: 'One screen. Then the quiz.',
     headline: 'See what the scale missed about your strength',
-    lead: 'Eight questions. After the first two we save your summary email. About 3 minutes. No card.',
+    lead: 'Eight questions. After the first two we save your summary email. Written priorities, a two-day strength plan, and evidence essays. Reserve the $59 box with no card.',
     ctaLabel: 'Get my free summary',
     ctaTo: '/quiz',
     micro: 'Education only. Clinical services are not offered.',
@@ -175,6 +183,32 @@ export const landingVariants: Record<LandingVariantId, LandingVariant> = {
     offerEyebrow: 'Free check first',
     offerHeadline: 'Start with the summary. Reserve the box if you want it.',
     offerBody: 'The check and plan are free. The founding $59 box can be reserved with no card.',
+    pricingLeft: 'today for summary and plan',
+    pricingMid: 'founding box $59/mo',
+    pricingRight: 'no card to reserve',
+    pricingNote: 'The $59 price is the founding box rate when we can charge and ship.',
+  },
+  ad: {
+    id: 'ad',
+    path: '/go/ad',
+    source: 'go_ad',
+    documentTitle: 'Peptis: free continuity check',
+    eyebrow: 'Ad landing',
+    headline: 'See what the scale missed about your strength',
+    lead: 'Eight questions. After the first two we save your summary email. Written priorities, a two-day strength plan, and evidence essays. Reserve the $59 box with no card. About 3 minutes.',
+    ctaLabel: 'Get my free summary',
+    ctaTo: '/quiz',
+    micro: 'Education only. The box is a reservation, not a sale. Clinical services are not offered.',
+    stickyTitle: 'Free continuity check',
+    stickyNote: '3 minutes. $0. No card.',
+    closerEyebrow: 'Free continuity check',
+    closerHeadline: 'Start the eight questions',
+    closerBody: 'Email after question two. Written priorities and the starter plan.',
+    showHeroPrompts: false,
+    showLeadCapture: false,
+    offerEyebrow: 'Live today',
+    offerHeadline: 'Check, plan, essays, then a box you can reserve',
+    offerBody: 'Four live tools. No payment details. The $59 box is email-list only until we can charge and ship.',
     pricingLeft: 'today for summary and plan',
     pricingMid: 'founding box $59/mo',
     pricingRight: 'no card to reserve',
