@@ -32,7 +32,7 @@ export function LeadCapture({ source, buttonLabel, purpose = 'starter_guide' }: 
     <div role="status">
       <p>{box ? 'Your interest is saved.' : 'Your request is saved.'} {state === 'done' ? `We sent a confirmation to ${email}.` : 'We could not send the email just now.'}</p>
       {!box && <Link to="/publication/training/two-day-strength-plan">Open your free starter guide</Link>}
-      {state === 'saved' && <p>Contact <a href="mailto:support@peptis.com">support@peptis.com</a> if you need help.</p>}
+      {state === 'saved' && <p>Contact <a href="mailto:support@peptis.co">support@peptis.co</a> if you need help.</p>}
     </div>
   )
   return (

@@ -26,6 +26,6 @@ export function resourceEmail({ firstName, baseUrl, priorities, unsubscribeUrl, 
     lines.push('Here is your free two-day strength starter guide.', '')
   }
   if (!box) lines.push(`Starter guide: ${baseUrl}/publication/training/two-day-strength-plan`, `Build or reopen a programme on this device: ${baseUrl}/plan`, '', 'Your custom programme is saved in your browser. Use the print/PDF or calendar export to keep a copy.', 'Education only. Ask your clinician before making changes to exercise, diet or medication.')
-  lines.push('', `Stop product-update emails: ${unsubscribeUrl}`, 'For help or a privacy request: support@peptis.com', '', ...postalLines())
+  lines.push('', `Stop product-update emails: ${unsubscribeUrl}`, 'For help or a privacy request: support@peptis.co', '', ...postalLines())
   return lines.join('\n')
 }
