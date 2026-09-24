@@ -89,7 +89,7 @@ async function sendResend({ to, subject, text, idempotencyKey }) {
         ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}),
       },
       signal: AbortSignal.timeout(8000),
-      body: JSON.stringify({ from, to, subject, text, reply_to: 'support@peptis.com' }),
+      body: JSON.stringify({ from, to, subject, text, reply_to: 'support@peptis.co' }),
     })
     if (!res.ok) {
       const detail = await res.text().catch(() => '')
@@ -567,7 +567,7 @@ app.get('/unsubscribe', (req, res) => {
 app.post('/unsubscribe', (req, res) => {
   const token = String(req.body?.token || '')
   const person = /^[a-f0-9]{48}$/.test(token) && readProgressEvents().find((e) => e.type === 'update_token' && e.token === token)
-  if (!person) return res.status(404).send('Unsubscribe link not found. Contact support@peptis.com.')
+  if (!person) return res.status(404).send('Unsubscribe link not found. Contact support@peptis.co.')
   appendEvent({ type: 'unsubscribe', email: person.email, at: new Date().toISOString() }, PROGRESS_FILE)
   res.set('Cache-Control', 'no-store').type('html').send('<!doctype html><html lang="en"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Unsubscribed | Peptis</title><main><h1>You are unsubscribed</h1><p>Peptis product-update emails are turned off.</p><a href="/">Back to Peptis</a></main></html>')
 })
