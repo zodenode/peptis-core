@@ -11,6 +11,9 @@ const SERVER_EVENTS = new Set(['email_submitted', 'box_interest_saved', 'summary
 export function funnelEvent(event, properties = {}, server = false) {
   if (!EVENTS.has(event) || (!server && SERVER_EVENTS.has(event))) return null
   const safe = {}
+  // Broad first-party source only; never campaign names, click IDs or URLs.
+  const sources = new Set(['meta', 'google', 'youtube', 'email', 'partner', 'organic', 'other', 'direct'])
+  if (typeof properties?.source === 'string' && sources.has(properties.source)) safe.source = properties.source
   if (event === 'quiz_step_viewed' && Number.isInteger(properties?.step_index) && properties.step_index >= 0 && properties.step_index <= 30) safe.step_index = properties.step_index
   return { event, properties: safe }
 }
