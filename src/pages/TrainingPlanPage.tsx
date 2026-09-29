@@ -303,7 +303,7 @@ export function TrainingPlanPage() {
 
               <div className="plan-guidance">
                 <div>
-                  <h2>Choosing your weights</h2>
+                  <h2>{intake?.equipment === 'none' ? 'Choosing your effort' : 'Choosing your weights'}</h2>
                   <ul>
                     {program.weightRules.map((n) => (
                       <li key={n}>{n}</li>
