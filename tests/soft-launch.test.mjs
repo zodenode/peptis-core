@@ -111,4 +111,24 @@ test('soft launch integration', async (t) => {
     } finally { child.kill(); await once(child, 'exit') }
   })
 
+  await t.test('production signup accepts Microsoft Graph configuration and sends from the support mailbox', async () => {
+    const graphPort = 18881
+    const graphMailFile = path.join(tmp, 'graph-mail.jsonl')
+    const child = spawn(process.execPath, ['--import', './tests/mock-graph-mail.mjs', 'server.mjs'], {
+      env: { ...process.env, PORT: String(graphPort), NODE_ENV: 'production', DATA_DIR: tmp, RAILWAY_VOLUME_MOUNT_PATH: tmp, EMAIL_PROVIDER: 'microsoft_graph', RESEND_API_KEY: '', MS_GRAPH_TENANT_ID: 'test-tenant', MS_GRAPH_CLIENT_ID: 'test-client', MS_GRAPH_CLIENT_SECRET: 'test-secret', MS_GRAPH_MAILBOX: 'support@peptis.co', OPS_NOTIFY_EMAILS: 'disabled', MOCK_MAIL_FILE: graphMailFile },
+      stdio: ['ignore', 'pipe', 'pipe'],
+    })
+    try {
+      await new Promise((resolve, reject) => { child.stdout.on('data', (chunk) => { if (String(chunk).includes('listening')) resolve() }); child.once('exit', reject) })
+      const graphBase = `http://127.0.0.1:${graphPort}`
+      assert.deepEqual(await (await fetch(graphBase + '/api/readiness')).json(), { signupReady: true })
+      const res = await fetch(graphBase + '/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firstName: 'Tester', email: 'graph@example.com' }) })
+      assert.equal((await res.json()).guideSent, true)
+      const messages = fs.readFileSync(graphMailFile, 'utf8').trim().split('\n').map(JSON.parse)
+      assert.equal(messages.length, 1)
+      assert.equal(messages[0].message.toRecipients[0].emailAddress.address, 'graph@example.com')
+      assert.equal(messages[0].message.replyTo[0].emailAddress.address, 'support@peptis.co')
+    } finally { child.kill(); await once(child, 'exit') }
+  })
+
 })
