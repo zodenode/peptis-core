@@ -38,6 +38,8 @@ test('soft launch integration', async (t) => {
   })
   await t.test('analytics drops personal, health and nested payloads on both sides', async () => {
     assert.deepEqual(funnelEvent('quiz_step_viewed', { step_index: 3, email: 'private', pathways: ['gi_repair'], option_id: 'q3_a' }), { event: 'quiz_step_viewed', properties: { step_index: 3 } })
+    assert.deepEqual(funnelEvent('landing_viewed', { source: 'meta', utm_campaign: 'sensitive-campaign', fbclid: 'private' }), { event: 'landing_viewed', properties: { source: 'meta' } })
+    assert.deepEqual(funnelEvent('quiz_completed', { source: 'unknown-source', email: 'private' }, true), { event: 'quiz_completed', properties: {} })
     assert.equal(funnelEvent('summary_sent'), null)
     assert.equal((await post('/api/events', { event: 'quiz_step_viewed', properties: { step_index: 3, secret: { medication: 'private' } }, path: '/quiz?email=private' })).status, 200)
     const data = rows('analytics.jsonl')
