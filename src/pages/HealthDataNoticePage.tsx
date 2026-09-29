@@ -18,7 +18,7 @@ export function HealthDataNoticePage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Consumer Health Data Notice</h1>
-            <p className="notice-updated">Last updated: September 22, 2026</p>
+            <p className="notice-updated">Last updated: September 29, 2026</p>
             <p>
               Some information collected on this website may be considered consumer health data
               under state laws such as the Washington My Health My Data Act. This notice explains
@@ -41,12 +41,15 @@ export function HealthDataNoticePage() {
               <li>Your interest in optional future wellness products.</li>
             </ul>
             <p>
-              We ask for your consent before you begin the check. Your individual answers,
-              provider and prescription stay in your browser. When you ask us to email your
-              completed summary, we save its priority categories with your contact details and
-              consent record, and send the summary through our email provider. We do not save
-              individual quiz answers on our server. We do not collect health data from third
-              parties or use geofencing.
+              We ask for your consent before you begin the check. Answers stay on your device until
+              you choose to save or email your details or plan. We then save your contact details,
+              consent record and the answers you provide, including optional provider, medication
+              and dose, weight-change category, training routine, protein habits and appetite.
+              These inputs generate your exercise sessions, nutrition actions and summary.
+              Our hosting provider stores this record; our email provider processes your requested
+              programme email. We do not put these answers in analytics or operator notification emails.
+              If delivery is delayed, the requested email is queued for retry. We do not collect
+              health data from third parties or use geofencing.
             </p>
 
             <h2>Why we collect it</h2>

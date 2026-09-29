@@ -5,8 +5,8 @@ export const COMPANY = {
   legalName: 'Information Edge Insights LLC',
   tradeName: 'Peptis',
   jurisdiction: 'Wyoming, United States',
-  supportEmail: 'support@peptis.com',
-  privacyEmail: 'support@peptis.com',
+  supportEmail: 'support@peptis.co',
+  privacyEmail: 'support@peptis.co',
   responseTime: 'We aim to reply within two business days.',
   postalLines: (
     typeof import.meta !== 'undefined' && import.meta.env?.VITE_COMPANY_POSTAL_ADDRESS

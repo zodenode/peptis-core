@@ -40,7 +40,7 @@ export function Success({ form, pathways, reservationId, emailSent, onReset }: P
         <p className="quiz-kicker">Your summary is saved</p>
         <h1 className="quiz-title">Your summary is saved, {form.firstName || 'there'}.</h1>
         <p>
-          {emailSent ? `We sent your written priorities and starter guide to ${form.email}.` : 'Your summary is saved, but we could not send the email just now. Your priorities and starter plan are available below.'}
+          {emailSent ? `We sent your priorities and personalised plan to ${form.email}.` : 'Your summary is saved, but email is pending. Your priorities and personalised plan are available below.'}
         </p>
         {reservationId ? (
           <p className="quiz-hint">List reference: {reservationId}</p>
@@ -76,11 +76,11 @@ export function Success({ form, pathways, reservationId, emailSent, onReset }: P
         <div className="success-next">
           <h2>Start this week</h2>
           <p>
-            Build your personalized starter program in one minute. It shows every movement with
+            Your personalised programme is ready from your quiz answers. It shows every movement with
             illustrations and exports to PDF, your calendar or the Hevy app.
           </p>
           <Link className="btn btn-primary" to="/plan">
-            Build my strength program
+            View my strength programme
           </Link>
         </div>
         <div className="quiz-actions">

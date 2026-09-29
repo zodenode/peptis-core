@@ -1,4 +1,7 @@
+import type { Answers } from '../data/quiz'
 export type ReservationPayload = {
+  profile?: Answers
+  consentVersion?: string
   quizId: string
   firstName: string
   lastName: string
@@ -38,6 +41,8 @@ export async function submitReservation(payload: ReservationPayload): Promise<Re
 }
 
 export type ProgressPayload = {
+  profile?: Answers
+  consentVersion?: string
   quizId: string
   step: string
   email?: string

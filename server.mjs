@@ -1,3 +1,6 @@
+import { cleanAnswers, cleanPlanIntake, planIntakeFromAnswers, derivePathways, programText, CONSENT_VERSION } from './shared/profile.mjs'
+import { generateProgram } from './shared/program.mjs'
+import { createOutbox } from './mailOutbox.mjs'
 import { randomUUID, randomBytes } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -33,15 +36,15 @@ app.use('/api', (req, res, next) => {
   next()
 })
 
-// Never claim a production signup is saved when email or durable storage is absent.
+// Durable storage gates signup; a sender outage queues mail instead of losing the lead.
 const productionRuntime = Boolean(process.env.RAILWAY_ENVIRONMENT_ID) || process.env.NODE_ENV === 'production'
 const emailProvider = process.env.EMAIL_PROVIDER || 'resend'
 const mailConfigured = emailProvider === 'microsoft_graph'
   ? Boolean(process.env.MS_GRAPH_TENANT_ID && process.env.MS_GRAPH_CLIENT_ID && process.env.MS_GRAPH_CLIENT_SECRET && process.env.MS_GRAPH_MAILBOX)
   : emailProvider === 'resend' && Boolean(process.env.RESEND_API_KEY)
-const signupReady = !productionRuntime || Boolean(mailConfigured && process.env.DATA_DIR && process.env.RAILWAY_VOLUME_MOUNT_PATH && (DATA_DIR === process.env.RAILWAY_VOLUME_MOUNT_PATH || DATA_DIR.startsWith(`${process.env.RAILWAY_VOLUME_MOUNT_PATH}/`)))
-app.get('/api/readiness', (_req, res) => res.json({ signupReady }))
-app.use(['/api/leads', '/api/quiz-progress', '/api/reservations'], (req, res, next) => {
+const signupReady = !productionRuntime || Boolean(process.env.DATA_DIR && process.env.RAILWAY_VOLUME_MOUNT_PATH && (DATA_DIR === process.env.RAILWAY_VOLUME_MOUNT_PATH || DATA_DIR.startsWith(`${process.env.RAILWAY_VOLUME_MOUNT_PATH}/`)))
+app.get('/api/readiness', (_req, res) => res.json({ signupReady, emailReady: mailConfigured }))
+app.use(['/api/leads', '/api/quiz-progress', '/api/reservations', '/api/plan'], (req, res, next) => {
   if (req.method === 'POST' && req.path !== '/cancel' && !signupReady) return res.status(503).json({ ok: false, error: 'signup_unavailable' })
   next()
 })
@@ -121,7 +124,7 @@ async function sendMicrosoftGraph({ to, subject, text }) {
   }
 }
 
-async function sendMail({ to, subject, text, idempotencyKey }) {
+async function deliverMail({ to, subject, text, idempotencyKey }) {
   if (emailProvider === 'microsoft_graph') return sendMicrosoftGraph({ to, subject, text })
   if (emailProvider !== 'resend') return { sent: false, reason: 'unknown_provider' }
   const key = process.env.RESEND_API_KEY
@@ -149,6 +152,11 @@ async function sendMail({ to, subject, text, idempotencyKey }) {
     return { sent: false, reason: 'network' }
   }
 }
+
+const outbox = createOutbox({ file: path.join(DATA_DIR, 'mail-outbox.jsonl'), deliver: deliverMail, enabled: () => mailConfigured, accepted: event => recordFunnel(event), shouldSend: mail => !mail.marketing || !readProgressEvents().some(e => e.type === 'unsubscribe' && mail.to?.includes(e.email)) })
+const sendMail = mail => outbox.send(mail)
+const retryTimer = setInterval(() => { void outbox.retry().catch(() => console.error('mail retry failed')) }, 60000)
+retryTimer.unref()
 
 async function sendOpsNotification({ event, firstName, email, state, phone, upsell, source, reference }) {
   const to = opsRecipients()
@@ -179,7 +187,7 @@ async function sendOpsNotification({ event, firstName, email, state, phone, upse
 
 function appendEvent(event, file = EVENTS_FILE) {
   const line = JSON.stringify(event) + '\n'
-  const fd = fs.openSync(file, 'a')
+  const fd = fs.openSync(file, 'a', 0o600)
   try {
     fs.writeSync(fd, line)
     fs.fsyncSync(fd)
@@ -216,15 +224,17 @@ function unsubscribeToken(email) {
   return token
 }
 
-async function sendResource({ email, firstName, priorities, box = false, id }) {
+async function sendResource({ email, firstName, priorities, box = false, id, intake }) {
   const token = unsubscribeToken(email)
   const result = await sendMail({
     to: [email],
+    marketing: box,
     subject: box ? 'Your Peptis box launch updates' : priorities ? 'Your Peptis priorities and starter plan' : 'Your two-day strength starter guide',
-    text: resourceEmail({ firstName, priorities, box, baseUrl: PUBLIC_BASE_URL, unsubscribeUrl: `${PUBLIC_BASE_URL}/unsubscribe?token=${token}` }),
+    text: (intake ? programText(generateProgram(intake)) + '\n\n' : '') + resourceEmail({ firstName, priorities, box, baseUrl: PUBLIC_BASE_URL, unsubscribeUrl: `${PUBLIC_BASE_URL}/unsubscribe?token=${token}` }),
+    metric: priorities || intake ? 'summary_sent' : 'guide_sent',
     idempotencyKey: id,
   })
-  recordFunnel(result.sent ? (priorities ? 'summary_sent' : 'guide_sent') : 'email_failed')
+  if (!result.sent) recordFunnel('email_failed')
   return result
 }
 
@@ -262,7 +272,7 @@ app.post('/api/quiz-progress', async (req, res) => {
   const marketingConsent = body.marketingConsent === true
   const reserveBox = body.reserveBox === true && marketingConsent
   if (email && !healthConsent) return res.status(400).json({ ok: false, error: 'health_consent_required' })
-  // No prescription answers or derived health categories are accepted by this endpoint.
+  if (body.profile && body.consentVersion !== CONSENT_VERSION) return res.status(400).json({ ok: false, error: 'renew_health_consent' })
   if (!UUID_RE.test(quizId) || !step) {
     return res.status(400).json({ ok: false, error: 'invalid_payload' })
   }
@@ -275,13 +285,15 @@ app.post('/api/quiz-progress', async (req, res) => {
       appendEvent(
         {
           type: 'lead',
+          quizId,
+          profile: cleanAnswers(body.profile),
           email,
           firstName: firstName || undefined,
           source,
           healthConsent,
           marketingConsent,
           reserveBox,
-          consentVersion: '2026-09-22',
+          consentVersion: CONSENT_VERSION,
           at: new Date().toISOString(),
         },
         PROGRESS_FILE,
@@ -366,7 +378,7 @@ app.post('/api/leads', async (req, res) => {
         marketingConsent,
         reserveBox: box,
         marketingScope: box ? 'box_updates' : 'all_product_updates',
-        consentVersion: '2026-09-22',
+        consentVersion: CONSENT_VERSION,
         at: new Date().toISOString(),
       },
       PROGRESS_FILE,
@@ -426,7 +438,9 @@ app.post('/api/reservations', async (req, res) => {
   const state = String(body.state ?? '').trim().toUpperCase()
   const upsell = body.upsell === true
   if (body.healthConsent !== true) return res.status(400).json({ ok: false, error: 'health_consent_required' })
-  const priorities = cleanPriorities(body.priorities)
+  if (body.profile && body.consentVersion !== CONSENT_VERSION) return res.status(400).json({ ok: false, error: 'renew_health_consent' })
+  const profile = cleanAnswers(body.profile)
+  const priorities = body.profile ? derivePathways(profile) : cleanPriorities(body.priorities)
   const source = cleanSource(body.source)
 
   if (firstName.length < 2) {
@@ -457,8 +471,9 @@ app.post('/api/reservations', async (req, res) => {
     healthConsent: true,
     marketingConsent: body.marketingConsent === true,
     boxUpdatesConsent: upsell,
-    consentVersion: '2026-09-22',
+    consentVersion: CONSENT_VERSION,
     priorities,
+    profile,
     state,
     upsell,
     source,
@@ -472,7 +487,7 @@ app.post('/api/reservations', async (req, res) => {
   }
 
   const alreadySent = readEvents().some((e) => e.type === 'summary_email' && e.reservationId === reservation.id)
-  const emailResult = alreadySent ? { sent: true } : await sendResource({ email, firstName: reservation.firstName, priorities: reservation.priorities, id: `summary-${reservation.id}` })
+  const emailResult = alreadySent ? { sent: true } : await sendResource({ email, firstName: reservation.firstName, priorities: reservation.priorities, id: `summary-${reservation.id}`, intake: planIntakeFromAnswers(reservation.profile) })
   if (emailResult.sent && !alreadySent) appendEvent({ type: 'summary_email', reservationId: reservation.id, at: new Date().toISOString() })
   if (!existing) recordFunnel('quiz_completed')
   const opsResult = await sendOpsNotification({
@@ -487,6 +502,20 @@ app.post('/api/reservations', async (req, res) => {
   })
 
   res.json({ ok: true, id: reservation.id, emailSent: emailResult.sent, opsNotified: opsResult.sent })
+})
+
+app.post('/api/plan', async (req, res) => {
+  const body = req.body || {}
+  const intake = cleanPlanIntake(body.intake)
+  const email = String(body.email || '').trim().toLowerCase()
+  const firstName = String(body.firstName || '').trim().slice(0, 80)
+  if (!intake || !EMAIL_RE.test(email) || firstName.length < 2) return res.status(400).json({ ok: false, error: 'invalid_plan' })
+  if (body.healthConsent !== true || body.consentVersion !== CONSENT_VERSION) return res.status(400).json({ ok: false, error: 'health_consent_required' })
+  const id = randomUUID()
+  try { appendEvent({ type: 'saved_plan', id, email, firstName, intake, healthConsent: true, consentVersion: CONSENT_VERSION, at: new Date().toISOString() }, PROGRESS_FILE) }
+  catch { return res.status(500).json({ ok: false, error: 'write_failed' }) }
+  const result = await sendResource({ email, firstName, intake, priorities: derivePathways(intake.context), id: `plan-${id}` })
+  res.json({ ok: true, guideSent: result.sent, queued: result.queued === true })
 })
 
 app.post('/api/reservations/cancel', (req, res) => {
@@ -637,7 +666,7 @@ app.use(
       const email = mail.to?.[0]
       if (readProgressEvents().some((e) => e.type === 'unsubscribe' && e.email === email)) return { sent: false, reason: 'unsubscribed' }
       const token = unsubscribeToken(email)
-      return sendMail({ ...mail, text: `${mail.text}\n\nUnsubscribe: ${PUBLIC_BASE_URL}/unsubscribe?token=${token}\n${postalLines().join('\n')}` })
+      return sendMail({ ...mail, marketing: true, text: `${mail.text}\n\nUnsubscribe: ${PUBLIC_BASE_URL}/unsubscribe?token=${token}\n${postalLines().join('\n')}` })
     },
     logEvent: appendEvent,
   }),
