@@ -46,7 +46,7 @@ test('soft launch integration', async (t) => {
     assert.equal(JSON.stringify(data).includes('private'), false)
     assert.equal(JSON.stringify(data).includes('medication'), false)
   })
-  await t.test('health consent is enforced and raw answers are never persisted', async () => {
+  await t.test('health consent is enforced and unrecognised answer payloads are discarded', async () => {
     const lead = { quizId, step: 'email_gate', email: 'quiz@example.com', firstName: 'Tester', responses: [{ prompt: 'medication', labels: ['private'] }] }
     assert.equal((await post('/api/quiz-progress', lead)).status, 400)
     const res = await post('/api/quiz-progress', { ...lead, healthConsent: true, marketingConsent: false, sendGuide: true })
@@ -99,6 +99,42 @@ test('soft launch integration', async (t) => {
     assert.equal(res.status, 200)
     assert.match(await res.text(), /summary_sent/)
   })
+  await t.test('consented quiz profile is saved, sanitised, and used in the emailed programme', async () => {
+    const profile = { q1: 'q1_not_started', q2: ['a'], q5: 'q5_a', q8: 'q8_a', training_experience: 'new', equipment: 'none', training_days: '2', protein_habit: 'rarely', appetite: 'very_low', current_medication: 'none', medication_dose: 'stale dose', injected: 'secret' }
+    const body = { quizId: '00000000-0000-4000-8000-000000000010', firstName: 'Profile', email: 'profile@example.com', state: 'CA', resident: true, attest: true, healthConsent: true, consentVersion: '2026-09-29', profile }
+    assert.equal((await post('/api/reservations', { ...body, healthConsent: false })).status, 400)
+    assert.equal((await post('/api/reservations', { ...body, consentVersion: 'old' })).status, 400)
+    const result = await (await post('/api/reservations', body)).json()
+    assert.equal(result.emailSent, true)
+    const saved = rows('reservations.jsonl').find(x => x.id === result.id)
+    assert.equal(saved.profile.equipment, 'none')
+    assert.equal(saved.profile.injected, undefined)
+    assert.equal(saved.profile.medication_dose, undefined)
+    assert.equal(saved.priorities.includes('gi_repair'), false)
+    const mail = rows('mail.jsonl').at(-1)
+    assert.match(mail.text, /Your personalised Peptis programme/)
+    assert.match(mail.text, /Shoulder-blade|shoulder-blade/)
+    assert.doesNotMatch(mail.text, /Band row/)
+    assert.match(mail.text, /1 set/)
+  })
+  await t.test('the standalone plan email contains the requested three-day plan', async () => {
+    const payload = { firstName: 'Plan', email: 'plan@example.com', intake: { experience: 'regular', equipment: 'dumbbells', days: 3, sensitivities: [] }, healthConsent: true, consentVersion: '2026-09-29' }
+    assert.equal((await post('/api/plan', { ...payload, healthConsent: false })).status, 400)
+    assert.equal((await (await post('/api/plan', payload)).json()).guideSent, true)
+    assert.match(rows('mail.jsonl').at(-1).text, /Day C/)
+    assert.match(rows('mail.jsonl').at(-1).text, /One-arm dumbbell row/)
+  })
+  await t.test('production can save and queue without a sender when its volume is mounted', async () => {
+    const dataDir = path.join(tmp, 'queued')
+    const child = spawn(process.execPath, ['server.mjs'], { env: { ...process.env, PORT: '18882', NODE_ENV: 'production', DATA_DIR: dataDir, RAILWAY_VOLUME_MOUNT_PATH: dataDir, EMAIL_PROVIDER: 'resend', RESEND_API_KEY: '', OPS_NOTIFY_EMAILS: 'disabled' }, stdio: ['ignore','pipe','pipe'] })
+    try {
+      await new Promise((resolve,reject) => { child.stdout.on('data', c => { if(String(c).includes('listening')) resolve() }); child.once('exit',reject) })
+      assert.deepEqual(await (await fetch('http://127.0.0.1:18882/api/readiness')).json(), { signupReady: true, emailReady: false })
+      const result = await fetch('http://127.0.0.1:18882/api/leads', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({firstName:'Queued',email:'queued@example.com'}) })
+      assert.deepEqual(await result.json(), { ok: true, guideSent: false, opsNotified: false })
+      assert.match(fs.readFileSync(path.join(dataDir, 'mail-outbox.jsonl'),'utf8'), /"status":"pending"/)
+    } finally { child.kill(); await once(child,'exit') }
+  })
   await t.test('production signup fails closed without a persistent volume', async () => {
     const child = spawn(process.execPath, ['server.mjs'], { env: { ...process.env, PORT: '18880', NODE_ENV: 'production', DATA_DIR: path.join(tmp, 'unmounted'), RAILWAY_VOLUME_MOUNT_PATH: '', RESEND_API_KEY: '', OPS_NOTIFY_EMAILS: 'disabled' }, stdio: ['ignore', 'pipe', 'pipe'] })
     try {
@@ -121,7 +157,7 @@ test('soft launch integration', async (t) => {
     try {
       await new Promise((resolve, reject) => { child.stdout.on('data', (chunk) => { if (String(chunk).includes('listening')) resolve() }); child.once('exit', reject) })
       const graphBase = `http://127.0.0.1:${graphPort}`
-      assert.deepEqual(await (await fetch(graphBase + '/api/readiness')).json(), { signupReady: true })
+      assert.deepEqual(await (await fetch(graphBase + '/api/readiness')).json(), { signupReady: true, emailReady: true })
       const res = await fetch(graphBase + '/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ firstName: 'Tester', email: 'graph@example.com' }) })
       assert.equal((await res.json()).guideSent, true)
       const messages = fs.readFileSync(graphMailFile, 'utf8').trim().split('\n').map(JSON.parse)

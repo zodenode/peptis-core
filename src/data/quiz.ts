@@ -1,3 +1,4 @@
+import { derivePathways as derive } from '../../shared/profile.mjs'
 import type { ContinuityTerms } from './continuityConfig'
 
 export type StepType =
@@ -7,6 +8,7 @@ export type StepType =
   | 'stop_block'
   | 'summary'
   | 'plan_build'
+  | 'treatment_context'
   | 'trajectory'
   | 'email_gate'
   | 'checkout'
@@ -37,6 +39,7 @@ export type StepId =
   | 'email_gate'
   | 'summary_mid'
   | 'plan_build'
+  | 'treatment_context'
   | 'trajectory'
   | 'checkout'
   | 'success'
@@ -100,18 +103,21 @@ export const questions: Record<QuestionId, QuestionStep> = {
       {
         id: 'q1_b',
         letter: 'C',
-        label: 'I have been in treatment for three months or longer.',
+        label: 'I have been in treatment for three to six months.',
         insight: 'This is a useful time to notice changes in strength, food intake, comfort and routine.',
       },
+      { id: 'q1_f', letter: 'D', label: 'I have been in treatment for six to twelve months.', insight: 'Use your routine and strength records to review progress with your clinician.' },
+      { id: 'q1_g', letter: 'E', label: 'I have been in treatment for more than a year.', insight: 'Review what is sustainable and what has changed in your usual routine.' },
+      { id: 'q1_not_started', letter: 'F', label: 'I have not started GLP-1 treatment.', insight: 'You can build strength and nutrition habits before any treatment decision.' },
       {
         id: 'q1_c',
-        letter: 'D',
+        letter: 'G',
         label: 'I recently stopped treatment.',
         insight: 'A change in treatment deserves follow up with your current clinician. This summary can help organize your questions.',
       },
       {
         id: 'q1_d',
-        letter: 'E',
+        letter: 'H',
         label: 'I am not sure of my timeline or dose schedule.',
         insight: 'That is fine for this quiz. Confirm the details with your current clinician when you can.',
       },
@@ -321,29 +327,30 @@ export const questions: Record<QuestionId, QuestionStep> = {
     type: 'question',
     topic: 'Digestive priority',
     prompt: 'What would better digestive comfort make easier for you?',
-    hint: 'Choose the most practical benefit.',
+    hint: 'Choose a benefit, or tell us this is not a concern.',
     options: [
+      { id: 'q8_none', letter: 'A', label: 'Digestive comfort is not a concern for me.', insight: 'We will focus on the priorities you selected.' },
       {
         id: 'q8_a',
-        letter: 'A',
+        letter: 'B',
         label: 'Eating comfortable portions and meeting nutrition needs more consistently.',
         insight: 'Meal size, timing, fluids and symptom notes can support a better conversation with your clinician.',
       },
       {
         id: 'q8_b',
-        letter: 'B',
+        letter: 'C',
         label: 'Planning meals with less worry about symptoms.',
         insight: 'We will add meal planning and symptom timing notes to your summary.',
       },
       {
         id: 'q8_c',
-        letter: 'C',
+        letter: 'D',
         label: 'Feeling more comfortable being active after meals.',
         insight: 'We will add post-meal comfort and activity notes to your summary.',
       },
       {
         id: 'q8_d',
-        letter: 'D',
+        letter: 'E',
         label: 'Enjoying meals away from home with more confidence.',
         insight: 'We will add eating-out comfort and preparation notes to your summary.',
       },
@@ -425,6 +432,7 @@ export function isStopStepId(id: StepId): id is StopStepId {
 export function stepMeta(id: StepId): { type: StepType; step_id: string; step_index: number; block?: StopBlockId } {
   const map: Record<StepId, { type: StepType; step_index: number; block?: StopBlockId }> = {
     q1: { type: 'question', step_index: 0 },
+    treatment_context: { type: 'plan_build', step_index: 1 },
     explain_q1: { type: 'explainer', step_index: 1 },
     q2: { type: 'question', step_index: 2 },
     email_gate: { type: 'email_gate', step_index: 3 },
@@ -473,20 +481,20 @@ export type Answers = {
   care_provider?: string
   current_medication?: string
   training_setting?: string
+  medication_dose?: string
+  weight_change?: string
+  training_experience?: string
+  equipment?: string
+  training_days?: string
+  training_habit?: string
+  protein_habit?: string
+  appetite?: string
+  sensitivities?: string[]
 }
 
-export type PlanAnswerKey = 'care_provider' | 'current_medication' | 'training_setting'
+export type PlanAnswerKey = Exclude<keyof Answers, 'q2' | 'sensitivities'>
 
-export function derivePathways(answers: Answers): string[] {
-  const pathways = new Set<string>()
-  const q2 = answers.q2 ?? []
-  if (q2.includes('a') || answers.q3 === 'q3_d' || answers.q6 === 'q6_b') pathways.add('muscle_protection')
-  if (q2.includes('b') || answers.q4 === 'q4_a' || answers.q7 === 'q7_c' || answers.q7 === 'q7_d')
-    pathways.add('cellular_energy')
-  if (q2.includes('c') || answers.q5 === 'q5_c' || answers.q8 === 'q8_a') pathways.add('gi_repair')
-  if (q2.includes('d')) pathways.add('rebound_protection')
-  return [...pathways]
-}
+export function derivePathways(answers: Answers): string[] { return derive(answers) }
 
 export type LabeledResponse = {
   id: string
@@ -567,6 +575,8 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
 
   switch (step) {
     case 'q1':
+      return 'treatment_context'
+    case 'treatment_context':
       return 'explain_q1'
     case 'explain_q1':
       return 'q2'
@@ -608,7 +618,7 @@ export function nextAfter(step: StepId, answers: Answers, shown: StopBlockId[]):
     case 'explain_q7':
       return 'q8'
     case 'q8':
-      return 'explain_q8'
+      return answers.q8 === 'q8_none' ? 'plan_build' : 'explain_q8'
     case 'explain_q8':
       return 'plan_build'
     case 'plan_build':

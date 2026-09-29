@@ -16,7 +16,9 @@ import { getQuizPrompt, getQuizSource, track } from '../lib/analytics'
 import { postQuizProgress, submitReservation } from '../lib/reservations'
 import { isValidEmail } from '../lib/validate'
 
-export const QUIZ_STORAGE_KEY = 'peptis.continuity.quiz'
+import { QUIZ_STORAGE_KEY, INTAKE_KEY } from '../lib/quizPlan'
+import { cleanAnswers, PROFILE_VERSION, planIntakeFromAnswers, CONSENT_VERSION } from '../../shared/profile.mjs'
+export { QUIZ_STORAGE_KEY } from '../lib/quizPlan'
 
 export type CheckoutForm = {
   firstName: string
@@ -41,6 +43,8 @@ const PROMPT_TO_Q2: Record<string, string> = {
 }
 
 export type QuizSnapshot = {
+  version?: number
+  startedTracked?: boolean
   quizId?: string
   entryPrompt?: string
   current: StepId
@@ -117,12 +121,13 @@ export function useQuizEngine() {
 
   useEffect(() => {
     const saved = loadSnapshot()
-    if (saved && saved.checkout?.healthConsent && !saved.completed && isStepId(saved.current)) {
+    if (saved && saved.version === PROFILE_VERSION && saved.checkout?.healthConsent && !saved.completed && isStepId(saved.current)) {
       if (saved.quizId) setQuizId(saved.quizId)
       setEntryPrompt(saved.entryPrompt ?? getQuizPrompt())
       setCurrent(saved.current)
       setHistory(saved.history)
-      setAnswers(saved.answers)
+      setAnswers(cleanAnswers(saved.answers))
+      startedEvent.current = Boolean(saved.startedTracked)
       setShown(saved.shown)
       setCheckout({ ...emptyCheckout, ...saved.checkout })
       setStartedAt(saved.startedAt)
@@ -144,6 +149,8 @@ export function useQuizEngine() {
   useEffect(() => {
     if (!hydrated || !checkout.healthConsent) return
     persist({
+      version: PROFILE_VERSION,
+      startedTracked: startedEvent.current,
       quizId,
       entryPrompt,
       current,
@@ -158,11 +165,7 @@ export function useQuizEngine() {
   }, [answers, checkout, completed, current, entryPrompt, history, hydrated, identifiedEmail, quizId, shown, startedAt])
 
   useEffect(() => {
-    if (!hydrated) return
-    if (!startedEvent.current) {
-      startedEvent.current = true
-      track('quiz_started', { source: getQuizSource(), entry_prompt: getQuizPrompt() ?? 'none' })
-    }
+    if (!hydrated || !checkout.healthConsent) return
     if (lastViewed.current === current) return
     lastViewed.current = current
     const meta = stepMeta(current)
@@ -182,13 +185,13 @@ export function useQuizEngine() {
         track('quiz_reached_checkout', { pathways: derivePathways(answers) })
       }
     }
-  }, [answers, current, hydrated])
+  }, [answers, current, hydrated, checkout.healthConsent])
 
   useEffect(() => {
     if (!hydrated) return
 
     const abandon = () => {
-      if (completed || abandonedSent.current) return
+      if (!startedEvent.current || completed || abandonedSent.current) return
       abandonedSent.current = true
       const minutes = Math.round(((Date.now() - startedAt) / 60000) * 10) / 10
       track('quiz_abandoned', { last_step: current, minutes_on_quiz: minutes })
@@ -208,7 +211,12 @@ export function useQuizEngine() {
 
   const selectOption = useCallback(
     (optionId: string) => {
-      if (!isQuestionId(current)) return
+      if (!checkout.healthConsent || !isQuestionId(current)) return
+      if (!startedEvent.current) {
+        startedEvent.current = true
+        setStartedAt(Date.now())
+        track('quiz_started', { source: getQuizSource() })
+      }
       const q = questions[current]
       if (q.multi) {
         const prev = answers.q2 ?? []
@@ -223,7 +231,7 @@ export function useQuizEngine() {
         option_id: optionId,
       })
     },
-    [answers.q2, current],
+    [answers.q2, current, checkout.healthConsent],
   )
 
   const setPlanAnswer = useCallback((key: PlanAnswerKey, value: string) => {
@@ -233,6 +241,10 @@ export function useQuizEngine() {
   }, [])
 
   const goNext = useCallback(() => {
+    if (current === 'plan_build') {
+      const intake = planIntakeFromAnswers(answers)
+      if (intake) { try { localStorage.setItem(INTAKE_KEY, JSON.stringify(intake)) } catch { /* private mode */ } }
+    }
     const upcoming = nextAfter(current, answers, shown)
     if (isStopStepId(upcoming)) {
       const block: StopBlockId = upcoming === 'stop_a' ? 'A' : upcoming === 'stop_b' ? 'B' : 'C'
@@ -289,7 +301,7 @@ export function useQuizEngine() {
       const name = firstName.trim()
       if (!isValidEmail(clean) || name.length < 2 || !healthConsent) return false
       const reserveBox = false
-      const saved = await postQuizProgress({ quizId, step: current, email: clean, firstName: name, pathways: [], sendGuide: true, source: getQuizSource(), healthConsent, marketingConsent, reserveBox })
+      const saved = await postQuizProgress({ quizId, step: current, email: clean, firstName: name, pathways: [], sendGuide: true, source: getQuizSource(), healthConsent, marketingConsent, reserveBox, profile: cleanAnswers(answers), consentVersion: CONSENT_VERSION })
       if (!saved.ok) return false
       setCheckout((c) => ({
         ...c,
@@ -309,7 +321,7 @@ export function useQuizEngine() {
       setIdentifiedEmail(clean)
       return true
     },
-    [current, quizId],
+    [current, quizId, answers],
   )
 
   const submitCheckout = useCallback(async () => {
@@ -337,6 +349,7 @@ export function useQuizEngine() {
       healthConsent: checkout.healthConsent,
       marketingConsent: checkout.marketingConsent,
       priorities: derivePathways(answers),
+      profile: cleanAnswers(answers), consentVersion: CONSENT_VERSION,
     })
 
     if (!result.ok) {
@@ -365,6 +378,8 @@ export function useQuizEngine() {
 
   const reset = useCallback(() => {
     localStorage.removeItem(QUIZ_STORAGE_KEY)
+    localStorage.removeItem(INTAKE_KEY)
+    startedEvent.current = false
     setQuizId(newQuizId())
     setCurrent('q1')
     setHistory([])

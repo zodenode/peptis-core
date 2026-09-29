@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useSignupReady } from '../../hooks/useSignupReady'
+import { useSignupStatus } from '../../hooks/useSignupReady'
 import { useState, type FormEvent } from 'react'
 import { checkoutCopy } from '../../data/quiz'
 import { US_STATES } from '../../data/usStates'
@@ -24,7 +24,7 @@ const pathwayLabels: Record<string, string> = {
 }
 
 export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways, submitState }: Props) {
-  const signupReady = useSignupReady()
+  const { signupReady, emailReady } = useSignupStatus()
   const [attempted, setAttempted] = useState(false)
   const errors = {
     firstName: form.firstName.trim().length > 1 ? '' : 'Enter your first name.',
@@ -53,14 +53,14 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
 
   const fieldError = (key: keyof typeof errors) => (attempted && errors[key] ? errors[key] : null)
 
-  if (signupReady === false) return <div className="quiz-card"><div className="quiz-body"><h1>Your priorities</h1><ul>{pathways.map((key) => <li key={key}>{pathwayLabels[key]}</li>)}</ul><p>Email delivery is temporarily unavailable. Your answers stay on this device. You can build and export your free training programme now.</p><Link to="/plan" className="btn btn-primary">Build my training plan</Link></div></div>
+  if (signupReady === false) return <div className="quiz-card"><div className="quiz-body"><h1>Your priorities</h1><ul>{pathways.map((key) => <li key={key}>{pathwayLabels[key]}</li>)}</ul><p>Saving is temporarily unavailable. Your personalised plan is ready on this device, and you can export it now.</p><Link to="/plan" className="btn btn-primary">View my training plan</Link></div></div>
   return (
     <div className="quiz-card checkout-card">
       <form className="quiz-body" onSubmit={handleSubmit} noValidate>
         <p className="quiz-kicker">{checkoutCopy.eyebrow}</p>
         <h1 className="quiz-title">Save your summary</h1>
         <p className="quiz-hint">
-          Finish your free check and receive your written priorities and starter guide by email.
+          {emailReady ? 'Save your priorities and personalised exercise and nutrition plan. We will email a copy.' : 'Save your priorities and personalised plan now. Email is delayed and will be queued; your plan is available on screen.'}
         </p>
 
         <fieldset className="plan-box">

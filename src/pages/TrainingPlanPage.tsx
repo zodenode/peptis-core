@@ -18,7 +18,8 @@ import { ReserveBoxButton } from '../components/landing/ReserveBoxButton'
 import { useSignupReady } from '../hooks/useSignupReady'
 import { isValidEmail } from '../lib/validate'
 
-const INTAKE_KEY = 'peptis.plan.intake'
+import { quizPlan, INTAKE_KEY } from '../lib/quizPlan'
+import { cleanPlanIntake, CONSENT_VERSION } from '../../shared/profile.mjs'
 
 const experienceOptions: { id: Experience; label: string; hint: string }[] = [
   { id: 'new', label: 'New to resistance training', hint: 'Little or no structured lifting so far' },
@@ -27,7 +28,7 @@ const experienceOptions: { id: Experience; label: string; hint: string }[] = [
 ]
 
 const equipmentOptions: { id: Equipment; label: string; hint: string }[] = [
-  { id: 'none', label: 'No equipment', hint: 'Home, bodyweight, maybe a light band' },
+  { id: 'none', label: 'No equipment', hint: 'Bodyweight and ordinary household supports; no bands or weights' },
   { id: 'dumbbells', label: 'Dumbbells at home', hint: 'A pair of dumbbells or adjustable set' },
   { id: 'gym', label: 'Full gym', hint: 'Machines, cables and free weights' },
 ]
@@ -41,7 +42,9 @@ const sensitivityOptions: { id: Sensitivity; label: string }[] = [
 function loadIntake(): PlanIntake | null {
   try {
     const raw = localStorage.getItem(INTAKE_KEY)
-    return raw ? (JSON.parse(raw) as PlanIntake) : null
+    const saved = raw ? cleanPlanIntake(JSON.parse(raw)) : null
+    const quiz = quizPlan()
+    return quiz && JSON.stringify(quiz.context) !== JSON.stringify(saved?.context) ? quiz : saved ?? quiz
   } catch {
     return null
   }
@@ -66,7 +69,8 @@ export function TrainingPlanPage() {
   const [sensitivities, setSensitivities] = useState<Sensitivity[]>(intake?.sensitivities ?? [])
   const [planEmail, setPlanEmail] = useState('')
   const [planName, setPlanName] = useState('')
-  const [planMarketing, setPlanMarketing] = useState(false)
+  const [planHealthConsent, setPlanHealthConsent] = useState(false)
+  const [planContext] = useState(intake?.context)
   const [planSent, setPlanSent] = useState<'idle' | 'sending' | 'sent' | 'saved' | 'error'>('idle')
   const viewed = useRef(false)
 
@@ -82,7 +86,7 @@ export function TrainingPlanPage() {
 
   const generate = () => {
     if (!experience || !equipment || !days) return
-    const next: PlanIntake = { experience, equipment, days, sensitivities }
+    const next: PlanIntake = { experience, equipment, days, sensitivities, context: planContext }
     setIntake(next)
     try {
       localStorage.setItem(INTAKE_KEY, JSON.stringify(next))
@@ -220,8 +224,7 @@ export function TrainingPlanPage() {
                     {program.days.length} full-body sessions a week, built for steady strength
                   </h1>
                   <p className="plan-intro">
-                    Every session covers the six movement patterns that protect everyday
-                    function. Alternate the days, rest at least one day between sessions, and
+                    Your sessions fit your equipment, available days and quiz context. Alternate the days, rest at least one day between sessions, and
                     progress one small step at a time.
                   </p>
                 </div>
@@ -252,13 +255,17 @@ export function TrainingPlanPage() {
                 </div>
               </div>
 
+              <section className="plan-guidance" aria-label="How your answers shaped this plan">
+                <div><h2>Why this plan fits you</h2><ul>{program.personalisationNotes.map(note => <li key={note}>{note}</li>)}</ul></div>
+                <div><h2>Your nutrition actions</h2><ul>{program.nutritionNotes.map(note => <li key={note}>{note}</li>)}</ul></div>
+              </section>
               {program.days.map((day) => (
                 <article className="plan-day" key={day.title}>
                   <h2>{day.title}</h2>
                   <ol className="plan-slots">
                     {day.slots.map((slot) => (
-                      <li className="plan-slot" key={`${day.title}-${slot.pattern}`}>
-                        <div className="plan-slot-media" aria-hidden="true">
+                      <li className={`plan-slot${slot.exercise.slug === 'wall-slide' ? ' is-text-only' : ''}`} key={`${day.title}-${slot.pattern}`}>
+                        {slot.exercise.slug !== 'wall-slide' ? <div className="plan-slot-media" aria-hidden="true">
                           <img
                             src={exerciseImage(slot.exercise.slug, 1)}
                             alt=""
@@ -275,11 +282,12 @@ export function TrainingPlanPage() {
                             height={512}
                           />
                         </div>
+                        : null}
                         <div className="plan-slot-copy">
                           <span className="plan-pattern">{slot.patternLabel}</span>
                           <h3>{slot.exercise.name}</h3>
                           <p className="plan-dose">
-                            {slot.sets} sets of {slot.reps}
+                            {slot.sets} {slot.sets === 1 ? 'set' : 'sets'} of {slot.reps}
                           </p>
                           <p className="plan-cue">{slot.exercise.cue}</p>
                           {slot.note ? <p className="plan-cue">{slot.note}</p> : null}
@@ -332,20 +340,20 @@ export function TrainingPlanPage() {
                 className="plan-email no-print"
                 onSubmit={(event) => {
                   event.preventDefault()
-                  if (!isValidEmail(planEmail) || planName.trim().length < 2) {
+                  if (!isValidEmail(planEmail) || planName.trim().length < 2 || !planHealthConsent) {
                     setPlanSent('error')
                     return
                   }
                   if (planSent === 'sending') return
                   setPlanSent('sending')
-                  void fetch('/api/leads', {
+                  void fetch('/api/plan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                       firstName: planName.trim(),
                       email: planEmail.trim(),
                       source: 'plan_email',
-                      marketingConsent: planMarketing,
+                      intake, healthConsent: planHealthConsent, consentVersion: CONSENT_VERSION,
                     }),
                   })
                     .then(async (res) => {
@@ -357,9 +365,9 @@ export function TrainingPlanPage() {
                     .catch(() => setPlanSent('error'))
                 }}
               >
-                <h2>Email me the starter guide</h2>
+                <h2>Email me this programme</h2>
                 {signupReady === false && <p role="status">Email delivery is temporarily unavailable. You can export your programme above.</p>}
-                <p>We’ll send the two-day starter guide. Your custom programme stays on this device; export it above to keep a copy.</p>
+                <p>Save and email the exercise sessions and nutrition actions shown above. You can also export them now.</p>
                 <label>
                   First name
                   <input value={planName} onChange={(event) => setPlanName(event.target.value)} />
@@ -375,16 +383,16 @@ export function TrainingPlanPage() {
                 <label className="consent-line">
                   <input
                     type="checkbox"
-                    checked={planMarketing}
-                    onChange={(event) => setPlanMarketing(event.target.checked)}
+                    checked={planHealthConsent}
+                    onChange={(event) => setPlanHealthConsent(event.target.checked)}
                   />
-                  <span>Email me product updates, including when the $59 box can ship.</span>
+                  <span>I agree to Peptis saving my health-related plan inputs and using its email provider to send this programme, as described in the Consumer Health Data Notice.</span>
                 </label>
-                <button className="btn btn-primary" type="submit" disabled={!signupReady || planSent === 'sending'}>
-                  Email my starter guide
+                <button className="btn btn-primary" type="submit" disabled={!signupReady || !planHealthConsent || planSent === 'sending'}>
+                  Email my programme
                 </button>
-                {planSent === 'sent' ? <p>Saved. Check your inbox for the starter plan.</p> : null}
-                {planSent === 'saved' ? <p>Your request is saved, but email delivery is unavailable. Your programme is still here; use Export to keep a copy.</p> : null}
+                {planSent === 'sent' ? <p>Saved. Check your inbox for your personalised programme.</p> : null}
+                {planSent === 'saved' ? <p>Your programme is saved and its email is queued. Your programme is still here; use Export to keep a copy.</p> : null}
                 {planSent === 'error' ? <p>Check your name and email, then try again. We could not save your request.</p> : null}
                 <ReserveBoxButton source="plan_box" />
               </form>

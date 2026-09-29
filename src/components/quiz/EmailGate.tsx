@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSignupReady } from '../../hooks/useSignupReady'
+import { useSignupStatus } from '../../hooks/useSignupReady'
 import { isValidEmail } from '../../lib/validate'
 
 export type EmailGatePayload = {
@@ -27,7 +27,7 @@ export function EmailGate({
   onBack,
   canGoBack,
 }: Props) {
-  const signupReady = useSignupReady()
+  const { signupReady, emailReady: deliveryReady } = useSignupStatus()
   const [firstName, setFirstName] = useState(initialFirstName)
   const [email, setEmail] = useState(initialEmail)
   const [healthConsent, setHealthConsent] = useState(false)
@@ -59,7 +59,7 @@ export function EmailGate({
     else setError(true)
   }
 
-  if (signupReady === false) return <article className="quiz-card"><div className="quiz-body"><h1>Continue with your free check</h1><p>Email delivery is temporarily unavailable. You can see your priorities on screen and build your starter plan.</p><button className="btn btn-primary" type="button" onClick={onContinue}>Continue without email</button></div></article>
+  if (signupReady === false) return <article className="quiz-card"><div className="quiz-body"><h1>Continue with your free check</h1><p>Saving is temporarily unavailable. You can still complete the check and view your plan on this device.</p><button className="btn btn-primary" type="button" onClick={onContinue}>Continue without email</button></div></article>
   return (
     <article className="quiz-card email-gate-card">
       <div className="email-gate-visual" aria-hidden="true">
@@ -74,7 +74,7 @@ export function EmailGate({
         <p className="quiz-kicker">Save your continuity check</p>
         <h1>Where should we send your starter guide?</h1>
         <p>
-          Two of eight questions are in. We’ll send your free starter guide now. Finish the check to receive your written priorities. No card.
+          {deliveryReady ? 'Two of eight questions are in. Request your free starter guide now, then finish your personalised plan. No card.' : 'Two of eight questions are in. We can save your details now. Email is currently delayed; your guide will be queued, and your personalised plan will be available on screen.'}
         </p>
         <div className="email-gate-field">
           <label htmlFor="email-gate-name">First name</label>
@@ -148,7 +148,7 @@ export function EmailGate({
             </button>
           ) : null}
           <button type="button" className="btn btn-primary" onClick={submit} disabled={!signupReady || !valid || saving}>
-            {saving ? 'Saving…' : 'Send my starter guide and continue'}
+            {saving ? 'Saving…' : 'Save my details and continue'}
           </button>
         </div>
         <p className="email-gate-note">

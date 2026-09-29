@@ -11,7 +11,7 @@ import { useQuizEngine } from '../../hooks/useQuizEngine'
 import { Checkout } from './Checkout'
 import { EmailGate } from './EmailGate'
 import { ExplainerPage } from './ExplainerPage'
-import { PlanBuild } from './PlanBuild'
+import { PlanBuild, TreatmentContext } from './PlanBuild'
 import { providerLogoSrcs } from '../../data/planBuild'
 import { QuizQuestion } from './QuizQuestion'
 import { Success } from './Success'
@@ -42,8 +42,8 @@ export function QuizFlow({ embedded = false }: Props) {
   if (!quiz.checkout.healthConsent) return (
     <div className="quiz-shell"><article className="quiz-card"><div className="quiz-body">
       <p className="quiz-kicker">Before your free check</p><h1>Your answers, your choice</h1>
-      <p>This check asks about treatment, strength, energy and eating. Peptis uses your answers to build an educational summary on this device. If you request an email, we save your contact details, consent and summary priorities and send them through our email provider. Prescription and provider answers stay in your browser.</p>
-      <p>Read the <Link to="/health-data">Consumer Health Data Notice</Link>. You can withdraw consent or request deletion at support@peptis.com.</p>
+      <p>This check asks about treatment, strength, energy and eating. Peptis uses your answers to build an educational summary on this device. If you request an email, we save your contact details, consent and summary priorities and send them through our email provider. When you choose to save or email your plan, we also save your treatment details and routine answers to personalise it.</p>
+      <p>Read the <Link to="/health-data">Consumer Health Data Notice</Link>. You can withdraw consent or request deletion at support@peptis.co.</p>
       <label className="consent-line"><input type="checkbox" onChange={(event) => { if (event.target.checked) quiz.patchCheckout({ healthConsent: true }) }} /><span>I am 18 or older and agree to Peptis collecting and using my health-related answers for this check and any summary I request.</span></label>
       <p>You can also <Link to="/publication/training/two-day-strength-plan">read the free starter guide</Link> without taking the check.</p>
     </div></article></div>
@@ -91,6 +91,8 @@ export function QuizFlow({ embedded = false }: Props) {
             canGoBack={quiz.canGoBack}
           />
         ) : null}
+
+        {quiz.current === 'treatment_context' ? <TreatmentContext answers={quiz.answers} onAnswer={quiz.setPlanAnswer} onContinue={quiz.goNext} onBack={quiz.goBack} canGoBack={quiz.canGoBack} /> : null}
 
         {quiz.current === 'email_gate' ? (
           <EmailGate

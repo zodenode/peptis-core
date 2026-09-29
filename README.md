@@ -30,9 +30,11 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 
 - `POST /api/reservations` validates and appends to `DATA_DIR/reservations.jsonl` with fsync, then sends a confirmation email with a cancellation link. The quiz shows success only after this write is confirmed.
 - `POST /api/reservations/cancel` appends a cancellation event (idempotent).
-- `POST /api/quiz-progress` appends either an anonymous step record (quizId, step, pathways) or a separate lead record (email, first name, source). Provider and prescription answers are not written to disk. When called with `sendGuide: true`, it sends the two day strength starter plan email once per address. A new lead also emails the operators.
+- `POST /api/quiz-progress` appends either an anonymous step record (quizId, step, pathways) or a separate lead record (email, first name, source). When the visitor requests a saved/email plan and supplies the current health consent version, the allowlisted treatment and routine profile is saved with the lead. It is excluded from analytics and operator notices. When called with `sendGuide: true`, it sends the two day strength starter plan email once per address. A new lead also emails the operators.
 - `POST /api/leads` is the short landing-page email capture. Same lead write, starter-plan email and operator notice. No quiz answers.
-- `GET /api/health` for monitoring.
+- `POST /api/plan` saves a consented standalone plan and emails the exact programme shown on screen. The quiz and plan page use the same shared generator and profile.
+- `GET /api/health` for monitoring; `/api/readiness` reports durable `signupReady` separately from configured `emailReady`. A configured sender is not proof of inbox delivery.
+- Mail is journalled with fsync in `DATA_DIR/mail-outbox.jsonl` before delivery. Failed/pending messages retry every minute with backoff up to one hour; accepted messages are deduplicated. Pending marketing is checked against unsubscribes before retry. Include this journal in access controls and deletion requests because it contains email content.
 
 | Server variable | Required | Purpose |
 |---|---|---|
@@ -105,7 +107,7 @@ Use it for Peptis claims, infographics, quiz copy, supplement messaging and cont
 
 ## Quiz
 
-Eight screening questions, branching educational stop-blocks and qualitative social-proof intersplices (muscle / energy / GI), followed by an animated continuity-map build. The build pauses for current provider, prescription and realistic training-setting refinements, then reveals a non-predictive Today-to-Week-12 milestone map before identity + state verification and the $0 reservation. Answers persist in `localStorage` (`peptis.continuity.quiz`) for abandonment resume.
+Eight screening questions and educational interludes, with medication/provider/dose and weight-change context immediately after the treatment timeline. A routine step gathers training, equipment, protein and appetite inputs and builds the shared programme, followed by the educational milestone map and optional saved summary. Answers persist in `localStorage` (`peptis.continuity.quiz`) for abandonment resume.
 
 The provider grid identifies common telehealth care settings without suggesting a partnership. Provider and medication selections stay in the browser for the on-screen summary. They are not written to `quiz-progress.jsonl` or `reservations.jsonl`. Prescribing and medication decisions remain with the user's licensed clinician.
 
@@ -134,7 +136,7 @@ Blog: `blog_viewed`, `blog_article_viewed` `{ slug, category }`.
 
 Email gate (step 3 of the quiz): `quiz_email_captured` or `quiz_email_skipped`. A valid email triggers `posthog.identify(email, { quiz_source })` and a Meta Pixel `Lead`; reservation submit fires `CompleteRegistration`.
 
-Identify: at the quiz email gate when an email is entered, otherwise at reservation submit via `posthog.identify(email, { first_name, state, plan })`. Raw quiz answers are not sent to analytics. Provider and prescription answers are not written to server files.
+Identify: at the quiz email gate when an email is entered, otherwise at reservation submit via `posthog.identify(email, { first_name, state, plan })`. Raw quiz answers are not sent to analytics. Consented saved/email profiles are stored on the server; raw answers never enter analytics. `quiz_started` fires once when the first answer is selected, and is retained across reloads.
 
 Email abandonment copy and event → flow mapping: [`docs/EMAIL-ABANDONMENT.md`](./docs/EMAIL-ABANDONMENT.md).
 

@@ -78,7 +78,7 @@ export function PrivacyPage() {
               medication, provider, derived health priority, advertising identifier or full URL.
               We do not load advertising pixels, PostHog, session replay or third-party analytics.
               Quiz answers and your custom training programme are saved in your browser so you
-              can return on the same device.
+              can return on the same device. When you request a saved or emailed plan, we also store the inputs you provide with your consent and contact details.
             </p>
 
             <h2>Consumer health data</h2>
