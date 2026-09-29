@@ -38,10 +38,17 @@ npm run dev            # or Vite dev server (proxies /api to :8787)
 |---|---|---|
 | `DATA_DIR` | Yes in production | Point at a mounted Railway volume so reservations survive deploys |
 | `RESEND_API_KEY` | For email | Resend API key for confirmation, starter-plan and operator notices |
+| `EMAIL_PROVIDER` | No | `resend` (default) or `microsoft_graph` |
+| `MS_GRAPH_TENANT_ID` | For Microsoft Graph | Microsoft 365 tenant ID |
+| `MS_GRAPH_CLIENT_ID` | For Microsoft Graph | Entra app client ID |
+| `MS_GRAPH_CLIENT_SECRET` | For Microsoft Graph | Entra app secret; set only as a Railway secret |
+| `MS_GRAPH_MAILBOX` | For Microsoft Graph | Sender mailbox, `support@peptis.co` |
 | `RESERVATION_EMAIL_FROM` | No | Defaults to `Peptis <reservations@peptis.com>` |
 | `OPS_NOTIFY_EMAILS` | No | Defaults to Joseph and Edozie. Comma-separated operator inboxes for form completions |
 | `PUBLIC_BASE_URL` | No | Cancellation link base, defaults to `https://www.peptis.com` |
 | `ADMIN_TOKEN` | For `/admin` | 16+ character token. The desk stays 404 until this is set. |
+
+To send through the existing GoDaddy Microsoft 365 mailbox, register an Entra application in the mailbox's tenant, grant the Microsoft Graph **application** `Mail.Send` permission with admin consent, and scope the app's Exchange access to `support@peptis.co`. Set `EMAIL_PROVIDER=microsoft_graph` and the four `MS_GRAPH_*` values in Railway. The server requests a short-lived token and calls Graph `users/support@peptis.co/sendMail`; it never needs the mailbox password. Check `/api/readiness` and send a test lead to a company-controlled address after deployment. A successful Graph response means the message was accepted for processing, not that it reached the inbox.
 
 ## Production
 

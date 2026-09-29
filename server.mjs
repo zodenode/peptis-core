@@ -35,7 +35,11 @@ app.use('/api', (req, res, next) => {
 
 // Never claim a production signup is saved when email or durable storage is absent.
 const productionRuntime = Boolean(process.env.RAILWAY_ENVIRONMENT_ID) || process.env.NODE_ENV === 'production'
-const signupReady = !productionRuntime || Boolean(process.env.RESEND_API_KEY && process.env.DATA_DIR && process.env.RAILWAY_VOLUME_MOUNT_PATH && (DATA_DIR === process.env.RAILWAY_VOLUME_MOUNT_PATH || DATA_DIR.startsWith(`${process.env.RAILWAY_VOLUME_MOUNT_PATH}/`)))
+const emailProvider = process.env.EMAIL_PROVIDER || 'resend'
+const mailConfigured = emailProvider === 'microsoft_graph'
+  ? Boolean(process.env.MS_GRAPH_TENANT_ID && process.env.MS_GRAPH_CLIENT_ID && process.env.MS_GRAPH_CLIENT_SECRET && process.env.MS_GRAPH_MAILBOX)
+  : emailProvider === 'resend' && Boolean(process.env.RESEND_API_KEY)
+const signupReady = !productionRuntime || Boolean(mailConfigured && process.env.DATA_DIR && process.env.RAILWAY_VOLUME_MOUNT_PATH && (DATA_DIR === process.env.RAILWAY_VOLUME_MOUNT_PATH || DATA_DIR.startsWith(`${process.env.RAILWAY_VOLUME_MOUNT_PATH}/`)))
 app.get('/api/readiness', (_req, res) => res.json({ signupReady }))
 app.use(['/api/leads', '/api/quiz-progress', '/api/reservations'], (req, res, next) => {
   if (req.method === 'POST' && req.path !== '/cancel' && !signupReady) return res.status(503).json({ ok: false, error: 'signup_unavailable' })
@@ -76,7 +80,50 @@ function cleanSource(value) {
   return SOURCE_RE.test(source) ? source : 'direct'
 }
 
-async function sendResend({ to, subject, text, idempotencyKey }) {
+async function sendMicrosoftGraph({ to, subject, text }) {
+  const tenant = process.env.MS_GRAPH_TENANT_ID
+  const client = process.env.MS_GRAPH_CLIENT_ID
+  const secret = process.env.MS_GRAPH_CLIENT_SECRET
+  const mailbox = process.env.MS_GRAPH_MAILBOX
+  if (!tenant || !client || !secret || !mailbox) return { sent: false, reason: 'no_graph_config' }
+  try {
+    const tokenResponse = await fetch(`https://login.microsoftonline.com/${encodeURIComponent(tenant)}/oauth2/v2.0/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ client_id: client, client_secret: secret, scope: 'https://graph.microsoft.com/.default', grant_type: 'client_credentials' }),
+      signal: AbortSignal.timeout(8000),
+    })
+    if (!tokenResponse.ok) {
+      console.error('microsoft token failed', tokenResponse.status)
+      return { sent: false, reason: `token_${tokenResponse.status}` }
+    }
+    const { access_token: token } = await tokenResponse.json()
+    if (!token) return { sent: false, reason: 'missing_token' }
+    const response = await fetch(`https://graph.microsoft.com/v1.0/users/${encodeURIComponent(mailbox)}/sendMail`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: {
+        subject,
+        body: { contentType: 'Text', content: text },
+        toRecipients: to.map((address) => ({ emailAddress: { address } })),
+        replyTo: [{ emailAddress: { address: mailbox } }],
+      } }),
+      signal: AbortSignal.timeout(8000),
+    })
+    if (response.status !== 202) {
+      console.error('microsoft mail failed', response.status)
+      return { sent: false, reason: `status_${response.status}` }
+    }
+    return { sent: true }
+  } catch (error) {
+    console.error('microsoft mail network failure', error instanceof Error ? error.name : 'unknown')
+    return { sent: false, reason: 'network' }
+  }
+}
+
+async function sendMail({ to, subject, text, idempotencyKey }) {
+  if (emailProvider === 'microsoft_graph') return sendMicrosoftGraph({ to, subject, text })
+  if (emailProvider !== 'resend') return { sent: false, reason: 'unknown_provider' }
   const key = process.env.RESEND_API_KEY
   if (!key) return { sent: false, reason: 'no_api_key' }
   const from = process.env.RESERVATION_EMAIL_FROM || 'Peptis <reservations@peptis.com>'
@@ -89,7 +136,7 @@ async function sendResend({ to, subject, text, idempotencyKey }) {
         ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}),
       },
       signal: AbortSignal.timeout(8000),
-      body: JSON.stringify({ from, to, subject, text, reply_to: 'support@peptis.com' }),
+      body: JSON.stringify({ from, to, subject, text, reply_to: 'support@peptis.co' }),
     })
     if (!res.ok) {
       const detail = await res.text().catch(() => '')
@@ -123,7 +170,7 @@ async function sendOpsNotification({ event, firstName, email, state, phone, upse
   ]
     .filter(Boolean)
     .join('\n')
-  return sendResend({
+  return sendMail({
     to,
     subject: `Peptis ${event}: ${firstName || email}`,
     text,
@@ -171,7 +218,7 @@ function unsubscribeToken(email) {
 
 async function sendResource({ email, firstName, priorities, box = false, id }) {
   const token = unsubscribeToken(email)
-  const result = await sendResend({
+  const result = await sendMail({
     to: [email],
     subject: box ? 'Your Peptis box launch updates' : priorities ? 'Your Peptis priorities and starter plan' : 'Your two-day strength starter guide',
     text: resourceEmail({ firstName, priorities, box, baseUrl: PUBLIC_BASE_URL, unsubscribeUrl: `${PUBLIC_BASE_URL}/unsubscribe?token=${token}` }),
@@ -590,7 +637,7 @@ app.use(
       const email = mail.to?.[0]
       if (readProgressEvents().some((e) => e.type === 'unsubscribe' && e.email === email)) return { sent: false, reason: 'unsubscribed' }
       const token = unsubscribeToken(email)
-      return sendResend({ ...mail, text: `${mail.text}\n\nUnsubscribe: ${PUBLIC_BASE_URL}/unsubscribe?token=${token}\n${postalLines().join('\n')}` })
+      return sendMail({ ...mail, text: `${mail.text}\n\nUnsubscribe: ${PUBLIC_BASE_URL}/unsubscribe?token=${token}\n${postalLines().join('\n')}` })
     },
     logEvent: appendEvent,
   }),
