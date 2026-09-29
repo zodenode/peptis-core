@@ -2,8 +2,28 @@ import { funnelEvent } from '../../shared/funnel.mjs'
 
 export type AnalyticsProps = Record<string, string | number | boolean | string[] | null | undefined>
 
+const ATTRIBUTION_KEY = 'peptis.attribution.source'
+const SOURCES = new Set(['meta', 'google', 'youtube', 'email', 'partner', 'organic'])
+
+function campaignSource(): string {
+  try {
+    const query = new URLSearchParams(window.location.search)
+    if (query.has('utm_source')) {
+      const raw = (query.get('utm_source') ?? '').trim().toLowerCase()
+      const source = raw === 'facebook' || raw === 'instagram' || raw === 'fb' || raw === 'ig'
+        ? 'meta'
+        : SOURCES.has(raw) ? raw : 'other'
+      sessionStorage.setItem(ATTRIBUTION_KEY, source)
+      return source
+    }
+    return sessionStorage.getItem(ATTRIBUTION_KEY) ?? 'direct'
+  } catch {
+    return 'direct'
+  }
+}
+
 export function track(event: string, properties?: AnalyticsProps) {
-  const safe = funnelEvent(event, properties)
+  const safe = funnelEvent(event, { ...properties, source: campaignSource() })
   if (!safe) return
   if (typeof window === 'undefined') return
   try {
