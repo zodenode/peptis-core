@@ -67,6 +67,7 @@ export function Success({ form, pathways, reservationId, emailSent, onReset }: P
         <p className="quiz-hint">
           Your check and starter plan are free. Clinical services are not offered.
         </p>
+        {form.callbackConsent && form.phone ? <p className="quiz-hint">Your callback request is saved. The Peptis team may call the number you provided to discuss your plan and programme options. To withdraw the request, email support@peptis.co.</p> : null}
         {form.upsell ? (
           <p className="quiz-hint">
             You asked to hear when the Lean Mass nutrition box can ship at the intended $59 a

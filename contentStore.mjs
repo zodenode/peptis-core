@@ -179,6 +179,11 @@ export function buildPeople({ progress, reservations }) {
     }
     current.firstName = row.firstName || current.firstName
     current.state = row.state
+    current.phone = row.callbackConsent === true ? row.phone || '' : ''
+    current.callbackConsent = row.callbackConsent === true && Boolean(current.phone)
+    current.callbackConsentAt = row.callbackConsentAt || null
+    current.callbackConsentVersion = row.callbackConsentVersion || null
+    current.callbackConsentText = row.callbackConsentText || null
     if (row.marketingConsent) current.marketingConsent = true
     if (row.healthConsent) current.healthConsent = true
     if (row.boxUpdatesConsent) current.boxUpdatesConsent = true
@@ -192,6 +197,8 @@ export function buildPeople({ progress, reservations }) {
       byEmail.get(event.email).marketingConsent = false
       byEmail.get(event.email).reserveBox = false
       byEmail.get(event.email).boxUpdatesConsent = false
+      byEmail.get(event.email).callbackConsent = false
+      byEmail.get(event.email).phone = ''
     }
   }
   return [...byEmail.values()].sort((a, b) => String(b.lastAt || '').localeCompare(String(a.lastAt || '')))

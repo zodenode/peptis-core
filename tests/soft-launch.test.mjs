@@ -7,6 +7,7 @@ import { spawn } from 'node:child_process'
 import { once } from 'node:events'
 import { funnelEvent } from '../shared/funnel.mjs'
 import { buildPeople } from '../contentStore.mjs'
+import { CALLBACK_CONSENT_VERSION, CALLBACK_CONSENT_TEXT } from '../shared/callback.mjs'
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'peptis-launch-'))
 const mailFile = path.join(tmp, 'mail.jsonl')
@@ -85,6 +86,48 @@ test('soft launch integration', async (t) => {
     const people = buildPeople({ progress: rows('quiz-progress.jsonl'), reservations: rows('reservations.jsonl') })
     assert.equal(people.find((x) => x.email === body.email).marketingConsent, false)
     assert.equal(people.find((x) => x.email === body.email).reserveBox, false)
+  })
+  await t.test('optional callbacks require specific permission and stay out of analytics and mail', async () => {
+    const body = { quizId: '00000000-0000-4000-8000-000000000020', email: 'callback@example.com', firstName: 'Callback', state: 'CA', resident: true, attest: true, healthConsent: true, marketingConsent: false, source: 'google' }
+    const contact = { phone: '(202) 555-0123', callbackConsent: true, callbackConsentVersion: CALLBACK_CONSENT_VERSION }
+    assert.equal((await (await post('/api/reservations', { ...body, phone: contact.phone })).json()).error, 'callback_consent_required')
+    assert.equal((await (await post('/api/reservations', { ...body, ...contact, phone: 'hello123' })).json()).error, 'invalid_phone')
+    assert.equal((await (await post('/api/reservations', { ...body, ...contact, phone: '' })).json()).error, 'callback_phone_required')
+    assert.equal((await (await post('/api/reservations', { ...body, ...contact, callbackConsentVersion: 'old' })).json()).error, 'renew_callback_consent')
+    const first = await (await post('/api/reservations', { ...body, ...contact, smsOptIn: true })).json()
+    assert.equal(first.ok, true)
+    assert.equal(first.callbackRequested, true)
+    const saved = rows('reservations.jsonl').find(x => x.id === first.id)
+    assert.equal(saved.phone, '+12025550123')
+    assert.equal(saved.callbackConsent, true)
+    assert.equal(saved.callbackConsentVersion, CALLBACK_CONSENT_VERSION)
+    assert.equal(saved.callbackConsentText, CALLBACK_CONSENT_TEXT)
+    assert.ok(saved.callbackConsentAt)
+    assert.equal(saved.smsOptIn, false)
+    assert.equal(saved.marketingConsent, false)
+    const retry = await (await post('/api/reservations', { ...body, ...contact })).json()
+    assert.equal(retry.id, first.id)
+    assert.equal(rows('analytics.jsonl').filter(x => x.event === 'callback_requested').length, 1)
+    assert.equal(JSON.stringify(rows('analytics.jsonl')).includes('12025550123'), false)
+    assert.equal(JSON.stringify(rows('mail.jsonl')).includes('12025550123'), false)
+    assert.deepEqual(funnelEvent('callback_requested', { source: 'google', phone: saved.phone, email: body.email }, true), { event: 'callback_requested', properties: { source: 'google' } })
+    assert.equal(funnelEvent('callback_requested', {}, false), null)
+    const headers = { Authorization: 'Bearer test-admin-token-1234' }
+    assert.equal((await fetch(base + '/admin/people.csv?callback=yes', { redirect: 'manual' })).status, 303)
+    const admin = await (await fetch(base + '/admin/people?callback=yes', { headers })).text()
+    assert.match(admin, /tel:\+12025550123/)
+    const csv = await (await fetch(base + '/admin/people.csv?callback=yes', { headers })).text()
+    assert.match(csv, /callbackConsentText/)
+    assert.match(csv, /'\+12025550123/)
+    const detail = await (await fetch(base + '/admin/people/callback%40example.com', { headers })).text()
+    assert.match(detail, /Permission saved/)
+    const suppressed = buildPeople({ progress: [{ type: 'unsubscribe', email: body.email }], reservations: [saved] }).find(x => x.email === body.email)
+    assert.equal(suppressed.callbackConsent, false)
+    assert.equal(suppressed.phone, '')
+    const noPhone = await (await post('/api/reservations', { ...body, quizId: '00000000-0000-4000-8000-000000000021', email: 'no-callback@example.com' })).json()
+    assert.equal(noPhone.ok, true)
+    assert.equal(noPhone.callbackRequested, false)
+    assert.equal(rows('reservations.jsonl').find(x => x.id === noPhone.id).phone, '')
   })
   await t.test('email failure is distinct from a successful durable save', async () => {
     const res = await post('/api/leads', { firstName: 'Tester', email: 'failure@example.com' })

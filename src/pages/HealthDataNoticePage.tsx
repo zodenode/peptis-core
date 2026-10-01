@@ -18,7 +18,7 @@ export function HealthDataNoticePage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Consumer Health Data Notice</h1>
-            <p className="notice-updated">Last updated: September 29, 2026</p>
+            <p className="notice-updated">Last updated: September 30, 2026</p>
             <p>
               Some information collected on this website may be considered consumer health data
               under state laws such as the Washington My Health My Data Act. This notice explains
@@ -39,6 +39,7 @@ export function HealthDataNoticePage() {
                 digestive comfort.
               </li>
               <li>Your interest in optional future wellness products.</li>
+              <li>An optional phone number and permission for a callback about your starter plan and Peptis programme options.</li>
             </ul>
             <p>
               We ask for your consent before you begin the check. Answers stay on your device until
@@ -57,6 +58,7 @@ export function HealthDataNoticePage() {
               <li>To build the educational summary you request at the end of the quiz.</li>
               <li>To send the summary you requested and, if you asked, nutrition-box updates.</li>
               <li>To notify the Peptis team that a form was completed, using contact details only, not quiz answers.</li>
+              <li>To make a manually dialled callback if you separately request one. The phone number stays in the protected operator record and is not included in analytics or operator notification emails.</li>
               <li>To understand, in aggregate, how the quiz is used and improve it.</li>
             </ul>
 
