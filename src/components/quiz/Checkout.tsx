@@ -5,6 +5,7 @@ import { checkoutCopy } from '../../data/quiz'
 import { US_STATES } from '../../data/usStates'
 import type { CheckoutForm } from '../../hooks/useQuizEngine'
 import { isValidEmail } from '../../lib/validate'
+import { CALLBACK_CONSENT_TEXT, CALLBACK_CONSENT_VERSION, validateCallback } from '../../../shared/callback.mjs'
 
 type Props = {
   form: CheckoutForm
@@ -26,14 +27,18 @@ const pathwayLabels: Record<string, string> = {
 export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways, submitState }: Props) {
   const { signupReady, emailReady } = useSignupStatus()
   const [attempted, setAttempted] = useState(false)
+  const callback = validateCallback(form)
+  const callbackErrors: Record<string, string> = {
+    invalid_phone: 'Enter a 10-digit US number, or include + and your country code.',
+    callback_phone_required: 'Enter a phone number for your callback, or untick the request.',
+    callback_consent_required: 'Tick the callback permission below, or leave the phone number blank.',
+    renew_callback_consent: 'Please tick the current callback permission again.',
+  }
   const errors = {
     firstName: form.firstName.trim().length > 1 ? '' : 'Enter your first name.',
     lastName: '',
     email: isValidEmail(form.email) ? '' : 'Enter a valid email address, like name@example.com.',
-    phone:
-      form.phone.trim().length === 0 || form.phone.trim().length >= 7
-        ? ''
-        : 'Enter a valid phone number or leave this blank.',
+    phone: callback.ok ? '' : callbackErrors[callback.error],
     state: form.state.length === 2 ? '' : 'Select your state of residence.',
   }
   const ready =
@@ -178,6 +183,36 @@ export function Checkout({ form, onChange, onSubmit, onBack, canGoBack, pathways
             ) : null}
           </label>
         </div>
+
+        <fieldset className="plan-box" aria-describedby="callback-help">
+          <legend>Want to talk through your next step?</legend>
+          <p id="callback-help">Request a call from the Peptis team about your starter plan and programme options. This is optional; your free summary is available either way.</p>
+          <label>
+            Phone number (optional)
+            <input
+              type="tel"
+              autoComplete="tel"
+              inputMode="tel"
+              maxLength={40}
+              placeholder="(202) 555-0123"
+              value={form.phone}
+              onChange={(e) => onChange({ phone: e.target.value })}
+              aria-invalid={Boolean(fieldError('phone'))}
+              aria-describedby={fieldError('phone') ? 'callback-format error-phone' : 'callback-format'}
+            />
+            <span id="callback-format" className="quiz-hint">Use a 10-digit US number, or include + and your country code.</span>
+          </label>
+          <label className={`check-card optional-card${form.callbackConsent ? ' is-selected' : ''}`}>
+            <input
+              type="checkbox"
+              checked={form.callbackConsent}
+              onChange={(e) => onChange({ callbackConsent: e.target.checked, callbackConsentVersion: e.target.checked ? CALLBACK_CONSENT_VERSION : '' })}
+            />
+            <span className="check-mark" aria-hidden="true">✓</span>
+            <span className="check-copy"><strong>Please call me</strong><span>{CALLBACK_CONSENT_TEXT}</span></span>
+          </label>
+          {fieldError('phone') ? <p className="field-error" id="error-phone" role="alert">{errors.phone}</p> : null}
+        </fieldset>
 
         <fieldset className="attestations" aria-describedby={attempted && (!form.resident || !form.attest) ? 'attestation-error' : undefined}>
           <legend>Required confirmations</legend>

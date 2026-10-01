@@ -2,7 +2,8 @@ import fs from 'node:fs'
 import { buildPeople, createContentStore } from './contentStore.mjs'
 
 function csvEscape(value) {
-  const text = String(value ?? '')
+  const raw = String(value ?? '')
+  const text = /^[=+@-]/.test(raw) ? `'${raw}` : raw
   if (/[",\n]/.test(text)) return `"${text.replace(/"/g, '""')}"`
   return text
 }
@@ -42,6 +43,8 @@ function filterPeople(ctx, query) {
   if (query.marketing === 'yes') people = people.filter((person) => person.marketingConsent)
   if (query.marketing === 'no') people = people.filter((person) => !person.marketingConsent)
   if (query.health === 'yes') people = people.filter((person) => person.healthConsent)
+  if (query.callback === 'yes') people = people.filter((person) => person.callbackConsent && person.phone)
+  if (query.callback === 'no') people = people.filter((person) => !person.callbackConsent)
   if (q) {
     people = people.filter((person) => {
       const hay = [
@@ -49,6 +52,7 @@ function filterPeople(ctx, query) {
         person.firstName,
         person.source,
         person.state,
+        person.phone,
         ...(person.responses || []).flatMap((row) => [row.id, row.prompt, ...(row.labels || [])]),
       ]
         .join(' ')
@@ -211,6 +215,11 @@ export function attachAdminOps(router, { ctx, isAuthorized, noStore, escapeHtml,
         <option value="">Any</option>
         <option value="yes"${query.health === 'yes' ? ' selected' : ''}>Consented</option>
       </select></label>
+      <label>Callback<select name="callback">
+        <option value="">Any</option>
+        <option value="yes"${query.callback === 'yes' ? ' selected' : ''}>Requested</option>
+        <option value="no"${query.callback === 'no' ? ' selected' : ''}>Not requested</option>
+      </select></label>
       <label>Contains<input name="q" value="${escapeHtml(query.q || '')}" /></label>
       <button type="submit">Filter</button>
       <a class="btn" href="/admin/people.csv?${queryString(query)}">Export CSV</a>
@@ -228,6 +237,7 @@ export function attachAdminOps(router, { ctx, isAuthorized, noStore, escapeHtml,
       escapeHtml(person.state || ''),
       person.reserveBox ? pill('box', 'ok') : '',
       person.marketingConsent ? pill('email ok', 'ok') : pill('no marketing', 'warn'),
+      person.callbackConsent && person.phone ? `<a href="tel:${escapeHtml(person.phone)}">${escapeHtml(person.phone)}</a> ${pill('callback requested', 'ok')}` : '',
       escapeHtml(person.responses?.map((row) => row.labels.join('; ')).join(' / ') || ''),
     ])
     res.type('html').send(
@@ -237,7 +247,7 @@ export function attachAdminOps(router, { ctx, isAuthorized, noStore, escapeHtml,
         <main>
           <section>
             ${peopleFilters(req.query)}
-            ${table(['When', 'Name', 'Email', 'Source', 'State', 'Box', 'Email ok', 'Answers'], rows)}
+            ${table(['When', 'Name', 'Email', 'Source', 'State', 'Box', 'Email ok', 'Callback', 'Answers'], rows)}
           </section>
           <section>
             <h2>Outreach</h2>
@@ -248,6 +258,7 @@ export function attachAdminOps(router, { ctx, isAuthorized, noStore, escapeHtml,
               <input type="hidden" name="answers" value="${escapeHtml(req.query.answers || '')}" />
               <input type="hidden" name="marketing" value="${escapeHtml(req.query.marketing || '')}" />
               <input type="hidden" name="health" value="${escapeHtml(req.query.health || '')}" />
+              <input type="hidden" name="callback" value="${escapeHtml(req.query.callback || '')}" />
               <input type="hidden" name="state" value="${escapeHtml(req.query.state || '')}" />
               <input type="hidden" name="q" value="${escapeHtml(req.query.q || '')}" />
               <label>Subject<input name="subject" required /></label>
@@ -263,7 +274,7 @@ export function attachAdminOps(router, { ctx, isAuthorized, noStore, escapeHtml,
   router.get('/admin/people.csv', (req, res) => {
     if (!requireAdmin(req, res)) return
     const people = filterPeople(ctx, req.query)
-    const header = ['email', 'firstName', 'source', 'state', 'reserveBox', 'marketingConsent', 'healthConsent', 'lastAt', 'answers']
+    const header = ['email', 'firstName', 'source', 'state', 'reserveBox', 'marketingConsent', 'healthConsent', 'lastAt', 'answers', 'phone', 'callbackConsent', 'callbackConsentAt', 'callbackConsentVersion', 'callbackConsentText']
     const lines = [
       header.join(','),
       ...people.map((person) =>
@@ -277,6 +288,11 @@ export function attachAdminOps(router, { ctx, isAuthorized, noStore, escapeHtml,
           person.healthConsent,
           person.lastAt,
           (person.responses || []).map((row) => `${row.id}:${row.labels.join('|')}`).join(' '),
+          person.phone || '',
+          person.callbackConsent === true,
+          person.callbackConsentAt,
+          person.callbackConsentVersion,
+          person.callbackConsentText,
         ]
           .map(csvEscape)
           .join(','),
@@ -309,7 +325,9 @@ export function attachAdminOps(router, { ctx, isAuthorized, noStore, escapeHtml,
               ${person.reserveBox ? pill('box reserved', 'ok') : pill('no box', 'warn')}
               ${person.marketingConsent ? pill('marketing ok', 'ok') : pill('no marketing', 'warn')}
               ${person.healthConsent ? pill('health consent', 'ok') : pill('no health store', 'warn')}
+              ${person.callbackConsent ? pill('callback requested', 'ok') : pill('no callback permission', 'warn')}
             </div>
+            ${person.callbackConsent && person.phone ? `<h2>Requested callback</h2><p><a href="tel:${escapeHtml(person.phone)}">${escapeHtml(person.phone)}</a></p><p class="muted">Permission saved ${escapeHtml(person.callbackConsentAt || '')}. Version ${escapeHtml(person.callbackConsentVersion || '')}.</p><p>${escapeHtml(person.callbackConsentText || '')}</p>` : ''}
             <h2>Quiz responses</h2>
             ${
               person.healthConsent

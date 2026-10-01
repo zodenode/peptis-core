@@ -18,7 +18,7 @@ export function PrivacyPage() {
           <div className="notice-inner">
             <p className="eyebrow">Legal</p>
             <h1>Privacy Policy</h1>
-            <p className="notice-updated">Effective and last updated: September 22, 2026</p>
+            <p className="notice-updated">Effective and last updated: September 30, 2026</p>
             <p>
               Peptis is operated by Information Edge Insights LLC, a Wyoming limited liability
               company, trading as Peptis. This Privacy Policy explains how we collect, use,
@@ -29,7 +29,7 @@ export function PrivacyPage() {
 
             <h2>Information we collect</h2>
             <ul>
-              <li><strong>Contact and account information:</strong> name, email address, state and information you provide when joining a programme, reservation or waitlist.</li>
+              <li><strong>Contact and account information:</strong> name, email address, state, optional phone number and callback permission, and information you provide when joining a programme, reservation or waitlist.</li>
               <li><strong>Programme and quiz information:</strong> information you choose to provide about goals, treatment timeline, current provider or medication, nutrition, strength, exercise, energy, digestive comfort, routine and programme progress.</li>
               <li><strong>Order and fulfilment information:</strong> products selected, transaction status, shipping address and related fulfilment information. Payment-card information may be collected directly by our payment processor rather than stored by Peptis.</li>
               <li><strong>Communications:</strong> messages, support requests, survey responses and other communications with Peptis.</li>
@@ -116,10 +116,9 @@ export function PrivacyPage() {
               change. The effective date above identifies the latest revision.
             </p>
 
-            <h2>SMS</h2>
+            <h2>Optional callbacks and SMS</h2>
             <p>
-              We do not send marketing SMS today. If we later collect a mobile number for product
-              updates, we will ask for separate TCPA consent before sending those messages. We currently collect no mobile numbers in the signup flow.
+              At the end of the quiz, you may provide a phone number and separately ask the Peptis team to call about your starter plan and programme options. We save the number and the wording, version and time of your permission in our protected contact record. A phone number is not required for your free plan or a purchase. You can withdraw permission at support@peptis.co; unsubscribing from updates also stops callback permission. We do not send marketing SMS or make automated calls under this permission. Any future SMS programme will need a separate opt-in.
             </p>
             <h2>Contact</h2>
             <pre className="legal-address">{companyPostalBlock()}</pre>

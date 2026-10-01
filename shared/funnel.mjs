@@ -5,9 +5,9 @@ const EVENTS = new Set([
   'publication_category_viewed', 'quiz_cta_clicked', 'hero_cta_clicked', 'quiz_started',
   'quiz_step_viewed', 'quiz_option_selected', 'quiz_email_captured', 'quiz_completed',
   'email_submitted', 'plan_opened', 'plan_generated', 'plan_exported', 'box_reserve_clicked',
-  'box_interest_saved', 'summary_sent', 'guide_sent', 'email_failed', 'quiz_abandoned',
+  'box_interest_saved', 'summary_sent', 'guide_sent', 'email_failed', 'quiz_abandoned', 'callback_requested',
 ])
-const SERVER_EVENTS = new Set(['email_submitted', 'box_interest_saved', 'summary_sent', 'guide_sent', 'email_failed', 'quiz_completed'])
+const SERVER_EVENTS = new Set(['email_submitted', 'box_interest_saved', 'summary_sent', 'guide_sent', 'email_failed', 'quiz_completed', 'callback_requested'])
 export function funnelEvent(event, properties = {}, server = false) {
   if (!EVENTS.has(event) || (!server && SERVER_EVENTS.has(event))) return null
   const safe = {}

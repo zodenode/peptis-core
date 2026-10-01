@@ -8,6 +8,8 @@ export type ReservationPayload = {
   email: string
   phone: string
   smsOptIn?: boolean
+  callbackConsent?: boolean
+  callbackConsentVersion?: string
   state: string
   resident: boolean
   attest: boolean
@@ -19,7 +21,7 @@ export type ReservationPayload = {
 }
 
 export type ReservationResult =
-  | { ok: true; id: string; emailSent: boolean }
+  | { ok: true; id: string; emailSent: boolean; callbackRequested: boolean }
   | { ok: false; error: string }
 
 export async function submitReservation(payload: ReservationPayload): Promise<ReservationResult> {
@@ -30,11 +32,11 @@ export async function submitReservation(payload: ReservationPayload): Promise<Re
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(25000),
     })
-    const data = (await res.json().catch(() => null)) as { ok?: boolean; id?: string; emailSent?: boolean; error?: string } | null
+    const data = (await res.json().catch(() => null)) as { ok?: boolean; id?: string; emailSent?: boolean; callbackRequested?: boolean; error?: string } | null
     if (!res.ok || !data?.ok || !data.id) {
       return { ok: false, error: data?.error ?? `status_${res.status}` }
     }
-    return { ok: true, id: data.id, emailSent: data.emailSent === true }
+    return { ok: true, id: data.id, emailSent: data.emailSent === true, callbackRequested: data.callbackRequested === true }
   } catch {
     return { ok: false, error: 'network' }
   }

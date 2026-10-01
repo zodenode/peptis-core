@@ -1,4 +1,5 @@
 import { cleanAnswers, cleanPlanIntake, planIntakeFromAnswers, derivePathways, programText, CONSENT_VERSION } from './shared/profile.mjs'
+import { validateCallback, CALLBACK_CONSENT_TEXT, CALLBACK_CONSENT_VERSION } from './shared/callback.mjs'
 import { generateProgram } from './shared/program.mjs'
 import { createOutbox } from './mailOutbox.mjs'
 import { randomUUID, randomBytes } from 'node:crypto'
@@ -158,7 +159,7 @@ const sendMail = mail => outbox.send(mail)
 const retryTimer = setInterval(() => { void outbox.retry().catch(() => console.error('mail retry failed')) }, 60000)
 retryTimer.unref()
 
-async function sendOpsNotification({ event, firstName, email, state, phone, upsell, source, reference }) {
+async function sendOpsNotification({ event, firstName, email, state, callbackRequested, upsell, source, reference }) {
   const to = opsRecipients()
   if (!to.length) return { sent: false, reason: 'no_recipients' }
   const text = [
@@ -168,7 +169,7 @@ async function sendOpsNotification({ event, firstName, email, state, phone, upse
     `Name: ${firstName || 'unknown'}`,
     `Email: ${email}`,
     state ? `State: ${state}` : null,
-    phone ? `Phone: ${phone}` : null,
+    callbackRequested ? 'Callback requested: yes. Review the phone number and permission in the authenticated operator desk.' : null,
     `Path / source: ${source || 'direct'}`,
     upsell === undefined ? null : `Lean Mass box interest: ${upsell ? 'yes' : 'no'}`,
     reference ? `Reference: ${reference}` : null,
@@ -434,7 +435,8 @@ app.post('/api/reservations', async (req, res) => {
   const firstName = String(body.firstName ?? '').trim()
   const lastName = String(body.lastName ?? '').trim()
   const email = String(body.email ?? '').trim().toLowerCase()
-  const phone = '' // SMS collection is off until a separate SMS programme is ready.
+  const callback = validateCallback(body)
+  if (!callback.ok) return res.status(400).json({ ok: false, error: callback.error })
   const state = String(body.state ?? '').trim().toUpperCase()
   const upsell = body.upsell === true
   if (body.healthConsent !== true) return res.status(400).json({ ok: false, error: 'health_consent_required' })
@@ -466,7 +468,11 @@ app.post('/api/reservations', async (req, res) => {
     firstName,
     lastName,
     email,
-    phone,
+    phone: callback.phone,
+    callbackConsent: callback.callbackConsent,
+    callbackConsentAt: callback.callbackConsent ? new Date().toISOString() : null,
+    callbackConsentVersion: callback.callbackConsent ? CALLBACK_CONSENT_VERSION : null,
+    callbackConsentText: callback.callbackConsent ? CALLBACK_CONSENT_TEXT : null,
     smsOptIn: false,
     healthConsent: true,
     marketingConsent: body.marketingConsent === true,
@@ -490,18 +496,19 @@ app.post('/api/reservations', async (req, res) => {
   const emailResult = alreadySent ? { sent: true } : await sendResource({ email, firstName: reservation.firstName, priorities: reservation.priorities, id: `summary-${reservation.id}`, intake: planIntakeFromAnswers(reservation.profile) })
   if (emailResult.sent && !alreadySent) appendEvent({ type: 'summary_email', reservationId: reservation.id, at: new Date().toISOString() })
   if (!existing) recordFunnel('quiz_completed')
+  if (!existing && reservation.callbackConsent) recordFunnel('callback_requested', { source: reservation.source })
   const opsResult = await sendOpsNotification({
     event: 'reservation',
     firstName,
     email,
     state,
-    phone,
+    callbackRequested: reservation.callbackConsent,
     upsell,
     source,
     reference: reservation.id,
   })
 
-  res.json({ ok: true, id: reservation.id, emailSent: emailResult.sent, opsNotified: opsResult.sent })
+  res.json({ ok: true, id: reservation.id, emailSent: emailResult.sent, opsNotified: opsResult.sent, callbackRequested: reservation.callbackConsent === true })
 })
 
 app.post('/api/plan', async (req, res) => {

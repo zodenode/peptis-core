@@ -18,6 +18,7 @@ import { isValidEmail } from '../lib/validate'
 
 import { QUIZ_STORAGE_KEY, INTAKE_KEY } from '../lib/quizPlan'
 import { cleanAnswers, PROFILE_VERSION, planIntakeFromAnswers, CONSENT_VERSION } from '../../shared/profile.mjs'
+import { CALLBACK_CONSENT_VERSION } from '../../shared/callback.mjs'
 export { QUIZ_STORAGE_KEY } from '../lib/quizPlan'
 
 export type CheckoutForm = {
@@ -30,6 +31,8 @@ export type CheckoutForm = {
   attest: boolean
   upsell: boolean
   smsOptIn: boolean
+  callbackConsent: boolean
+  callbackConsentVersion: string
   healthConsent: boolean
   marketingConsent: boolean
 }
@@ -75,6 +78,8 @@ const emptyCheckout: CheckoutForm = {
   attest: false,
   upsell: false,
   smsOptIn: false,
+  callbackConsent: false,
+  callbackConsentVersion: '',
   healthConsent: false,
   marketingConsent: false,
 }
@@ -129,7 +134,7 @@ export function useQuizEngine() {
       setAnswers(cleanAnswers(saved.answers))
       startedEvent.current = Boolean(saved.startedTracked)
       setShown(saved.shown)
-      setCheckout({ ...emptyCheckout, ...saved.checkout })
+      setCheckout({ ...emptyCheckout, ...saved.checkout, callbackConsent: saved.checkout.callbackConsent === true && saved.checkout.callbackConsentVersion === CALLBACK_CONSENT_VERSION })
       setStartedAt(saved.startedAt)
       setCompleted(saved.completed)
       setIdentifiedEmail(saved.identifiedEmail)
@@ -341,6 +346,8 @@ export function useQuizEngine() {
       email: checkout.email,
       phone: checkout.phone,
       smsOptIn: checkout.smsOptIn,
+      callbackConsent: checkout.callbackConsent,
+      callbackConsentVersion: checkout.callbackConsentVersion,
       state: checkout.state,
       resident: checkout.resident,
       attest: checkout.attest,
@@ -361,6 +368,7 @@ export function useQuizEngine() {
     setSubmitState('idle')
     setReservationId(result.id)
     setEmailSent(result.emailSent)
+    setCheckout((form) => ({ ...form, callbackConsent: result.callbackRequested }))
     identifyIfReady()
     track('quiz_completed', { pathways: derivePathways(answers) })
     track('founding_reservation_submitted', {
