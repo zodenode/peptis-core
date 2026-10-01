@@ -245,6 +245,11 @@ export function useQuizEngine() {
     track('plan_refinement_answered', { question_id: key })
   }, [])
 
+  const setSensitivities = useCallback((values: string[]) => {
+    setAnswers((currentAnswers) => cleanAnswers({ ...currentAnswers, sensitivities: values }))
+    track('plan_refinement_answered', { question_id: 'sensitivities' })
+  }, [])
+
   const goNext = useCallback(() => {
     if (current === 'plan_build') {
       const intake = planIntakeFromAnswers(answers)
@@ -419,6 +424,7 @@ export function useQuizEngine() {
     pathways: derivePathways(answers),
     selectOption,
     setPlanAnswer,
+    setSensitivities,
     goNext,
     goBack,
     patchCheckout,

@@ -2,8 +2,11 @@ import { useEffect, useRef } from 'react'
 import { medicationLabel, providerLabel } from '../../data/planBuild'
 import type { Answers } from '../../data/quiz'
 import { track } from '../../lib/analytics'
+import { planIntakeFromAnswers } from '../../../shared/profile.mjs'
+import { PersonalisedPlanPreview } from './PersonalisedPlanPreview'
 
 type Props = {
+  firstName: string
   answers: Answers
   pathways: string[]
   onContinue: () => void
@@ -53,12 +56,14 @@ function currentProviderSentence(answers: Answers) {
   return `${provider} stays in view as your current care setting. Its licensed clinician remains responsible for prescribing and medication decisions.`
 }
 
-export function TrajectoryReveal({ answers, pathways, onContinue, onBack, canGoBack }: Props) {
+export function TrajectoryReveal({ firstName, answers, pathways, onContinue, onBack, canGoBack }: Props) {
   const viewedRef = useRef(false)
-  const focus = focusDetails[pathways[0]] ?? {
+  const focuses = pathways.map(pathway => focusDetails[pathway]).filter(Boolean)
+  const focus = focuses[0] ?? {
     label: 'continuity readiness',
     weekFour: 'Review what you completed, what felt realistic and what needs adjusting.',
   }
+  const intake = planIntakeFromAnswers(answers)
   const medication = medicationLabel(answers.current_medication)
   const setting = answers.training_setting ? settingPhrases[answers.training_setting] : undefined
   const showMedication =
@@ -74,17 +79,17 @@ export function TrajectoryReveal({ answers, pathways, onContinue, onBack, canGoB
     {
       time: 'Today',
       title: 'Record your baseline',
-      body: 'Capture strength, usual intake, energy and digestive comfort alongside weight.',
+      body: answers.training_habit === '0' ? 'Record a comfortable everyday strength task and your usual meals before your first practice session.' : 'Record the sessions you currently complete and one everyday strength task you can repeat.',
     },
     {
       time: 'First 7 days',
       title: 'Choose the minimum',
-      body: `Set realistic strength slots${setting ? ` ${setting}` : ''} and one protein fallback for lower-appetite days.`,
+      body: `Plan ${intake?.days ?? 2} strength slots${setting ? ` ${setting}` : ''}.${answers.training_habit === '1' && intake?.days === 3 ? ' Establish two comfortable sessions before adding the third.' : ''} ${answers.protein_habit === 'most_meals' ? 'Keep the protein-containing meals you already manage.' : 'Choose one familiar protein-containing food for a meal that often lacks it.'}`,
     },
     {
       time: 'Week 4',
-      title: `Check ${focus.label}`,
-      body: focus.weekFour,
+      title: focuses.length > 1 ? 'Review your selected priorities' : `Check ${focus.label}`,
+      body: focuses.length ? focuses.map(item => item.weekFour).join(' ') : focus.weekFour,
     },
     {
       time: 'Week 8',
@@ -105,9 +110,9 @@ export function TrajectoryReveal({ answers, pathways, onContinue, onBack, canGoB
           <span>✓</span> Map ready
         </div>
         <p className="quiz-kicker">Your Peptis continuity map</p>
-        <h1 className="quiz-title">You are here. Here is what you can build in 12 weeks.</h1>
+        <h1 className="quiz-title">{firstName ? `${firstName}, here` : 'Here'} is your starter plan.</h1>
         <p className="trajectory-intro">
-          Your route follows practical actions and records. It is not a forecast of weight, muscle or symptoms.
+          Your sessions and nutrition actions follow the answers you gave. Start this week, then use the review points below to check what fits.
         </p>
 
         <figure className="trajectory-figure">
@@ -119,47 +124,40 @@ export function TrajectoryReveal({ answers, pathways, onContinue, onBack, canGoB
             <span>Your next review</span>
             <strong>Week 12</strong>
           </div>
-          <svg viewBox="0 0 540 230" role="img" aria-label="A rising route from today's baseline to a clearer 12-week review">
-            <defs>
-              <linearGradient id="trajectory-area" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="#7e8f6e" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#7e8f6e" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <path
-              className="trajectory-area"
-              d="M32 190 C92 185 112 162 150 154 C208 141 218 124 268 116 C330 105 347 80 390 73 C446 63 472 38 508 32 L508 214 L32 214 Z"
-            />
+          <svg viewBox="0 0 540 130" role="img" aria-label="Five review points: today, first seven days, week four, week eight and week twelve">
             <path
               className="trajectory-line-base"
-              d="M32 190 C92 185 112 162 150 154 C208 141 218 124 268 116 C330 105 347 80 390 73 C446 63 472 38 508 32"
+              d="M32 65 L508 65"
             />
             <path
               className="trajectory-line"
               pathLength="1"
-              d="M32 190 C92 185 112 162 150 154 C208 141 218 124 268 116 C330 105 347 80 390 73 C446 63 472 38 508 32"
+              d="M32 65 L508 65"
             />
             {[
-              [32, 190],
-              [150, 154],
-              [268, 116],
-              [390, 73],
-              [508, 32],
+              [32, 65],
+              [150, 65],
+              [268, 65],
+              [390, 65],
+              [508, 65],
             ].map(([cx, cy], index) => (
               <g key={`${cx}-${cy}`} className="trajectory-node" style={{ animationDelay: `${0.35 + index * 0.24}s` }}>
                 <circle className="trajectory-node-ring" cx={cx} cy={cy} r="10" />
                 <circle cx={cx} cy={cy} r="4" />
+                <text x={cx} y={cy + 33} textAnchor="middle">{['Today','7 days','Week 4','Week 8','Week 12'][index]}</text>
               </g>
             ))}
           </svg>
           <figcaption>
-            A programme framework for review points, not a guaranteed clinical outcome.
+            Review points for your routine. These do not predict weight, muscle or symptom changes.
           </figcaption>
         </figure>
 
+        <PersonalisedPlanPreview answers={answers} />
+
         <ol className="trajectory-milestones">
-          {milestones.map((milestone) => (
-            <li key={milestone.time}>
+          {milestones.map((milestone, index) => (
+            <li key={milestone.time} style={{ animationDelay: `${0.1 * index}s` }}>
               <span>{milestone.time}</span>
               <div>
                 <strong>{milestone.title}</strong>

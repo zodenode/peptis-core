@@ -206,15 +206,32 @@ export function generateProgram(intake) {
     if (context.q1 === 'q1_not_started') personalisationNotes.push('Before treatment: establish a comfortable training routine and a baseline of strength and food intake.');
     else if (['q1_a','q1_e'].includes(context.q1)) personalisationNotes.push('Early treatment: use the first week to check energy, food tolerance and recovery before adding training volume.');
     else if (context.q1 === 'q1_c') personalisationNotes.push('After stopping treatment: keep a repeatable routine and review appetite or weight changes with your prescriber.');
+    else if (context.q1 === 'q1_d') personalisationNotes.push('Your treatment timeline is uncertain. Keep a baseline record and confirm your prescription details with your clinician.');
     else if (context.q1) personalisationNotes.push('Established treatment: compare strength and session completion week to week alongside your weight trend.');
     if (reducedVolume) personalisationNotes.push('You reported lower energy, harder daily tasks or very low appetite. Start with one comfortable set per movement; review persistent symptoms with your clinician before increasing effort.');
     if (context.training_habit === '0') personalisationNotes.push('You are starting from no weekly strength sessions. Treat week one as practice and build consistency first.');
+    else if (context.training_habit === '1' && intake.days === 3) personalisationNotes.push('You currently train once a week and chose three planned days. Establish two comfortable sessions before adding the third.');
+    if (context.q6 === 'q6_a') personalisationNotes.push('You selected faster scale change as a goal. This starter plan tracks completed sessions and everyday function alongside weight; it does not set a weight-loss target.');
+    if (context.q6 === 'q6_c') personalisationNotes.push('You selected a smaller appetite as a goal. This plan supports regular nutrition and strength practice; it does not recommend further appetite suppression.');
+    if (context.q6 === 'q6_d') personalisationNotes.push('You selected appearance and skin changes as a priority. Use the strength record as another measure of progress; this plan does not predict skin changes.');
     if (context.weight_change === 'over_10') personalisationNotes.push('You reported losing more than 10% of starting weight. Review your strength and nutrition needs with your care team.');
     if (intake.equipment === 'none') personalisationNotes.push('No bands or weights are required. Shoulder-blade squeezes provide gentle upper-back movement; they do not replace a progressively loaded pulling exercise.');
+    if (intake.sensitivities.length) personalisationNotes.push(`You flagged ${intake.sensitivities.join(', ')} for extra care. Exercise options reflect those preferences, but this is not an injury assessment or clearance to exercise.`);
     const nutritionNotes = [context.protein_habit === 'most_meals' ? 'Keep the protein-containing meals you already manage and review consistency across the week.' : 'Choose one familiar protein-containing food for a meal you often miss it at; build consistency before chasing a number.',
       context.appetite === 'very_low' || context.appetite === 'reduced' ? 'For lower appetite, try smaller meals that you tolerate. Ask a dietitian or clinician for a personal nutrition target if eating enough is difficult.' : 'Keep a regular pattern of meals, fluids and varied foods that fits your day.'];
     if (context.q5 === 'q5_c') nutritionNotes.push('You reported regular digestive discomfort. Note meal size and symptom timing and ask your clinician for advice; delay strenuous sessions when you feel unwell.');
     if (context.protein_habit === 'unsure') nutritionNotes.push('Record your usual meals for a few days to establish a protein baseline.');
+    if (context.q5 === 'q5_b') nutritionNotes.push('You linked discomfort to particular foods or larger meals. Record those foods, portions and timing rather than assuming every meal is a trigger.');
+    if (context.q5 === 'q5_d') nutritionNotes.push('You reported occasional, brief discomfort. Note the timing when it occurs and whether the pattern changes.');
+    if (context.q7 === 'q7_a') nutritionNotes.push('You want less soreness and stiffness. Record how you feel before and after sessions and leave a rest day between strength sessions.');
+    if (context.q7 === 'q7_b' || context.q4 === 'q4_d') nutritionNotes.push('You want an easier wind down. Record bedtime, wake time and evening habits so you can review your sleep pattern.');
+    if (context.q7 === 'q7_c' || context.q4 === 'q4_c') nutritionNotes.push('You reported energy dips. Note when they occur alongside meals, fluids, rest and activity, and record what helps.');
+    if (context.q7 === 'q7_d') nutritionNotes.push('You want clearer thinking and steadier energy. Record sleep, meals and energy timing; discuss persistent or new changes with your clinician.');
+    const digestiveFocus = context.q5 === 'q5_c' || (context.q2 || []).includes('c') || ['q5_b','q5_d'].includes(context.q5);
+    if (digestiveFocus && context.q8 === 'q8_a') nutritionNotes.push('Your digestive goal is more consistent nutrition. Keep a short record of comfortable portions and which meals you can manage.');
+    if (digestiveFocus && context.q8 === 'q8_b') nutritionNotes.push('Your digestive goal is easier meal planning. Keep a list of meals you tolerate and symptom timing to review with your care team.');
+    if (digestiveFocus && context.q8 === 'q8_c') nutritionNotes.push('Your digestive goal is comfort during activity after meals. Record the time between eating and activity and how you feel.');
+    if (digestiveFocus && context.q8 === 'q8_d') nutritionNotes.push('Your digestive goal is confidence eating away from home. Note familiar meal options you tolerate and any patterns worth discussing with your clinician.');
     const pools = poolsFor(intake.equipment, intake.sensitivities);
     const dayNames = intake.days === 2 ? ['Day A', 'Day B'] : ['Day A', 'Day B', 'Day C'];
     const days = dayNames.map((title, dayIndex) => ({

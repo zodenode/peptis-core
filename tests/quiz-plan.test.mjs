@@ -28,6 +28,28 @@ test('quiz context changes both training volume and nutrition actions', () => {
   assert.match(adapted.personalisationNotes.join(' '),/Early treatment/)
   assert.equal(cleanAnswers({current_medication:'none',medication_dose:'old'}).medication_dose,undefined)
 })
+test('recovery and digestive goals change actions without inventing symptoms', () => {
+  const base={training_experience:'new',equipment:'none',training_days:'2',training_habit:'0',q1:'q1_d',q4:'q4_b',q5:'q5_a',protein_habit:'most_meals',appetite:'normal'}
+  const plan=answers=>generateProgram(planIntakeFromAnswers({...base,...answers}))
+  assert.match(plan({q7:'q7_b'}).nutritionNotes.join(' '),/bedtime, wake time/)
+  assert.match(plan({q7:'q7_c'}).nutritionNotes.join(' '),/when they occur/)
+  assert.notDeepEqual(plan({q7:'q7_b'}).nutritionNotes,plan({q7:'q7_c'}).nutritionNotes)
+  assert.match(plan({q5:'q5_b',q8:'q8_d'}).nutritionNotes.join(' '),/eating away from home/)
+  assert.doesNotMatch(plan({q8:'q8_d'}).nutritionNotes.join(' '),/digestive goal|symptom timing/)
+  assert.match(plan({}).personalisationNotes.join(' '),/timeline is uncertain/)
+  assert.doesNotMatch(plan({}).personalisationNotes.join(' '),/Established treatment/)
+  assert.equal(cleanAnswers({current_medication:'prefer_not',medication_dose:'old dose'}).medication_dose,undefined)
+})
+test('exercise preferences survive quiz intake and change the actual session choices', () => {
+  const base={training_experience:'returning',equipment:'dumbbells',training_days:'3'}
+  const normal=generateProgram(planIntakeFromAnswers(base))
+  const adjusted=generateProgram(planIntakeFromAnswers({...base,sensitivities:['back','shoulders','unknown']}))
+  assert.equal(normal.days[0].slots.find(slot=>slot.pattern==='hinge').exercise.slug,'romanian-deadlift')
+  assert.equal(adjusted.days[0].slots.find(slot=>slot.pattern==='hinge').exercise.slug,'glute-bridge')
+  assert.notEqual(normal.days[0].slots.find(slot=>slot.pattern==='push').exercise.slug,adjusted.days[0].slots.find(slot=>slot.pattern==='push').exercise.slug)
+  assert.match(adjusted.personalisationNotes.join(' '),/back, shoulders/)
+  assert.doesNotMatch(adjusted.personalisationNotes.join(' '),/unknown/)
+})
 test('outbox survives provider downtime and process recreation without resending accepted mail', async () => {
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'peptis-outbox-')), file=path.join(dir,'outbox.jsonl')
   let calls=0

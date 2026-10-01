@@ -121,11 +121,13 @@ export function QuizFlow({ embedded = false }: Props) {
             onContinue={quiz.goNext}
             onBack={quiz.goBack}
             canGoBack={quiz.canGoBack}
+            onSensitivitiesChange={quiz.setSensitivities}
           />
         ) : null}
 
         {quiz.current === 'trajectory' ? (
           <TrajectoryReveal
+            firstName={quiz.checkout.firstName}
             answers={quiz.answers}
             pathways={quiz.pathways}
             onContinue={quiz.goNext}
@@ -148,6 +150,7 @@ export function QuizFlow({ embedded = false }: Props) {
 
         {quiz.current === 'success' ? (
           <Success
+            answers={quiz.answers}
             form={quiz.checkout}
             pathways={quiz.pathways}
             reservationId={quiz.reservationId}

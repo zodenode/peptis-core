@@ -26,6 +26,7 @@ export function cleanAnswers(input) {
     clean.current_medication = 'none'
     delete clean.medication_dose
   }
+  if (clean.current_medication === 'prefer_not') delete clean.medication_dose
   return clean
 }
 export function derivePathways(input) {

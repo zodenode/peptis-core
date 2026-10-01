@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import type { CheckoutForm } from '../../hooks/useQuizEngine'
+import type { Answers } from '../../data/quiz'
+import { PersonalisedPlanPreview } from './PersonalisedPlanPreview'
 
 type Props = {
+  answers: Answers
   form: CheckoutForm
   pathways: string[]
   reservationId: string | null
@@ -28,7 +31,7 @@ const pathwayRecap: Record<string, { label: string; body: string }> = {
   },
 }
 
-export function Success({ form, pathways, reservationId, emailSent, onReset }: Props) {
+export function Success({ answers, form, pathways, reservationId, emailSent, onReset }: Props) {
   const recap = pathways.map((p) => pathwayRecap[p]).filter(Boolean)
 
   return (
@@ -64,6 +67,7 @@ export function Success({ form, pathways, reservationId, emailSent, onReset }: P
             ))}
           </ul>
         </div>
+        <PersonalisedPlanPreview answers={answers} />
         <p className="quiz-hint">
           Your check and starter plan are free. Clinical services are not offered.
         </p>

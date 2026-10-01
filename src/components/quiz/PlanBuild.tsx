@@ -22,7 +22,7 @@ export function TreatmentContext({ answers, onAnswer, onContinue, onBack }: Prop
     <div className="quiz-actions"><button type="button" className="btn btn-ghost" onClick={onBack}>Back</button><button type="button" className="btn btn-primary" disabled={(!notStarted && !answers.current_medication) || !answers.weight_change} onClick={onContinue}>Continue</button></div>
   </div></article>
 }
-export function PlanBuild({ answers, onAnswer, onContinue, onBack, canGoBack }: Props) {
+export function PlanBuild({ answers, onAnswer, onContinue, onBack, canGoBack, onSensitivitiesChange }: Props & { onSensitivitiesChange: (values: string[]) => void }) {
   const ready = ['training_experience','equipment','training_days','training_habit','protein_habit','appetite'].every(key => answers[key as PlanAnswerKey])
   return <article className="quiz-card"><div className="quiz-body">
     <p className="quiz-kicker">Make the plan fit your week</p><h1>Your routine, your starter plan</h1><p>These answers build your exercise sessions and nutrition actions. You will not need to answer them again on the plan page.</p>
@@ -32,6 +32,7 @@ export function PlanBuild({ answers, onAnswer, onContinue, onBack, canGoBack }: 
     <Choices {...{ answers, onAnswer }} field="training_days" label="How many days can you plan for?" choices={[[ '2','Two days a week'],['3','Three days a week']]} />
     <Choices {...{ answers, onAnswer }} field="protein_habit" label="How often do your meals include a protein source?" choices={[[ 'rarely','Rarely'],['some_meals','Some meals'],['most_meals','Most meals'],['unsure','Not sure']]} />
     <Choices {...{ answers, onAnswer }} field="appetite" label="How is your appetite most days?" choices={[[ 'normal','Comfortable and manageable'],['reduced','Reduced, but I can eat regular meals'],['very_low','Very low; eating enough is difficult']]} />
+    <fieldset className="plan-field"><legend>Any areas you want the exercise options to take into account? (optional)</legend><p className="quiz-hint">Choose any that apply, or leave blank. This is not an injury assessment.</p><div className="refinement-options">{[['knees','Knees'],['back','Back'],['shoulders','Shoulders']].map(([id,label]) => <label className="refinement-option" key={id}><input type="checkbox" checked={answers.sensitivities?.includes(id) ?? false} onChange={event => onSensitivitiesChange(event.target.checked ? [...(answers.sensitivities || []),id] : (answers.sensitivities || []).filter(value => value !== id))} /> {label}</label>)}</div></fieldset>
     <div className="quiz-actions"><button type="button" className="btn btn-ghost" onClick={onBack} disabled={!canGoBack}>Back</button><button type="button" className="btn btn-primary" disabled={!ready} onClick={onContinue}>Build my plan</button></div>
   </div></article>
 }
