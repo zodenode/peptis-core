@@ -411,6 +411,7 @@ export function useQuizEngine() {
   }, [])
 
   return {
+    quizId,
     hydrated,
     current,
     historyLength: history.length,

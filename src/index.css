@@ -6009,3 +6009,49 @@ input:disabled {
 .quiz-body .email-gate-field select { display:block; width:100%; min-height:48px; padding:12px; border:1px solid #c7cec6; border-radius:10px; background:#fff; color:#17352b; font:inherit; margin-top:8px; }
 .quiz-body .plan-field { margin:24px 0; }
 .plan-slot.is-text-only { grid-template-columns:1fr; }
+
+/* Chapter milestones and answer-led micro stages. */
+.chapter-progress { margin: 0 0 1rem; padding: 1.1rem; border: 1px solid var(--line); border-radius: 20px; background: var(--white); }
+.chapter-heading { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; color: var(--muted); font-size: .85rem; }
+.chapter-heading strong { color: var(--forest); }
+.chapter-track { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: .6rem; padding: 0; margin: 0; list-style: none; }
+.chapter-track li { display: grid; gap: .4rem; min-width: 0; justify-items: center; }
+.chapter-token { display: grid; place-items: center; width: 2rem; height: 2rem; border: 2px solid var(--line); border-radius: 50%; color: var(--muted); font-weight: 800; transition: background .3s, border-color .3s, color .3s; }
+.chapter-track .is-active .chapter-token { border-color: var(--forest); color: var(--forest); box-shadow: 0 0 0 4px rgba(63,91,58,.08); }
+.chapter-track .is-done .chapter-token { border-color: var(--forest); background: var(--forest); color: var(--white); animation: chapter-pop .4s var(--ease) both; }
+.chapter-label { font-size: .72rem; color: var(--muted); text-align: center; }
+.chapter-track .is-active .chapter-label { color: var(--forest); font-weight: 700; }
+.chapter-bar { width: 100%; height: 8px; overflow: hidden; border-radius: 99px; background: var(--beige-warm); }
+.chapter-bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg,var(--forest),var(--sage-soft)); transition: width .45s var(--ease); }
+.chapter-track .is-done .chapter-bar > span { background: var(--forest); }
+.chapter-reward-slot { min-height: 0; }
+.chapter-reward { position: relative; display: flex; align-items: center; gap: .75rem; padding: .8rem; margin-top: 1rem; overflow: hidden; border-radius: 14px; background: var(--beige-warm); animation: quiz-rise .3s var(--ease) both; }
+.chapter-reward strong, .chapter-reward div > span { display: block; }
+.chapter-reward strong { font-size: .9rem; color: var(--forest); }
+.chapter-reward div > span { margin-top: .2rem; font-size: .8rem; color: var(--muted); }
+.chapter-reward-star { font-size: 1.75rem; color: var(--bronze-deep); animation: chapter-pop .55s var(--ease) both; }
+.chapter-sparks { position: absolute; left: 1.6rem; top: 50%; pointer-events: none; }
+.chapter-sparks i { position: absolute; width: 5px; height: 5px; background: var(--coral); border-radius: 2px; animation: chapter-spark .65s var(--ease) both; }
+.chapter-sparks i:nth-child(even) { background: var(--forest); }
+.micro-progress { margin: 1rem 0 1.5rem; }
+.micro-progress p { display: flex; justify-content: space-between; gap: 1rem; font-size: .85rem; color: var(--muted); }
+.micro-track { display: flex; gap: .35rem; }
+.micro-track > span { flex: 1; height: 9px; border-radius: 99px; background: var(--beige-warm); overflow: hidden; }
+.micro-track i { display: block; height: 100%; border-radius: inherit; background: var(--forest); transition: width .35s var(--ease); }
+.micro-track .is-active i { background: var(--coral); }
+.micro-stage { animation: quiz-rise .3s var(--ease) both; }
+.micro-choice-check { display: inline-grid; place-items: center; color: var(--forest); font-weight: 800; animation: chapter-pop .3s var(--ease) both; }
+.refinement-option { position: relative; }
+.refinement-option .micro-choice-check { margin-left: .5rem; }
+.provider-option { position: relative; }
+.provider-option .micro-choice-check { position: absolute; top: .35rem; right: .5rem; }
+.provider-option-label { font-size: .72rem; font-weight: 650; line-height: 1.2; }
+.quiz-option.is-selected .quiz-letter { animation: chapter-pop .3s var(--ease) both; }
+@keyframes chapter-pop { 0% { transform: scale(.8); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes chapter-spark { from { opacity: 1; transform: rotate(calc(var(--spark-index) * 45deg)) translateX(5px); } to { opacity: 0; transform: rotate(calc(var(--spark-index) * 45deg)) translateX(48px); } }
+@media (max-width: 420px) { .chapter-progress { padding: .8rem; } .chapter-track { gap: .35rem; } .chapter-label { font-size: .65rem; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter-token, .chapter-reward, .chapter-reward-star, .chapter-sparks i, .micro-stage, .micro-choice-check, .quiz-option.is-selected .quiz-letter { animation: none; }
+  .chapter-token, .chapter-bar > span, .micro-track i { transition: none; }
+  .chapter-sparks { display: none; }
+}
