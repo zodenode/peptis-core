@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
+import { useCallback, useState } from 'react'
 import {
   checkoutCopy,
   isQuestionId,
-  progressPercent,
   questions,
   resolveExplainer,
 } from '../../data/quiz'
@@ -17,6 +17,7 @@ import { QuizQuestion } from './QuizQuestion'
 import { Success } from './Success'
 import { SummaryReveal } from './SummaryReveal'
 import { TrajectoryReveal } from './TrajectoryReveal'
+import { ChapterProgress } from './ChapterProgress'
 
 type Props = {
   embedded?: boolean
@@ -27,7 +28,9 @@ export function QuizFlow({ embedded = false }: Props) {
   const quiz = useQuizEngine()
   const question = isQuestionId(quiz.current) ? questions[quiz.current] : undefined
   const explainer = resolveExplainer(quiz.current, quiz.answers, terms)
-  const percent = progressPercent(quiz.current)
+  const [micro, setMicro] = useState({ step: '', progress: 0 })
+  const currentStep = quiz.current
+  const onMicroProgress = useCallback((progress: number) => setMicro({ step: currentStep, progress }), [currentStep])
 
   if (!quiz.hydrated) {
     return (
@@ -56,22 +59,12 @@ export function QuizFlow({ embedded = false }: Props) {
           <img key={src} src={src} alt="" width="72" height="28" decoding="async" />
         ))}
       </div>
-      {quiz.current !== 'plan_build' ? (
-        <div
-          className="quiz-progress"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={percent}
-          aria-valuetext={`About ${percent} percent complete`}
-        >
-          <div className="quiz-progress-bar" style={{ width: `${percent}%` }} />
-        </div>
-      ) : null}
+      <ChapterProgress key={quiz.quizId} step={quiz.current} answers={quiz.answers} microProgress={micro.step === quiz.current ? micro.progress : 0} />
 
       <div className="quiz-stage">
         {question ? (
           <QuizQuestion
+            key={question.id}
             step={question}
             answers={quiz.answers}
             onSelect={quiz.selectOption}
@@ -92,7 +85,7 @@ export function QuizFlow({ embedded = false }: Props) {
           />
         ) : null}
 
-        {quiz.current === 'treatment_context' ? <TreatmentContext answers={quiz.answers} onAnswer={quiz.setPlanAnswer} onContinue={quiz.goNext} onBack={quiz.goBack} canGoBack={quiz.canGoBack} /> : null}
+        {quiz.current === 'treatment_context' ? <TreatmentContext answers={quiz.answers} onAnswer={quiz.setPlanAnswer} onContinue={quiz.goNext} onBack={quiz.goBack} canGoBack={quiz.canGoBack} onProgress={onMicroProgress} /> : null}
 
         {quiz.current === 'email_gate' ? (
           <EmailGate
@@ -122,6 +115,7 @@ export function QuizFlow({ embedded = false }: Props) {
             onBack={quiz.goBack}
             canGoBack={quiz.canGoBack}
             onSensitivitiesChange={quiz.setSensitivities}
+            onProgress={onMicroProgress}
           />
         ) : null}
 

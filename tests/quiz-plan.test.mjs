@@ -6,6 +6,29 @@ import path from 'node:path'
 import { cleanAnswers, planIntakeFromAnswers, derivePathways } from '../shared/profile.mjs'
 import { generateProgram } from '../shared/program.mjs'
 import { createOutbox } from '../mailOutbox.mjs'
+import { quizChapterState, routineReady, QUIZ_CHAPTERS } from '../shared/quizChapters.mjs'
+
+test('chapter progress follows real milestones and finishes only after a successful save', () => {
+  assert.equal(QUIZ_CHAPTERS.length,5)
+  assert.equal(quizChapterState('q1').index,0)
+  assert.equal(quizChapterState('email_gate').index,1)
+  assert.equal(quizChapterState('stop_a').progress,0)
+  assert.equal(quizChapterState('stop_b').index,2)
+  assert.equal(quizChapterState('summary_mid',{q3:'q3_a',q4:'q4_b',q5:'q5_a'}).progress,75)
+  assert.equal(quizChapterState('plan_build',{},0).progress,75)
+  assert.equal(quizChapterState('plan_build',{},.5).progress,88)
+  assert.equal(quizChapterState('treatment_context',{},Infinity).progress,33)
+  assert.equal(quizChapterState('plan_build',{},-1).progress,75)
+  assert.equal(quizChapterState('checkout').complete,false)
+  assert.equal(quizChapterState('checkout').progress,50)
+  assert.deepEqual(quizChapterState('success'),{index:4,progress:100,complete:true,position:5})
+})
+test('routine completion requires all plan inputs and permits no exercise-area preference', () => {
+  const answers={training_experience:'new',training_habit:'0',equipment:'none',training_days:'2',protein_habit:'unsure',appetite:'normal'}
+  assert.equal(routineReady(answers),true)
+  for (const field of Object.keys(answers)) assert.equal(routineReady({...answers,[field]:undefined}),false)
+  assert.equal(routineReady({...answers,sensitivities:[]}),true)
+})
 
 test('digestive wishes never invent a digestive priority without symptoms or an explicit goal', () => {
   for (const q8 of ['q8_a','q8_b','q8_c','q8_d','q8_none']) assert.equal(derivePathways({ q5:'q5_a',q2:['a'],q8 }).includes('gi_repair'),false)

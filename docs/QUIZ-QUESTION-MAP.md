@@ -116,3 +116,9 @@ The reveal includes four answer-driven fact tiles, reasons for the plan, expanda
 ## Final contact choices
 
 Name, email, US state and required confirmations accompany saving the free plan. A phone number and a separate unchecked manual-callback permission are optional. Email marketing and nutrition-box interest remain separate choices.
+
+## Animated chapters and micro stages
+
+The quiz is grouped into Context, Goals, Baseline, Routine and Your Plan. Five animated bars and chapter tokens stay visible through the quiz. Bars reflect completed questions and navigation; they are not health scores. A completed chapter receives a checkmark and a short star-and-confetti banner while the next question remains usable. Returning to a previous chapter does not repeatedly award its celebration in the same session. Restoring a saved check does not replay old celebrations.
+
+Treatment context now uses two or three micro stages: the restored provider logo matrix, medication/dose when applicable, and weight context. Routine planning uses seven micro stages: experience, current habit, equipment, planned days, protein habits, appetite and optional exercise-area preferences. Each has a small segmented animated bar, selection checkmarks and Back/Continue controls. Required plan inputs remain required; provider and exercise-area preferences can be skipped. Chapter and selection animations respect reduced-motion settings. No audio, extra timed gate, health ranking or XP tied to symptoms is introduced.
