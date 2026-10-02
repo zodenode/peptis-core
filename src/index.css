@@ -6011,7 +6011,8 @@ input:disabled {
 .plan-slot.is-text-only { grid-template-columns:1fr; }
 
 /* Chapter milestones and answer-led micro stages. */
-.chapter-progress { margin: 0 0 1rem; padding: 1.1rem; border: 1px solid var(--line); border-radius: 20px; background: var(--white); }
+.chapter-progress { position: sticky; top: 68px; z-index: 30; margin: 0 0 1rem; padding: 1.1rem; border: 1px solid var(--line); border-radius: 20px; background: var(--white); }
+.quiz-stage h1[tabindex="-1"] { scroll-margin-top: 240px; }
 .chapter-heading { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; color: var(--muted); font-size: .85rem; }
 .chapter-heading strong { color: var(--forest); }
 .chapter-track { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: .6rem; padding: 0; margin: 0; list-style: none; }
